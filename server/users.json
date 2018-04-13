@@ -1,0 +1,37 @@
+[
+  {
+    "login": "admin",
+    "password":"admin",
+    "type":"admin"
+  },
+
+  {
+    "login": "2",
+    "password":"2",
+    "name":"Никита",
+    "surname":"Никифоров",
+    "phone":"+375256934099",
+    "balance":"5",
+    "type":"user"
+  },
+
+  {
+    "login": "3",
+    "password":"3",
+    "name":"Лиза",
+    "surname":"Якимович",
+    "phone":"+375256934099",
+    "balance":"-15",
+    "type":"user"
+  },
+
+  {
+    "login": "12345678",
+    "password":"12345678",
+    "name":"Алексей",
+    "surname":"Малявко",
+    "phone":"+375256934099",
+    "balance":"24",
+    "type":"user"
+  }
+]
