@@ -6,20 +6,12 @@ html {
 * {
 	margin: 0;
 	padding: 0;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-*:before, *:after {
-  box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 p {
 	font-size: 16px;
 }
-
 
 img {
 	width: 100%;
@@ -39,6 +31,10 @@ th {
 	padding-bottom: 20px;
     font-size: 18px;
     padding-top: 10px;
+}
+
+tr {
+    width: 100%;
 }
 
 td {
@@ -100,6 +96,13 @@ header {
 	margin: 0px 20px;
 }
 
+.userInfo__button {
+    padding: 19px 15px;
+    background: #d6d6d6;
+    margin-right: 0px !important;
+    cursor: pointer;
+};
+
 main {
 	flex:1;
 	justify-content: flex-start;
@@ -108,12 +111,51 @@ main {
 }
 
 .container {
-	padding: 0px 100px;
+     padding: 80px 100px;
 }
 
+.tab_menu{
+    font-size: 24px;
+    background-color: #ebebeb;
+    display: grid;
+    margin: 25px 16px;
+    padding: 25px 0px;
+    grid-template-columns: 33% 33% 33%
+}
+
+.tab_menu_item{
+    text-align: center;
+}
+
+
 .generalInfo {
-	display: flex;
+    margin: 10px 16px;
+    display: flex;
     justify-content: space-between;
+}
+
+.generalInfo p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#drag {
+    margin: 60px 0px;
+}
+
+#dropZone {      
+    text-align: center;
+    width: 50%;
+    padding: 25px 0;
+    margin: 0 auto;
+    background: #eee;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+}
+
+#dropZone:hover {
+    background: #ddd;
+    border-color: #aaa;
 }
 
 .items {
@@ -135,12 +177,10 @@ main {
     margin: 10px 20px;
 }
 
-
-
 .item {
     position: relative;
     margin: 15px;
-    /* width: 300px; */
+        min-width: 350px;
     min-height: 450px;
     text-align: center;
     background: #f7f6f6;
@@ -169,6 +209,7 @@ main {
 .new_menu {
     padding: 10px 20px;
 }
+
 .past_menu {
     border-top: 3px solid black;
 }
@@ -189,9 +230,12 @@ main {
     left: 0;
 }
 
-
 button:hover {
     background: #72bb53;
+}
+
+.active {
+    color: #1464f6;
 }
 
 .future_menu {
