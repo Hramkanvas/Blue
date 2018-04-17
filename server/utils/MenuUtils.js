@@ -45,17 +45,17 @@ module.exports = {
             });
 
             return menuSchema.save()
-            .then((body) =>{
-                return {body}
-            })
-            .catch(err => {
-                return new Promise((res)=>{
-                    return {
-                        body: {message: `err`}
-                    }
+                .then((body) => {
+                    return { body }
                 })
-            } )
-            
+                .catch(err => {
+                    return new Promise((res) => {
+                        return {
+                            body: { message: `err` }
+                        }
+                    })
+                })
+
         }
 
         else {
