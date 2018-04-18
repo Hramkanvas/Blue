@@ -126,12 +126,16 @@ header {
     background: #d6d6d6;
     margin-right: 0px !important;
     cursor: pointer;
-};
+}
 
-
+main {
+    display: flex;
+    flex: 1
+}
 
 .container {
-     padding: 35px 100px;
+    width: 100%;
+    padding: 35px 100px;
 }
 
 .tab_menu {
@@ -321,7 +325,7 @@ input:focus, select:focus {
     padding: 30px;
     width: 500px;
     height: max-content;
-    margin-top: 10%;
+    margin: 10% auto;
 }
 
 .bottom-stuff h3 {
@@ -430,10 +434,3 @@ footer {
 	background: #eaeaea;
 }
 
-main {
-    display: flex;
-	flex:1;
-	justify-content: center;
-    flex-wrap: wrap;
-    flex-direction: row;
-}
