@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exadel - Grandmother</title>
+<link rel="shortcut icon" href="img/exadel_icon.ico">
+<link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+<body>
+<header>
+
+    <div class="logo">
+        <img src="img/logoExadel.png" alt="logoExadel">
+    </div>
+
+    <div class="userInfo">
+        
+        <span class="userInfo__name">
+            Имя
+        </span>
+        <span class="userInfo__button">
+            Выход
+        </span>
+    </div>
+ 
+</header>
+
+<main>
+<div class="container">
+   
+    <div class="tab_menu">
+        <div class="tab_menu_item ">Меню</div>
+        <div class="tab_menu_item active">Пополнить баланс</div>
+        <div class="tab_menu_item ">Заказы</div>
+    </div>
+
+    <div class="up-balance-block">
+        <div class="info">
+            <div class="worker">
+                <p>
+                    <b>Сотрудник: </b> Иванов Иван </p>
+            </div>
+            <div class="balance">
+                <p>
+                    <b> Баланс: </b> 5 к </p>
+            </div>
+        </div>
+        <form>
+            <label for="username">СОТРУДНИК:
+            <input type="text" id="username" list="character">
+            </label>
+            <datalist id="character">
+                <option value="Чебурашка"></option>
+                <option value="Крокодил Гена"></option>
+                <option value="Шапокляк"></option>
+            </datalist>
+            <label for="balance" list="character"> СУММА:
+            <input  type="text"> </label>
+        </form>
+
+        <button class="">Пополнить</button>
+    </div>
+
+</div>
+   
+</main>
+
+<footer><p>Exadel</p></footer>
+
+</body>
+</html>
