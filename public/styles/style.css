@@ -1,0 +1,438 @@
+html {
+	height: 100%
+}
+
+* {
+	margin: 0;
+	padding: 0;
+    box-sizing: border-box;
+}
+
+p {
+	font-size: 16px;
+}
+
+img {
+	width: 100%;
+    user-select: none;
+}
+
+
+
+h1, h2, h3, h4, h5, h6, th {
+	color: #606060
+}
+
+.price, b ,.generalInfo p {
+    color: #444444;
+}
+
+
+table {
+	padding: 0px 20px 30px 20px;
+    text-align: left;
+	width: 100%;
+}
+
+th {
+	padding-bottom: 20px;
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+tr {
+    width: 100%;
+}
+
+td {
+	font-size: 18px;
+	padding-right: 35px;
+	padding-bottom: 3px;
+}
+
+button {
+    border: none;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    background: #3d8af7;
+    padding: 5px 10px;
+}
+
+input {
+    width: 100%;
+    display: block;
+    border: none;
+    outline: none;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+label {
+    color: #606060;
+    font-size: 14px;
+}
+
+svg:hover {
+    cursor: pointer;
+    fill: black
+}
+
+body {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    min-width: 320px;
+    flex-direction: column;
+	min-height: 100vh;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	color: #7a7a7a;   
+}
+
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    background-color:#ebebeb;
+    padding: 10px 0px 10px 0px;
+    z-index: 2;
+	align-items: center;
+	justify-content: space-around;
+	color: #606060;
+    border-bottom: 1px solid #7a7a7a1a;
+}
+
+
+.logo {
+    padding: 0px 5px;
+	width: 150px;
+    margin-right: auto;
+    margin-left: 50px;
+}
+
+.userInfo {
+	font-size: 25px;
+}
+
+.userInfo span {
+	margin: 0px 20px;
+}
+
+.userInfo__button {
+    padding: 14px 15px;
+    background: #d6d6d6;
+    margin-right: 0px !important;
+    cursor: pointer;
+};
+
+
+
+.container {
+     padding: 35px 100px;
+}
+
+.tab_menu {
+    font-size: 24px;
+    background-color: #ebebeb;
+    display: grid;
+    margin: 25px 0px;
+    padding: 25px 0px;
+    grid-template-columns: 33% 33% 33%
+}
+
+.tab_menu_item {
+    text-align: center;
+}
+
+.generalInfo {
+    margin: 20px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.generalInfo p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#drag {
+    margin: 60px 0px;
+}
+
+#dropZone {      
+    text-align: center;
+    width: 50%;
+    padding: 25px 0;
+    margin: 0 auto;
+    background: #eee;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+}
+
+#dropZone:hover {
+    background: #ddd;
+    border-color: #aaa;
+}
+
+
+/* АДМИН ТАБЛИЦА */
+.orders-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.toolbar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin:10px 0 10px 0;
+}
+
+.toolbar select {
+    color: #757575;
+    width: 24%;
+    border: 2px solid #efefef;
+}
+
+.orders-table-header {
+    width: 100%;
+    height: 40px;
+    background: #d6d6d6;
+    color: white; 
+}
+
+.search_box {
+    width: 50%;
+    height: 40px;
+    border: 2px solid #efefef;
+    display: flex;
+}
+
+.search_box input {
+    width: 100%;
+    border:none;
+    user-select: none;
+}
+
+.orders-table {
+    padding: 0px;
+    width: 100%;
+}
+
+.orders-table tbody tr:nth-child(odd) {
+    background: #ebebeb;
+}
+
+.orders-table tbody tr{
+    height: 40px;
+}
+
+.btn {
+    width: 150px;
+    height: 50px;
+    background: rgb(61, 138, 247);
+    color: white;
+    text-align: center;
+    margin: auto;
+    font-size: 25px;
+    border:none;
+}
+
+.btn:hover {
+    background: #4c94f8;  
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    cursor:pointer;
+}
+.btn:active {
+    background: #3787f8;  
+}
+
+.statistics {
+    margin: 40px 0px;
+    background: #e7e6e6;
+    width: 100%;
+    min-height: 70px;
+    text-align: center;
+    padding: 30px 0px;
+}
+
+.orders-result {
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
+}
+
+.orders-result td {
+    padding: 0px 70px;
+}
+
+input:focus, select:focus {
+    outline: none;
+}
+
+.search_icon {
+    width:auto !important
+}
+
+
+/* ФОРМА БАЛАНСА */
+
+.up-balance-block {
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    padding: 30px 80px;
+    background-color: #ebebeb;
+    margin: 0px auto;
+}
+
+.up-balance-block > div {
+	padding-bottom:5%;
+}
+
+.info p {
+    font-size: 20px;
+}
+
+.worker {
+	float:left;
+}
+
+.balance{
+	float:right;
+}
+
+.bottom-stuff p {
+    margin: 0;
+    color: #444444;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+/* АВТОРИЗАЦИЯ */
+.authorization-block {
+    background: #ebebeb;
+    padding: 30px;
+    width: 500px;
+    height: max-content;
+    margin-top: 10%;
+}
+
+.bottom-stuff h3 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.items {
+	display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 50px 30px;
+}
+
+.item__Func {
+    display: flex;
+    padding-bottom: 15px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item__Func h5 {
+	text-align: left;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 10px 20px;
+}
+
+.item {
+    position: relative;
+        min-width: 350px;
+    min-height: 450px;
+    text-align: center;
+    background: #f7f6f6;
+    border-radius: 3px;
+    border: 1px solid #7a7a7a1a;
+    padding: 20px;
+    box-shadow: 4px 6px 8px 0px #0000004a;
+}
+
+.price {
+    position: absolute;
+    padding: 20px;
+    background: #ebebeb;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.price.edit {
+    bottom: 70px;
+    padding: 10px;
+}
+
+.new_menu {
+    padding: 10px 20px;
+}
+
+.past_menu {
+    border-top: 3px solid black;
+}
+
+.edit_menu {
+    box-shadow: 4px 5px 6px 1px #1464f685;
+    border-top: 3px solid #1464f6;
+}
+
+.edit_menu td {
+    padding-right: 20px;
+}
+
+.count_products {
+    display: flex;
+}
+
+.add_menu {
+    position: absolute;
+    top: 88%;
+    width: 100%;
+    left: 0;
+}
+
+button:hover {
+    background: #72bb53;
+}
+
+.active {
+    color: #1464f6;
+}
+
+.future_menu {
+    box-shadow: 4px 5px 6px 1px #72bb537a;
+    border-top: 3px solid #72bb53;
+}
+
+.item caption {
+	font-size: 15px;
+}
+
+footer {
+	display: flex;
+    flex-basis: 100%;
+    padding: 20px 0 20px 0;
+	justify-content: center;
+	background: #eaeaea;
+}
+
+main {
+    display: flex;
+	flex:1;
+	justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
