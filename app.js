@@ -10,16 +10,16 @@ mongoose.connect(`mongodb://localhost:27017`);
 
 app.put('/', (req, res) => {
     db.addMenu()
-        .then(response => { 
-            console.log(response);
-            res.send(response.body) })
+        .then(answer => { 
+            console.log(answer);
+            res.send(answer) })
         .catch(err => console.log(err));
 
 })
 
 app.get('/', (req, res) => {
-    db.findMenu(new Date(2018, 3, 26))
-        .then(response => res.send(response.body))
+    db.findMenu(new Date(2018, 8, 25))
+        .then(answer => res.send(answer))
         .catch(err => console.log(err));
 })
 

@@ -11,25 +11,16 @@ module.exports = {
                 let actuallMenu;
 
                 [].forEach.call(arr, (menu) => {
-
                     if (menu.toDate - actuallDate > 0 && actuallDate - menu.fromDate > 0) {
                         actuallMenu = menu;
                     }
                 });
 
-                return {
-                    body: actuallMenu
-                }
-
+                return actuallMenu;
             })
             .catch(err => {
-                return new Promise((res) => {
-                    res({
-                        body: { message: `Failed to get Menu because: ${err}` }
-                    })
-                })
+                return err;
             });
-
     },
 
     addMenu(file) {
@@ -45,30 +36,21 @@ module.exports = {
             });
 
             return menuSchema.save()
-                .then((body) => {
-                    return { body }
+                .then((answer) => {
+                    return answer;
                 })
                 .catch(err => {
-                    return new Promise((res) => {
-                        return {
-                            body: { message: `err` }
-                        }
-                    })
+                    return err;
                 })
-
         }
 
         else {
-            return new Promise((res) => {
-                res({
-                    body: { message: "Failed to add Menu" }
-                });
-            })
+            return "Failed to add Menu";
         }
-
-    },
+    }
 
 }
+
 
 function createMenu(file = './server/files/menu.xlsx') {
     const XLSX = require('xlsx');
