@@ -1,5 +1,4 @@
-
-let workWithPostsModule = (function () {
+let authorizeModule = (function () {
     
     function initialFunc() {
         document.getElementById("authorize").addEventListener('click', authorize);
@@ -9,7 +8,7 @@ let workWithPostsModule = (function () {
         var authorizeForm = document.forms.authorize;
         var login = authorizeForm.elements.login.value;
         var password = authorizeForm.elements.password.value;
-
+        console.log("PL");
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/login');
         xhr.setRequestHeader('content-type', 'application/json');
