@@ -5,7 +5,7 @@ let methods = require('./server/utils/methods');
 const bodyParser = require("body-parser");
 
 const app = express();
-app.use('/static', express.static('public'));
+app.use('/static', express.static('public/components'));
 app.use(bodyParser.json());
 
 mongoose.connect(`mongodb://localhost:27017`);
