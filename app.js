@@ -1,11 +1,11 @@
 const express = require('express');
 const db = require('./server/utils/MenuUtils');
 const mongoose = require('mongoose');
-let methods = require('./server/utils/methods');
+let methods = require('./server/utils/QueryMethods');
 const bodyParser = require("body-parser");
 
 const app = express();
-app.use('/static', express.static('public/components'));
+app.use('/static', express.static('public'));
 app.use(bodyParser.json());
 
 mongoose.connect(`mongodb://localhost:27017`);
@@ -22,7 +22,6 @@ app.post('/downloadMenu', (req, res) => {
             console.log(answer);
             res.send(answer) })
         .catch(err => console.log(err));
-
 })
 
 app.get('/getMenu', (req, res) => {
@@ -30,6 +29,12 @@ app.get('/getMenu', (req, res) => {
         .then(answer => res.send(answer))
         .catch(err => console.log(err));
 })
+
+app.put('/upBalance',(req,res) =>{
+    let user = methods.addBalance(req.body.id,req.body.sum);
+    user ? res.send(user): res.send(404,'Invalid idw of user!!!');
+})
+
 
 app.listen(3000, () => {
     console.log(`Server is running...`);

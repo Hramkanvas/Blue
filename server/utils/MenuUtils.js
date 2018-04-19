@@ -3,9 +3,7 @@ const Menu = require('../models/Menu');;
 
 
 module.exports = {
-
     findMenu(actuallDate) {
-
         return Menu.find({})
             .then((arr) => {
                 let actuallMenu;
@@ -28,7 +26,6 @@ module.exports = {
         const menu = createMenu(file);
 
         if (validateMenu(menu)) {
-
             const menuSchema = new Menu({
                 toDate: menu.toDate,
                 fromDate: menu.fromDate,
