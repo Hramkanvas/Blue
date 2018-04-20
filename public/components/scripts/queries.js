@@ -1,15 +1,15 @@
-let queries = (function () {
-
+export let queries = (function () {
     return {
         authorize: function (login, password) {
             return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/login');
                 xhr.setRequestHeader('content-type', 'application/json');
-                value = { login: login, password: password };
-    
+                var value = { login: login, password: password };
+                
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var user;
                         try {
                             user = JSON.parse(xhr.response);
                         } catch (err) {
@@ -30,6 +30,7 @@ let queries = (function () {
 
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var menu;
                         try {
                             menu = JSON.parse(xhr.response);
                         } catch (err) {
@@ -50,6 +51,7 @@ let queries = (function () {
 
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var user;
                         try {
                             user = JSON.parse(xhr.response);
                         } catch (err) {

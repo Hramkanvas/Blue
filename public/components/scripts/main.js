@@ -1,6 +1,6 @@
+import {queries} from "./queries.js";
 
-
-let authorizeModule = (function () {
+let mainModule = (function () {
     function initialFunc() {
         document.getElementById("authorize").addEventListener('click', authorize);
     }

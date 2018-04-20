@@ -13,6 +13,7 @@ mongoose.connect(`mongodb://localhost:27017`);
 
 app.post('/login',(req,res) =>{
     let user = methods.login(req.body.login,req.body.password);
+    console.log(user);
     user ? res.send(user): res.send(404,"Incorrect login or password");
 });
 
@@ -34,7 +35,6 @@ app.put('/upBalance',(req,res) =>{
     let user = methods.addBalance(req.body.id,req.body.sum);
     user ? res.send(user): res.send(404,'Invalid idw of user!!!');
 })
-
 
 app.listen(3000, () => {
     console.log(`Server is running...`);
