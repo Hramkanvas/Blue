@@ -6,6 +6,7 @@
 <title>Exadel - Grandmother</title>
 <link rel="shortcut icon" href="img/exadel_icon.ico">
 <link rel="stylesheet" type="text/css" href="styles/style.css">
+<script defer src="scripts/script.js"></script>
 </head>
 <body>
 <header>
@@ -15,13 +16,10 @@
     </div>
 
     <div class="userInfo">
-        <span class="userInfo__balans">
-            Баланс: <b>25</b> руб.
-        </span>
         <span class="userInfo__name">
             Имя
         </span>
-        <span class="userInfo__button">
+        <span class="userInfoButton">
             Выход
         </span>
     </div>
@@ -30,24 +28,36 @@
 
 <main>
 <div class="container">
-   
-   
+      
+    <div class="tabMenu">
+        <div><a href="#" data-tab="menu"        class="tabMenuItem active">Меню</a> </div>
+        <div><a href="#" data-tab="upbalance"   class="tabMenuItem">Пополнить баланс</a> </div>
+        <div><a href="#" data-tab="orders"      class="tabMenuItem">Заказы</a> </div>
+    </div>
 
     <div class="mainInfo">
         
+        <div id="menu" class="tabcontent active">
+
+        <form action="/" id="drag">
+            <div id="dropZone">
+                Для загрузки меню, перетащите файл сюда.
+            </div>
+        </form>
+
         <div class="generalInfo">
             <div class="timeShedule">
                 <p>Неделя (09.04 - 13.04)</p>
             </div>
             <div class="countMoney">
-                <p>Итого за неделю: 56р</p>
+                <p>Итого за неделю: 56 руб.</p>
             </div>
         </div>
 
         <div class="items">
             
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
 
@@ -91,189 +101,59 @@
                 </div>
             </div>
 
-            <div class="item past_menu">
-                <div class="item__Func">
+            <div class="item">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
             
                 <div class="item__menu">
                     <table>
-                        <caption>Оформленный заказ</caption>
-                        <tbody>
-                            <tr>
-                                <th>Продукт</th>
-                                <th>Цена</th>
-                            </tr>
-            
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                           
-                        </tbody>
-                    </table>
-                </div>
-                <div class="price">
-                    Итого: 56 руб.
-                </div>
-            </div>
-
-            <div class="item future_menu">
-                <div class="item__Func">
-                    <h5>Ср</h5>
-                    <div class="item__Func__buttons">
-                        <span>
-                            <svg fill="#606060" height="30" viewBox="0 0 24 24" width="30">
-                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                                />
-                            </svg>
-                        </span>
-                    
-                        <span>
-                            <svg fill="#606060" height="30" viewBox="0 0 24 24" width="30">
-                                <path d="M15 16h4v2h-4zm0-8h7v2h-7zm0 4h6v2h-6zM3 18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V8H3v10zM14 5h-3l-1-1H6L5 5H2v2h12z" />
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-            
-                <div class="item__menu">
-                    <table>
-                        <caption>Оформленный заказ:</caption>
-                        <tbody>
-                            <tr>
-                                <th>Продукт</th>
-                                <th>Цена</th>
-                            </tr>
-            
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            
-                            <tr>
-                                <td>Картошка</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="price">
-                    Итого: 56 руб.
-                </div>
-            </div>
-
-
-
-            <div class="item edit_menu">
-                <div class="item__Func">
-                    <h5>Вт</h5>
-                    <div class="item__Func__buttons">
-                        <span>
-                            <svg fill="#606060" height="30" viewBox="0 0 24 24" width="30">
-                                <path d="M15 16h4v2h-4zm0-8h7v2h-7zm0 4h6v2h-6zM3 18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V8H3v10zM14 5h-3l-1-1H6L5 5H2v2h12z" />
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-            
-                <div class="item__menu">
-                    <table>
                         <caption>Меню на день:</caption>
                         <tbody>
                             <tr>
                                 <th>Продукт</th>
                                 <th>Цена</th>
-                                <th>Кол-во</th>
-                                
                             </tr>
+            
                             <tr>
                                 <td>Мясо</td>
                                 <td>
-                                    <b>56</b> руб.
-                                </td>
-                                <td class="count_products">
-                                    
-                                    <span class="remove">
-                                        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 13H5v-2h14v2z" />
-                                        </svg>
-                                    </span>
-                                        <span class="count">5</span>
-                                        
-                                    <span class="add">
-                                        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                                        </svg>
-                                    </span>
-                                </td>
+                                    <b>56</b> руб.</td>
                             </tr>
                             <tr>
                                 <td>Картошка</td>
                                 <td>
-                                    <b>56</b> руб.
-                                </td>
-                                <td class="count_products">
-                                
-                                    <span class="remove">
-                                        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 13H5v-2h14v2z" />
-                                        </svg>
-                                    </span>
-                                    <span class="count">2</span>
-                                
-                                    <span class="add">
-                                        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                                        </svg>
-                                    </span>
-                                </td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
                             </tr>
                         </tbody>
                     </table>
-
-                </div> 
-                <div class="price edit">
-                    Итого: 56 руб.
-                </div>
-                
-                <div class="add_menu">
-                    <button>
-                        Заказать!
-                    </button>
                 </div>
             </div>
-
-
-
             <div class="item">
-                <div class="item__Func">
-                    <h5>Пт</h5>
+                <div class="itemFunc">
+                    <h5>Пн</h5>
                 </div>
-            
+
                 <div class="item__menu">
                     <table>
                         <caption>Меню на день:</caption>
@@ -282,7 +162,7 @@
                                 <th>Продукт</th>
                                 <th>Цена</th>
                             </tr>
-            
+
                             <tr>
                                 <td>Мясо</td>
                                 <td>
@@ -316,64 +196,265 @@
                         </tbody>
                     </table>
                 </div>
-                <button class="new_menu">
-                    Сформировать заказ
-                </button>
+            </div>
+            <div class="item">
+                <div class="itemFunc">
+                    <h5>Пн</h5>
+                </div>
+
+                <div class="item__menu">
+                    <table>
+                        <caption>Меню на день:</caption>
+                        <tbody>
+                            <tr>
+                                <th>Продукт</th>
+                                <th>Цена</th>
+                            </tr>
+
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="item">
+                <div class="itemFunc">
+                    <h5>Пн</h5>
+                </div>
+
+                <div class="item__menu">
+                    <table>
+                        <caption>Меню на день:</caption>
+                        <tbody>
+                            <tr>
+                                <th>Продукт</th>
+                                <th>Цена</th>
+                            </tr>
+
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="item">
+                <div class="itemFunc">
+                    <h5>Пн</h5>
+                </div>
+
+                <div class="item__menu">
+                    <table>
+                        <caption>Меню на день:</caption>
+                        <tbody>
+                            <tr>
+                                <th>Продукт</th>
+                                <th>Цена</th>
+                            </tr>
+
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Мясо</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Картошка</td>
+                                <td>
+                                    <b>56</b> руб.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="item">
-                <div class="item__Func">
-                    <h5>Пт</h5>
-                </div>
-            
-                <div class="item__menu">
-                    <table>
-                        <caption>Меню на день:</caption>
-                        <tbody>
-                            <tr>
-                                <th>Продукт</th>
-                                <th>Цена</th>
-                            </tr>
-            
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Мясо</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td>
-                                    <b>56</b> руб.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button class="new_menu">
-                    Сформировать заказ
-                </button>
-            </div>
 
         </div>
+    </div>
+
+    <div id="upbalance" class="tabcontent">
+        
+        <div class="upBalanceBlock">
+            <div class="info">
+                <div class="worker">
+                    <p>
+                        <b>Сотрудник: </b> Иванов Иван </p>
+                </div>
+                <div class="balance">
+                    <p>
+                        <b> Баланс: </b> 5 к </p>
+                </div>
+            </div>
+            <form>
+                <label for="username">Сотрудник:
+                    <input type="text" id="username" list="character">
+                </label>
+                <datalist id="character">
+                    <option value="Чебурашка"></option>
+                    <option value="Крокодил Гена"></option>
+                    <option value="Шапокляк"></option>
+                </datalist>
+                <label for="balance" list="character"> Сумма:
+                    <input type="text"> </label>
+            </form>
+        
+            <button class="">Пополнить</button>
+        </div>
+    </div>
+
+    <div id="orders" class="tabcontent">
+        <div class="ordersComponent">
+            <div class="toolbar">
+        
+                <div class="searchBox">
+                    <img class="searchIcon" src=""></img>
+                    <input placeholder="Введите пользователя" list="name">
+        
+                    <datalist id="name">
+                        <option value="admin"></option>
+                        <option value="lol"></option>
+                        <option value="asdas"></option>
+                    </datalist>
+                </div>
+        
+                <select>
+                    <option selected disabled>День недели</option>
+                    <option value="1">Понедельник</option>
+                    <option value="2">Вторник</option>
+                    <option value="3">Среда</option>
+                    <option value="4">Четверг</option>
+                    <option value="5">Пятница</option>
+                    <option value="6">Суббота</option>
+                </select>
+            </div>
+        
+        
+        
+            <table class="ordersTable">
+        
+                <tr class="ordersTableHeader">
+                    <th>Имя</th>
+                    <th>Заказ</th>
+                    <th>ЕЩЕ</th>
+                </tr>
+        
+                <tr class="ordersTable-row">
+                    <td>Павел</td>
+                    <td>Котлета</td>
+                    <td>ЕЩЕ</td>
+                </tr>
+        
+                <tr class="ordersTable-row">
+                    <td>НеПавел</td>
+                    <td>НеКотлета</td>
+                    <td>ЕЩЕ</td>
+                </tr>
+                <tr class="ordersTable-row">
+                    <td class="table-name">Павлуша</td>
+                    <td>НеКотлета</td>
+                    <td>ЕЩЕ</td>
+                </tr>
+            </table>
+        
+            <div class="statistics">
+                <h3>Итоговый заказ</h3>
+                <table class="ordersResult">
+                    <tr class="ordersResult-row">
+                        <td>Котлет</td>
+                        <td>56</td>
+                    </tr>
+                    <tr class="ordersResult-row">
+                        <td>Пюрешки</td>
+                        <td>2</td>
+                    </tr>
+                    <tr class="ordersResult-row">
+                        <td>Суп</td>
+                        <td>1</td>
+        
+                    </tr>
+                </table>
+            </div>
+        
+            <button class="btn btn-submit-orders">
+                Заказать!
+            </button>
+        </div>
+    </div>
+
     </div>
 </div>
    

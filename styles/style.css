@@ -9,8 +9,13 @@ html {
     box-sizing: border-box;
 }
 
+:root {
+    --grey-dark: var(--grey-dark);
+    --grey-black: #444444;
+}
+
 p {
-	font-size: 16px;
+    font-size: 16px;
 }
 
 img {
@@ -18,16 +23,18 @@ img {
     user-select: none;
 }
 
-
+a {
+    color: var(--grey-gark);
+    text-decoration: none;
+}
 
 h1, h2, h3, h4, h5, h6, th {
-	color: #606060
+	color: var(--grey-dark)
 }
 
 .price, b ,.generalInfo p {
-    color: #444444;
+    color: var(--grey-black)
 }
-
 
 table {
 	padding: 0px 20px 30px 20px;
@@ -72,7 +79,7 @@ input {
 }
 
 label {
-    color: #606060;
+    color: var(--grey-dark);
     font-size: 14px;
 }
 
@@ -101,7 +108,7 @@ header {
     z-index: 2;
 	align-items: center;
 	justify-content: space-around;
-	color: #606060;
+	color: var(--grey-dark);
     border-bottom: 1px solid #7a7a7a1a;
 }
 
@@ -121,7 +128,7 @@ header {
 	margin: 0px 20px;
 }
 
-.userInfo__button {
+.userInfoButton {
     padding: 14px 15px;
     background: #d6d6d6;
     margin-right: 0px !important;
@@ -138,8 +145,9 @@ main {
     padding: 35px 100px;
 }
 
-.tab_menu {
+.tabMenu {
     font-size: 24px;
+    text-align: center;
     background-color: #ebebeb;
     display: grid;
     margin: 25px 0px;
@@ -147,9 +155,19 @@ main {
     grid-template-columns: 33% 33% 33%
 }
 
-.tab_menu_item {
-    text-align: center;
+.tabMenuItem.active {
+    color: #0184c2;
+} 
+
+.tabcontent {
+    display: none;
 }
+
+.tabcontent.active {
+    display: block
+}
+
+
 
 .generalInfo {
     margin: 20px 0px;
@@ -183,7 +201,7 @@ main {
 
 
 /* АДМИН ТАБЛИЦА */
-.orders-component {
+.ordersComponent {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -204,36 +222,34 @@ main {
     border: 2px solid #efefef;
 }
 
-.orders-table-header {
+.ordersTableHeader {
     width: 100%;
-    height: 40px;
     background: #d6d6d6;
-    color: white; 
 }
 
-.search_box {
+.searchBox {
     width: 50%;
     height: 40px;
     border: 2px solid #efefef;
     display: flex;
 }
 
-.search_box input {
+.searchBox input {
     width: 100%;
     border:none;
     user-select: none;
 }
 
-.orders-table {
+.ordersTable {
     padding: 0px;
     width: 100%;
 }
 
-.orders-table tbody tr:nth-child(odd) {
+.ordersTable tbody tr:nth-child(odd) {
     background: #ebebeb;
 }
 
-.orders-table tbody tr{
+.ordersTable tbody tr{
     height: 40px;
 }
 
@@ -266,13 +282,13 @@ main {
     padding: 30px 0px;
 }
 
-.orders-result {
+.ordersResult {
     display: flex;
     padding-top: 20px;
     justify-content: center;
 }
 
-.orders-result td {
+.ordersResult td {
     padding: 0px 70px;
 }
 
@@ -280,14 +296,14 @@ input:focus, select:focus {
     outline: none;
 }
 
-.search_icon {
+.searchIcon {
     width:auto !important
 }
 
 
 /* ФОРМА БАЛАНСА */
 
-.up-balance-block {
+.upBalanceBlock {
     display: flex;
     flex-direction: column;
     width: 550px;
@@ -296,7 +312,7 @@ input:focus, select:focus {
     margin: 0px auto;
 }
 
-.up-balance-block > div {
+.upBalanceBlock > div {
 	padding-bottom:5%;
 }
 
@@ -312,7 +328,7 @@ input:focus, select:focus {
 	float:right;
 }
 
-.bottom-stuff p {
+.bottomStuff p {
     margin: 0;
     color: #444444;
     font-size: 100%;
@@ -320,7 +336,7 @@ input:focus, select:focus {
 }
 
 /* АВТОРИЗАЦИЯ */
-.authorization-block {
+.authorizationBlock {
     background: #ebebeb;
     padding: 30px;
     width: 500px;
@@ -328,7 +344,7 @@ input:focus, select:focus {
     margin: 10% auto;
 }
 
-.bottom-stuff h3 {
+.bottomStuff h3 {
     text-align: center;
     margin-bottom: 25px;
 }
@@ -339,14 +355,14 @@ input:focus, select:focus {
     grid-gap: 50px 30px;
 }
 
-.item__Func {
+.itemFunc {
     display: flex;
     padding-bottom: 15px;
     justify-content: space-between;
     align-items: center;
 }
 
-.item__Func h5 {
+.itemFunc h5 {
 	text-align: left;
     font-size: 30px;
     font-weight: 600;
@@ -381,28 +397,28 @@ input:focus, select:focus {
     padding: 10px;
 }
 
-.new_menu {
+.newMenu {
     padding: 10px 20px;
 }
 
-.past_menu {
+.pastMenu {
     border-top: 3px solid black;
 }
 
-.edit_menu {
+.editMenu {
     box-shadow: 4px 5px 6px 1px #1464f685;
     border-top: 3px solid #1464f6;
 }
 
-.edit_menu td {
+.editMenu td {
     padding-right: 20px;
 }
 
-.count_products {
+.countProducts {
     display: flex;
 }
 
-.add_menu {
+.addMenu {
     position: absolute;
     top: 88%;
     width: 100%;
@@ -413,11 +429,7 @@ button:hover {
     background: #72bb53;
 }
 
-.active {
-    color: #1464f6;
-}
-
-.future_menu {
+.futureMenu {
     box-shadow: 4px 5px 6px 1px #72bb537a;
     border-top: 3px solid #72bb53;
 }
