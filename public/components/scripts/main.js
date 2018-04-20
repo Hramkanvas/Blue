@@ -9,7 +9,7 @@ let authorizeModule = (function () {
         var authorizeForm = document.forms.authorize;
         var login = authorizeForm.elements.login.value;
         var password = authorizeForm.elements.password.value;
-        user = queries.authorize(login, password).then(
+        queries.authorize(login, password).then(
             user => {
                 console.log(user);
               },
