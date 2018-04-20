@@ -1,5 +1,8 @@
 const express = require('express');
-const db = require('./server/utils/MenuUtils');
+
+const MenuUtils = require('./server/utils/MenuUtils');
+const OrderUtils = require('./server/utils/OrderUtils');
+
 const mongoose = require('mongoose');
 let methods = require('./server/utils/methods');
 const bodyParser = require("body-parser");
@@ -17,7 +20,7 @@ app.post('/login',(req,res) =>{
 });
 
 app.post('/downloadMenu', (req, res) => {
-    db.addMenu()
+    MenuUtils.addMenu()
         .then(answer => { 
             console.log(answer);
             res.send(answer) })
@@ -26,7 +29,7 @@ app.post('/downloadMenu', (req, res) => {
 })
 
 app.get('/getMenu', (req, res) => {
-    db.findMenu(new Date(2018, 6, 20))
+    MenuUtils.findMenu(new Date(2018, 6, 20))
         .then(answer => res.send(answer))
         .catch(err => console.log(err));
 })
