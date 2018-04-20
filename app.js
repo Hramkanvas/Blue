@@ -40,7 +40,8 @@ app.put('/upBalance',(req,res) =>{
 
 app.post('/getTotalBalance', (req,res) => {
     let totalBalance = 23.4;
-   res.status(200).send(totalBalance);
+   res.status(200).send({totalBalance});
+
 });
 
 
