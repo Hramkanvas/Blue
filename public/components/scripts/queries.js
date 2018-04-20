@@ -62,6 +62,31 @@ export let queries = (function () {
                 }
                 xhr.send(JSON.stringify({id : id, sum: sum}));
             });
+        },
+
+        getTotalBalance: function(id){
+            return new Promise(function(resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/getTotalBalance');
+                xhr.setRequestHeader('content-type', 'application/json');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var balance;
+                        try {
+                            balance = JSON.parse(xhr.response);
+                        } catch (err) {
+                            //инфо об ошибке
+                        }
+                        resolve(balance);
+                    }
+                }
+                xhr.send(JSON.stringify({id : id}));
+            });
+        },
+
+        downloadMenu: function (){
+            
         }
     }
 })();

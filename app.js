@@ -2,19 +2,21 @@ const express = require('express');
 const db = require('./server/utils/MenuUtils');
 const mongoose = require('mongoose');
 let methods = require('./server/utils/QueryMethods');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 const app = express();
 app.use('/static', express.static('public/components'));
 app.use(bodyParser.json());
 
-mongoose.connect(`mongodb://localhost:27017`);
-
+mongoose.connect(`mongodb://localhost:27017`, function(err) {
+    if (err)
+        throw err;
+    console.log('Successfully connected to database');
+});
 
 app.post('/login',(req,res) =>{
     let user = methods.login(req.body.login,req.body.password);
-    console.log(user);
-    user ? res.send(user): res.send(404,"Incorrect login or password");
+    user ? res.status(200).send(user): res.status(404).send('Incorrect login or password!!!');
 });
 
 app.post('/downloadMenu', (req, res) => {
@@ -23,19 +25,25 @@ app.post('/downloadMenu', (req, res) => {
             console.log(answer);
             res.send(answer) })
         .catch(err => console.log(err));
-})
+});
 
 app.get('/getMenu', (req, res) => {
     db.findMenu(new Date(2018, 6, 20))
         .then(answer => res.send(answer))
         .catch(err => console.log(err));
-})
+});
 
 app.put('/upBalance',(req,res) =>{
     let user = methods.addBalance(req.body.id,req.body.sum);
-    user ? res.send(user): res.send(404,'Invalid idw of user!!!');
-})
+    user ? res.status(200).send(user): res.status(404).send('Invalid id of user!!!');
+});
+
+app.post('/getTotalBalance', (req,res) => {
+    let totalBalance = 23.4;
+   res.status(200).send({totalBalance});
+});
+
 
 app.listen(3000, () => {
     console.log(`Server is running...`);
-})
+});
