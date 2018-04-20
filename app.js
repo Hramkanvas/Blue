@@ -5,7 +5,7 @@ let methods = require('./server/utils/QueryMethods');
 const bodyParser = require('body-parser');
 
 const app = express();
-app.use('/static', express.static('public/components'));
+app.use('/static', express.static('public'));
 app.use(bodyParser.json());
 
 mongoose.connect(`mongodb://localhost:27017`, function(err) {
@@ -41,6 +41,7 @@ app.put('/upBalance',(req,res) =>{
 app.post('/getTotalBalance', (req,res) => {
     let totalBalance = 23.4;
    res.status(200).send({totalBalance});
+
 });
 
 
