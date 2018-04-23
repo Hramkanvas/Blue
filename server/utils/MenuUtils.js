@@ -9,7 +9,9 @@ module.exports = {
 
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
-        .then(menu => menu);
+        .then((menu) => {
+            return menu
+        };
 }
 
 function addMenu(file) {
@@ -25,7 +27,7 @@ function addMenu(file) {
     }
 
     else {
-        return new Promise((res, rej) =>{
+        return new Promise((res, rej) => {
             res(false);
         });
     }
