@@ -4,36 +4,48 @@ const Order = require('../models/Order');;
 module.exports = {
     uploadOrder,
     deleteOrder,
-    getDayOrder,
-    getOrder
+    getDayOrders,
+    getOrder,
+    getOrderPrice
 }
 
-function uploadOrder(Date, username, uploadOrder) {
-    return Order.findOne({ Date })
-        .then((OrderSchema) => {
-            OrderSchema.Orders[username] = uploadOrder;
+function uploadOrder(date, username, uploadOrder) {
+    if (validateOrder(uploadOrder)) {
+        return Order.findOne({ date })
+            .then((OrderSchema) => {
+                OrderSchema.Orders[username] = uploadOrder;
 
-            if (OrderSchema) {
-                const orders = OrderSchema.Orders;
-                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
-            }
-            else {
-                const Orders = {};
-                Orders[username] = uploadOrder;
+                if (OrderSchema) {
+                    const orders = OrderSchema.Orders;
+                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                }
 
-                OrderSchema = new Order({
-                    Date,
-                    Orders,
-                })
-                return OrderSchema.save();
-            }
-            return true;
+                else {
+                    const Orders = {};
+                    Orders[username] = uploadOrder;
+
+                    OrderSchema = new Order({
+                        Date: date,
+                        Orders,
+                    })
+                    return OrderSchema.save();
+                }
+            })
+    }
+
+    else {
+        return new Promise((res, rej) => {
+            res(false);
         })
+    }
 }
 
+function validateOrder(order) {
+    if (typeof order.price !== Number) return false;
+}
 
-function deleteOrder(Date, username) {
-    return Order.findOne({ Date })
+function deleteOrder(date, username) {
+    return Order.findOne({ date })
         .then((OrderSchema) => {
 
             if (OrderSchema) {
@@ -44,24 +56,48 @@ function deleteOrder(Date, username) {
             }
 
             return false;
-        })
+        });
 }
 
-function getDayOrder(Date) {
-    return Order.findOne({ Date })
+function getDayOrders(date) {
+    return Order.findOne({ date })
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
             }
+            return false;
+        })
+}
+
+function getOrder(date, username) {
+    return getDayOrders(date)
+        .then(dayOrders => {
+            return dayOrders[username];
         });
 }
 
-function getOrder(Date, Username) {
-    return Order.findOne({ Date })
-        .then(OrderSchema => {
-            console.log(OrderSchema);
-            if (OrderSchema) {
-                return OrderSchema.Orders[Username];
+function getOrderPrice(date, username) {
+    return getOrder(date, username).then((order) => {
+        return order.price;
+    })
+}
+
+function getTotal(date) {
+    return getDayOrders(date)
+        .then((dayOrders) => {
+            let total = {};
+
+            for (order in dayOrders) {
+                for (dish in order.info) {
+                    if (total[dish]) {
+                        total[dish]++;
+                    }
+                    else {
+                        total[dish] = 0;
+                    }
+                }
             }
-        });
+
+            return total
+        })
 }
