@@ -13,9 +13,9 @@ function uploadOrder(date, username, uploadOrder) {
     if (validateOrder(uploadOrder)) {
         return Order.findOne({ date })
             .then((OrderSchema) => {
-                OrderSchema.Orders[username] = uploadOrder;
 
                 if (OrderSchema) {
+                    OrderSchema.Orders[username] = uploadOrder;
                     const orders = OrderSchema.Orders;
                     return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
                 }
