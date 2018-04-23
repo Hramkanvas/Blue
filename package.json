@@ -1,0 +1,26 @@
+{
+  "name": "blue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hramkanvas/Blue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hramkanvas/Blue/issues"
+  },
+  "homepage": "https://github.com/Hramkanvas/Blue#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.14",
+    "nodemon": "^1.17.3",
+    "xlsx": "^0.12.9"
+  }
+}

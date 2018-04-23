@@ -7,27 +7,25 @@
     <title>Exadel - Grandmother</title>
     <link rel="shortcut icon" href="img/exadel_icon.ico">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <script defer src="scripts/script.js"></script>
-
 </head>
 
 <body>
     <main>
         <div class="container">
-            <div class="authorizationBlock">
+            <div class="authorizationBlock" id="authorizationBlock">
                 <div class="bottomStuff">
                     <h3>Авторизация</h3>
                 </div>
-                <form>
-                    <label for="username">Имя:</label>
-                    <input type="text" id="username">
-                    <label for="password">Пароль:</label>
-                    <input type="password" id="password">
-                    <button type="submit">Войти</button>
+                <form name="authorize">
+                    <label for="username">ИМЯ:</label>
+                    <input name="login" type="text" id="username">
+                    <label for="password">ПАРОЛЬ:</label>
+                    <input name="password" type="password" id="password">
+                    <button id="authorize" type="button">Готово</button>
                 </form>
             </div>
         </div>
     </main>
 </body>
-
+<script type="module" src="scripts/main.js"></script>
 </html>
