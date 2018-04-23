@@ -3,49 +3,34 @@ const Menu = require('../models/Menu');;
 
 
 module.exports = {
-    findMenu(actuallDate) {
-        return Menu.find({})
-            .then((arr) => {
-                let actuallMenu;
+    findMenu,
+    addMenu
+}
 
-                [].forEach.call(arr, (menu) => {
-                    if (menu.toDate - actuallDate > 0 && actuallDate - menu.fromDate > 0) {
-                        actuallMenu = menu;
-                    }
-                });
+function findMenu(fromDate) {
+    return Menu.findOne({ fromDate })
+        .then((menu) => {
+            return menu
+        };
+}
 
-                return actuallMenu;
-            })
-            .catch(err => {
-                return err;
-            });
-    },
+function addMenu(file) {
 
-    addMenu(file) {
+    const menu = createMenu(file);
+    if (validateMenu(menu)) {
+        const menuSchema = new Menu({
+            fromDate: menu.fromDate,
+            menuInfo: menu.menuInfo
+        });
 
-        const menu = createMenu(file);
-
-        if (validateMenu(menu)) {
-            const menuSchema = new Menu({
-                toDate: menu.toDate,
-                fromDate: menu.fromDate,
-                menuInfo: menu.menuInfo
-            });
-
-            return menuSchema.save()
-                .then((answer) => {
-                    return answer;
-                })
-                .catch(err => {
-                    return err;
-                })
-        }
-
-        else {
-            return "Failed to add Menu";
-        }
+        return menuSchema.save();
     }
 
+    else {
+        return new Promise((res, rej) => {
+            res(false);
+        });
+    }
 }
 
 
@@ -80,23 +65,23 @@ function createMenu(file = './server/files/menu.xlsx') {
     let [fromDate, toDate] = date.split('-');
 
     fromDate = toNormalDateFrom(fromDate);
-    toDate = toNormalDateFrom(toDate);
 
     delete menuInfo["Дата"];
 
-    return { fromDate, toDate, menuInfo };
+    return { fromDate, menuInfo };
 };
 
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day);
+    return new Date(year, month - 1, day, 0, 0, 0, 0);
 };
 
 
 function validateMenu(menu) {
 
-    if (!(menu.toDate instanceof Date && menu.fromDate instanceof Date)) return false;
+    if (!(menu.fromDate instanceof Date)) return false;
+    if (menu.fromDate.getDay() !== 1) return false;
 
     const menuInfo = menu.menuInfo;
 
