@@ -12,6 +12,9 @@ html {
 :root {
     --grey-dark: var(--grey-dark);
     --grey-black: #444444;
+    --white-grey: #ebebeb;
+    --border-component: 1px solid #7a7a7a1a;
+    --border-radius-component: 3px;
 }
 
 p {
@@ -59,6 +62,8 @@ td {
 }
 
 button {
+    display: flex;
+    margin: 0 auto;
     border: none;
     color: white;
     font-size: 16px;
@@ -83,9 +88,9 @@ label {
     font-size: 14px;
 }
 
-svg:hover {
+i:hover {
     cursor: pointer;
-    fill: black
+    color: black
 }
 
 body {
@@ -103,13 +108,13 @@ header {
     position: sticky;
     top: 0;
     display: flex;
-    background-color:#ebebeb;
+    background-color: var(--white-grey);
     padding: 10px 0px 10px 0px;
     z-index: 2;
 	align-items: center;
 	justify-content: space-around;
 	color: var(--grey-dark);
-    border-bottom: 1px solid #7a7a7a1a;
+    border-bottom: var(--border-component);
 }
 
 
@@ -148,7 +153,9 @@ main {
 .tabMenu {
     font-size: 24px;
     text-align: center;
-    background-color: #ebebeb;
+    background-color: #d6d6d6;
+    border-radius: var(--border-radius-component);
+    border: var(--border-component);
     display: grid;
     margin: 25px 0px;
     padding: 25px 0px;
@@ -156,7 +163,7 @@ main {
 }
 
 .tabMenuItem.active {
-    color: #0184c2;
+    color: #3d8af7;
 } 
 
 .tabcontent {
@@ -166,8 +173,6 @@ main {
 .tabcontent.active {
     display: block
 }
-
-
 
 .generalInfo {
     margin: 20px 0px;
@@ -230,23 +235,31 @@ main {
 .searchBox {
     width: 50%;
     height: 40px;
+    font-size: 20px;
     border: 2px solid #efefef;
     display: flex;
 }
 
 .searchBox input {
+    height: 100%;
     width: 100%;
     border:none;
     user-select: none;
 }
 
 .ordersTable {
+    border: var(--border-component);
     padding: 0px;
     width: 100%;
 }
 
+.ordersTableHeader > th, .ordersTable > td {
+    padding-left: 15px;
+}
+
+
 .ordersTable tbody tr:nth-child(odd) {
-    background: #ebebeb;
+    background: var(--white-grey);
 }
 
 .ordersTable tbody tr{
@@ -254,14 +267,8 @@ main {
 }
 
 .btn {
-    width: 150px;
-    height: 50px;
-    background: rgb(61, 138, 247);
-    color: white;
-    text-align: center;
-    margin: auto;
+    padding: 10px 20px;
     font-size: 25px;
-    border:none;
 }
 
 .btn:hover {
@@ -269,6 +276,7 @@ main {
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     cursor:pointer;
 }
+
 .btn:active {
     background: #3787f8;  
 }
@@ -279,7 +287,9 @@ main {
     width: 100%;
     min-height: 70px;
     text-align: center;
-    padding: 30px 0px;
+    padding: 15px 0px;
+    border-radius: var(--border-radius-component);
+    border: var(--border-component);
 }
 
 .ordersResult {
@@ -292,6 +302,10 @@ main {
     padding: 0px 70px;
 }
 
+.ordersResult tr:nth-child(odd) {
+    background: #afafaf59;
+}
+
 input:focus, select:focus {
     outline: none;
 }
@@ -300,7 +314,6 @@ input:focus, select:focus {
     width:auto !important
 }
 
-
 /* ФОРМА БАЛАНСА */
 
 .upBalanceBlock {
@@ -308,12 +321,14 @@ input:focus, select:focus {
     flex-direction: column;
     width: 550px;
     padding: 30px 80px;
-    background-color: #ebebeb;
+    background-color: var(--white-grey);
     margin: 0px auto;
+    border-radius: var(--border-radius-component);
+    border: var(--border-component);
 }
 
 .upBalanceBlock > div {
-	padding-bottom:5%;
+	padding-bottom: 30px;
 }
 
 .info p {
@@ -337,7 +352,9 @@ input:focus, select:focus {
 
 /* АВТОРИЗАЦИЯ */
 .authorizationBlock {
-    background: #ebebeb;
+    background: var(--white-grey);
+    border-radius: var(--border-radius-component);
+    border: var(--border-component);
     padding: 30px;
     width: 500px;
     height: max-content;
@@ -345,13 +362,14 @@ input:focus, select:focus {
 }
 
 .bottomStuff h3 {
+    font-size: 25px;
     text-align: center;
     margin-bottom: 25px;
 }
 
 .items {
 	display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     grid-gap: 50px 30px;
 }
 
@@ -375,16 +393,26 @@ input:focus, select:focus {
     min-height: 450px;
     text-align: center;
     background: #f7f6f6;
-    border-radius: 3px;
-    border: 1px solid #7a7a7a1a;
+    border-radius: var(--border-radius-component);
+    border: var(--border-component);
     padding: 20px;
     box-shadow: 4px 6px 8px 0px #0000004a;
 }
 
+.itemFuncButtons i {
+    font-size: 27px;
+    margin: 0px 2px;
+}
+
+.countProducts, .remove, .add {
+    margin: 0px 5px;
+}
+
+
 .price {
     position: absolute;
     padding: 20px;
-    background: #ebebeb;
+    background: var(--white-grey);
     font-size: 20px;
     font-weight: bold;
     width: 100%;
