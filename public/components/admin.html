@@ -6,6 +6,7 @@
 <title>Exadel - Grandmother</title>
 <link rel="shortcut icon" href="img/exadel_icon.ico">
 <link rel="stylesheet" type="text/css" href="styles/style.css">
+<script defer src="scripts/script.js"></script>
 </head>
 <body>
 <header>
@@ -15,11 +16,10 @@
     </div>
 
     <div class="userInfo">
-        
         <span class="userInfo__name">
             Имя
         </span>
-        <span class="userInfo__button">
+        <span class="userInfoButton">
             Выход
         </span>
     </div>
@@ -28,15 +28,17 @@
 
 <main>
 <div class="container">
-   
-    <div class="tab_menu">
-        <div class="tab_menu_item active">Меню</div>
-        <div class="tab_menu_item">Пополнить баланс</div>
-        <div class="tab_menu_item">Заказы</div>
+      
+    <div class="tabMenu">
+        <div><a href="#" data-tab="menu"        class="tabMenuItem active">Меню</a> </div>
+        <div><a href="#" data-tab="upbalance"   class="tabMenuItem">Пополнить баланс</a> </div>
+        <div><a href="#" data-tab="orders"      class="tabMenuItem">Заказы</a> </div>
     </div>
 
     <div class="mainInfo">
         
+        <div id="menu" class="tabcontent active">
+
         <form action="/" id="drag">
             <div id="dropZone">
                 Для загрузки меню, перетащите файл сюда.
@@ -55,7 +57,7 @@
         <div class="items">
             
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
 
@@ -100,7 +102,7 @@
             </div>
 
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
             
@@ -148,7 +150,7 @@
                 </div>
             </div>
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
 
@@ -196,7 +198,7 @@
                 </div>
             </div>
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
 
@@ -244,7 +246,7 @@
                 </div>
             </div>
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
 
@@ -292,7 +294,7 @@
                 </div>
             </div>
             <div class="item">
-                <div class="item__Func">
+                <div class="itemFunc">
                     <h5>Пн</h5>
                 </div>
 
@@ -342,6 +344,117 @@
 
 
         </div>
+    </div>
+
+    <div id="upbalance" class="tabcontent">
+        
+        <div class="upBalanceBlock">
+            <div class="info">
+                <div class="worker">
+                    <p>
+                        <b>Сотрудник: </b> Иванов Иван </p>
+                </div>
+                <div class="balance">
+                    <p>
+                        <b> Баланс: </b> 5 руб. </p>
+                </div>
+            </div>
+            <form>
+                <label for="username">Сотрудник:
+                    <input type="text" id="username" list="character">
+                </label>
+                <datalist id="character">
+                    <option value="Чебурашка"></option>
+                    <option value="Крокодил Гена"></option>
+                    <option value="Шапокляк"></option>
+                </datalist>
+                <label for="balance" list="character"> Сумма:
+                    <input type="text"> </label>
+            </form>
+        
+            <button class="">Пополнить</button>
+        </div>
+    </div>
+
+    <div id="orders" class="tabcontent">
+        <div class="ordersComponent">
+            <div class="toolbar">
+        
+                <div class="searchBox">
+                    <img class="searchIcon" src=""></img>
+                    <input placeholder="Введите пользователя" list="name">
+        
+                    <datalist id="name">
+                        <option value="admin"></option>
+                        <option value="lol"></option>
+                        <option value="asdas"></option>
+                    </datalist>
+                </div>
+        
+                <select>
+                    <option selected disabled>День недели</option>
+                    <option value="1">Понедельник</option>
+                    <option value="2">Вторник</option>
+                    <option value="3">Среда</option>
+                    <option value="4">Четверг</option>
+                    <option value="5">Пятница</option>
+                    <option value="6">Суббота</option>
+                </select>
+            </div>
+        
+        
+        
+            <table class="ordersTable">
+        
+                <tr class="ordersTableHeader">
+                    <th>Имя</th>
+                    <th>Заказ</th>
+                    <th>ЕЩЕ</th>
+                </tr>
+        
+                <tr class="ordersTable">
+                    <td>Павел</td>
+                    <td>Котлета</td>
+                    <td>ЕЩЕ</td>
+                </tr>
+        
+                <tr class="ordersTable">
+                    <td>НеПавел</td>
+                    <td>НеКотлета</td>
+                    <td>ЕЩЕ</td>
+                </tr>
+                <tr class="ordersTable">
+                    <td class="table-name">Павлуша</td>
+                    <td>НеКотлета</td>
+                    <td>ЕЩЕ</td>
+                </tr>
+            </table>
+        
+            <div class="statistics">
+                <h3>Итоговый заказ</h3>
+                <table class="ordersResult">
+                    <tr class="ordersResult-row">
+                        <td>Котлет</td>
+                        <td>56</td>
+                    </tr>
+                    <tr class="ordersResult-row">
+                        <td>Пюрешки</td>
+                        <td>2</td>
+                    </tr>
+                    <tr class="ordersResult-row">
+                        <td>Суп</td>
+                        <td>1</td>
+        
+                    </tr>
+                </table>
+            </div>
+        
+            <button class="btn btn-submit-orders">
+                Заказать!
+            </button>
+        </div>
+    </div>
+
     </div>
 </div>
    
