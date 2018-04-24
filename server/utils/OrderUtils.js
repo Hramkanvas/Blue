@@ -9,9 +9,9 @@ module.exports = {
     getOrderPrice
 }
 
-function uploadOrder(date, username, uploadOrder) {
+function uploadOrder(Date, username, uploadOrder) {
     if (validateOrder(uploadOrder)) {
-        return Order.findOne({ date })
+        return Order.findOne({ Date })
             .then((OrderSchema) => {
 
                 if (OrderSchema) {
@@ -25,7 +25,7 @@ function uploadOrder(date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date: date,
+                        Date,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -41,17 +41,18 @@ function uploadOrder(date, username, uploadOrder) {
 }
 
 function validateOrder(order) {
-    if (typeof order.price !== Number) return false;
+    /*if (typeof order.price !== Number)
+        return false;*/
+    return true;
 }
 
-function deleteOrder(date, username) {
-    return Order.findOne({ date })
+function deleteOrder(Date, username) {
+    return Order.findOne({ Date })
         .then((OrderSchema) => {
 
             if (OrderSchema) {
                 delete OrderSchema.Orders[username];
                 const orders = OrderSchema.Orders;
-
                 return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
             }
 

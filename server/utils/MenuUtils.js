@@ -10,8 +10,8 @@ module.exports = {
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
         .then((menu) => {
-            return menu
-        };
+            return menu;
+        });
 }
 
 function addMenu(file) {
