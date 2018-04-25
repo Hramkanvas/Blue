@@ -9,9 +9,11 @@ module.exports = {
     getOrderPrice
 }
 
-function uploadOrder(date, username, uploadOrder) {
+//достать по имени юзера и массиву дат массив заказов
+
+function uploadOrder(Date, username, uploadOrder) {
     if (validateOrder(uploadOrder)) {
-        return Order.findOne({ date })
+        return Order.findOne({ Date })
             .then((OrderSchema) => {
 
                 if (OrderSchema) {
@@ -80,6 +82,10 @@ function getOrderPrice(date, username) {
     return getOrder(date, username).then((order) => {
         return order.price;
     })
+}
+
+function deleteDayOrders(date){
+    return Order.find({})
 }
 
 function getTotal(date) {

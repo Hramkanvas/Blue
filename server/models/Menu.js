@@ -6,3 +6,5 @@ const MenuSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Menu', MenuSchema);
+
+//удаление самого раннего меню. 

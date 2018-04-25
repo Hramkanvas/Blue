@@ -4,14 +4,12 @@ const Menu = require('../models/Menu');;
 
 module.exports = {
     findMenu,
-    addMenu
+    addMenu,
+    getActuallAndNextMondayDate
 }
 
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
-        .then((menu) => {
-            return menu
-        };
 }
 
 function addMenu(file) {
@@ -23,7 +21,47 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return menuSchema.save();
+        return Menu.find({}).then((arr) => {
+            let idMenuToRemove;
+
+            arr.forEach((el) => {
+                if (el.fromDate === menuSchema.fromDate) {
+                    idMenuToRemove = el._id;
+                }
+            })
+            if (idMenuToRemove) {
+                Menu.remove({ _id: idMenuToRemove })
+                    .then(() => menuSchema.save())//заменяю
+            }
+
+            let [actuall, next] = getActuallAndNextMondayDate();
+
+            if (arr.length === 3 && menuSchema.fromDate === actuall) {
+                arr.sort((el1, el2) => {
+                    return el2.fromDate - el1.fromDate;
+                })
+
+                Promise.all(arr[0].remove(), arr[1].remove())
+                    .then(() => menuSchema.save())//удаляю самое старое, если не заменил
+            }
+            if (arr.length === 3 && menuSchema.fromDate === next) {
+                arr.sort((el1, el2) => {
+                    return el2.fromDate - el1.fromDate;
+                })
+
+                arr[0].remove()
+                    .then(() => {
+                        return menuSchema.save();
+                    })//удаляю самое старое, если не заменил
+            }
+
+            console.log(typeof menuSchema.fromDate, typeof next);
+            if (menuSchema.fromDate.toString() === next || menuSchema.fromDate.toString() === actuall) {
+                console.log(229);
+                return menuSchema.save();
+            }
+
+        })
     }
 
     else {
@@ -74,14 +112,24 @@ function createMenu(file = './server/files/menu.xlsx') {
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0);
+    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
 };
+
+
+function getActuallAndNextMondayDate() {
+    const today = new Date();
+    const actuall = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1, 0, 0, 0, 0);
+
+    const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
+    return [actuall.toString(), next.toString()];
+}
 
 
 function validateMenu(menu) {
 
-    if (!(menu.fromDate instanceof Date)) return false;
-    if (menu.fromDate.getDay() !== 1) return false;
+    const [actuall, next] = getActuallAndNextMondayDate();
+
+    if (menu.fromDate != actuall && menu.fromDate !== next) return false;
 
     const menuInfo = menu.menuInfo;
 
@@ -90,5 +138,6 @@ function validateMenu(menu) {
             if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return false;
         }
     }
+
     return true;
 };
