@@ -5,13 +5,13 @@ module.exports = {
     uploadOrder,
     deleteOrder,
     getDayOrders,
-    getOrder,
+    getUserOrders,
     getOrderPrice
 }
 
-function uploadOrder(date, username, uploadOrder) {
+function uploadOrder(Date, username, uploadOrder) {
     if (validateOrder(uploadOrder)) {
-        return Order.findOne({ date })
+        return Order.findOne({ Date })
             .then((OrderSchema) => {
 
                 if (OrderSchema) {
@@ -25,7 +25,7 @@ function uploadOrder(date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date: date,
+                        Date,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -41,26 +41,31 @@ function uploadOrder(date, username, uploadOrder) {
 }
 
 function validateOrder(order) {
-    if (typeof order.price !== Number) return false;
+    /*if (typeof order.price !== Number)
+        return false;*/
+    return true;
 }
 
-function deleteOrder(date, username) {
-    return Order.findOne({ date })
+function deleteOrder(Date, username) {
+    return Order.findOne({ Date })
         .then((OrderSchema) => {
-
             if (OrderSchema) {
+                if (!OrderSchema.Orders[username])
+                    return false;
                 delete OrderSchema.Orders[username];
+                if (Object.keys(OrderSchema.Orders).length === 0) {
+                    return OrderSchema.remove();
+                }
+
                 const orders = OrderSchema.Orders;
-
-                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
             }
-
             return false;
         });
 }
 
-function getDayOrders(date) {
-    return Order.findOne({ date })
+function getDayOrders(Date) {
+    return Order.findOne({ Date })
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
@@ -69,21 +74,21 @@ function getDayOrders(date) {
         })
 }
 
-function getOrder(date, username) {
-    return getDayOrders(date)
+function getUserOrders(Date, username) {
+    return getDayOrders(Date)
         .then(dayOrders => {
             return dayOrders[username];
         });
 }
 
-function getOrderPrice(date, username) {
-    return getOrder(date, username).then((order) => {
+function getOrderPrice(Date, username) {
+    return getUserOrders(Date, username).then((order) => {
         return order.price;
     })
 }
 
-function getTotal(date) {
-    return getDayOrders(date)
+function getTotal(Date) {
+    return getDayOrders(Date)
         .then((dayOrders) => {
             let total = {};
 
