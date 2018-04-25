@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     FIO: {type: String},
     balance: {type: Number}, // пополнение/списывание баланса,
     history: {
+        previousMonday: {type: Date},
         previous: {type: Array},
         current: {type: Array},
         next: {type: Array}
