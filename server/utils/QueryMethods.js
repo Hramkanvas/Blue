@@ -14,9 +14,14 @@ const methods = (function () {
         return user;
     }
 
+    let getTotalBalance = function(orders) {
+        return
+    };
+
     return {
         login,
-        addBalance
+        addBalance,
+        getTotalBalance
     }
 
 })();
