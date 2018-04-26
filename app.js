@@ -1,18 +1,9 @@
 const express = require('express');
-<<<<<<< HEAD
-const db = require('./server/utils/MenuUtils');
-const OU = require('./server/utils/OrderUtils');
-
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-
-=======
 const menu = require('./server/utils/MenuUtils');
 const order = require('./server/utils/OrderUtils');
 const mongoose = require('mongoose');
 let methods = require('./server/utils/QueryMethods');
 const bodyParser = require('body-parser');
->>>>>>> master
 
 const app = express();
 app.use('/static', express.static('public'));
@@ -23,13 +14,6 @@ mongoose.connect(`mongodb://localhost:27017`, function(err) {
         throw err;
     console.log('Successfully connected to database');
 });
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> master
-
 app.post('/login',(req,res) =>{
     let user = methods.login(req.body.login,req.body.password);
     user ? res.status(200).send(user): res.status(404).send('Incorrect login or password!!!');
@@ -60,8 +44,6 @@ app.post('/getTotalBalance', (req,res) => {
 
 });
 
-<<<<<<< HEAD
-=======
 app.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
     //структура объекта uploadOrder
     /*
@@ -86,12 +68,7 @@ app.delete('/deleteOrder', (req,res) => {
         .catch(err => res.status(404));
 });
 
->>>>>>> master
 
 app.listen(3000, () => {
     console.log(`Server is running...`);
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> master
