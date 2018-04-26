@@ -74,7 +74,7 @@ function createMenu(file = './server/files/menu.xlsx') {
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0);
+    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
 };
 
 
@@ -89,8 +89,8 @@ function getActuallAndNextMondayDate() {
 
 function validateMenu(menu) {
 
-    if (!(menu.fromDate instanceof Date)) return false;
-    if (menu.fromDate.getDay() !== 1) return false;
+    const [actuall, next] = getActuallAndNextMondayDate();
+    if (menu.fromDate != actuall && menu.fromDate !== next) return false;
 
     const menuInfo = menu.menuInfo;
 

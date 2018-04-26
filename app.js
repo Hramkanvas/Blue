@@ -62,6 +62,11 @@ app.put('/makeOrder',(req,res) => {//сделать заказ(обновить 
         .catch(err => res.status(404));
 });
 
+app.post('/r' ,(req, res)=>{
+    order.ordersForWeek([new Date("2018-05-14T21:00:00Z"),new Date("2018-05-13T21:00:00Z"),new Date("2018-05-12T21:00:00Z"),new Date("2018-05-11T21:00:00Z")], 'Pavel')
+    .then(arr=>res.send(arr));
+})
+
 
 app.delete('/deleteOrder', (req,res) => {
    order. deleteOrder(new Date(req.body.date), req.body.username)
