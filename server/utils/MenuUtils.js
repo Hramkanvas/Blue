@@ -21,47 +21,37 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return Menu.find({}).then((arr) => {
-            let idMenuToRemove;
+        return findMenu(menuSchema.fromDate).
+            then((menu) => {
+                if (menu) {
+                    return menu.remove()
+                        .then(() => menuSchema.save())
+                }
+                else {
+                    return Menu.find({})
+                        .then((arr) => {
 
-            arr.forEach((el) => {
-                if (el.fromDate === menuSchema.fromDate) {
-                    idMenuToRemove = el._id;
+                            arr.sort((a, b) => {
+                                return (+new Date(a.fromDate)) - (+new Date(b.fromDate));
+                            })
+
+                            if (arr.length === 3) {
+                                return Promise.all(arr[0].remove(), arr[1].remove())
+                                    .then(() => menuSchema.save());
+                            }
+
+                            else if (arr.length === 2) {
+                                return arr[0].remove()
+                                    .then(() => menuSchema.save());
+                            }
+
+                            else {
+                                return menuSchema.save();
+                            }
+
+                        })
                 }
             })
-            if (idMenuToRemove) {
-                Menu.remove({ _id: idMenuToRemove })
-                    .then(() => menuSchema.save())//заменяю
-            }
-
-            let [actuall, next] = getActuallAndNextMondayDate();
-
-            if (arr.length === 3 && menuSchema.fromDate === actuall) {
-                arr.sort((el1, el2) => {
-                    return el2.fromDate - el1.fromDate;
-                })
-
-                Promise.all(arr[0].remove(), arr[1].remove())
-                    .then(() => menuSchema.save())//удаляю самое старое, если не заменил
-            }
-            if (arr.length === 3 && menuSchema.fromDate === next) {
-                arr.sort((el1, el2) => {
-                    return el2.fromDate - el1.fromDate;
-                })
-
-                arr[0].remove()
-                    .then(() => {
-                        return menuSchema.save();
-                    })//удаляю самое старое, если не заменил
-            }
-
-            console.log(typeof menuSchema.fromDate, typeof next);
-            if (menuSchema.fromDate.toString() === next || menuSchema.fromDate.toString() === actuall) {
-                console.log(229);
-                return menuSchema.save();
-            }
-
-        })
     }
 
     else {
@@ -128,7 +118,6 @@ function getActuallAndNextMondayDate() {
 function validateMenu(menu) {
 
     const [actuall, next] = getActuallAndNextMondayDate();
-
     if (menu.fromDate != actuall && menu.fromDate !== next) return false;
 
     const menuInfo = menu.menuInfo;
