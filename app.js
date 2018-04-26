@@ -14,7 +14,6 @@ mongoose.connect(`mongodb://localhost:27017`, function(err) {
         throw err;
     console.log('Successfully connected to database');
 });
-
 app.post('/login',(req,res) =>{
     let user = methods.login(req.body.login,req.body.password);
     user ? res.status(200).send(user): res.status(404).send('Incorrect login or password!!!');
