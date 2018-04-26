@@ -1,53 +1,54 @@
 const mongoose = require('mongoose');
-const Menu = require('../models/Menu');;
+const Menu = require('../models/Menu');
 
 
 module.exports = {
-    findMenu(actuallDate) {
-        return Menu.find({})
-            .then((arr) => {
-                let actuallMenu;
+   findMenu,
+    addMenu
+}
 
-                [].forEach.call(arr, (menu) => {
-                    if (menu.toDate - actuallDate > 0 && actuallDate - menu.fromDate > 0) {
-                        actuallMenu = menu;
-                    }
-                });
+function findMenu(actuallDate) {
+    return Menu.find({})
+        .then((arr) => {
+            let actuallMenu;
 
-                return actuallMenu;
+            [].forEach.call(arr, (menu) => {
+                if (menu.toDate - actuallDate > 0 && actuallDate - menu.fromDate > 0) {
+                    actuallMenu = menu;
+                }
+            });
+
+            return actuallMenu;
+        })
+        .catch(err => {
+            return err;
+        });
+};
+
+function addMenu(file) {
+
+    const menu = createMenu(file);
+
+    if (validateMenu(menu)) {
+        const menuSchema = new Menu({
+            toDate: menu.toDate,
+            fromDate: menu.fromDate,
+            menuInfo: menu.menuInfo
+        });
+
+        return menuSchema.save()
+            .then((answer) => {
+                return answer;
             })
             .catch(err => {
                 return err;
-            });
-    },
-
-    addMenu(file) {
-
-        const menu = createMenu(file);
-
-        if (validateMenu(menu)) {
-            const menuSchema = new Menu({
-                toDate: menu.toDate,
-                fromDate: menu.fromDate,
-                menuInfo: menu.menuInfo
-            });
-
-            return menuSchema.save()
-                .then((answer) => {
-                    return answer;
-                })
-                .catch(err => {
-                    return err;
-                })
-        }
-
-        else {
-            return "Failed to add Menu";
-        }
+            })
     }
 
-}
-
+    else {
+        return "Failed to add Menu";
+    }
+};
 
 function createMenu(file = './server/files/menu.xlsx') {
     const XLSX = require('xlsx');
@@ -84,7 +85,7 @@ function createMenu(file = './server/files/menu.xlsx') {
 
     delete menuInfo["Дата"];
 
-    return { fromDate, toDate, menuInfo };
+    return {fromDate, toDate, menuInfo};
 };
 
 
