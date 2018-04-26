@@ -4,12 +4,14 @@ const Menu = require('../models/Menu');;
 
 module.exports = {
     findMenu,
-    addMenu,
-    getActuallAndNextMondayDate
+    addMenu
 }
 
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
+        .then((menu) => {
+            return menu;
+        });
 }
 
 function addMenu(file) {
@@ -21,37 +23,7 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return findMenu(menuSchema.fromDate).
-            then((menu) => {
-                if (menu) {
-                    return menu.remove()
-                        .then(() => menuSchema.save())
-                }
-                else {
-                    return Menu.find({})
-                        .then((arr) => {
-
-                            arr.sort((a, b) => {
-                                return (+new Date(a.fromDate)) - (+new Date(b.fromDate));
-                            })
-
-                            if (arr.length === 3) {
-                                return Promise.all(arr[0].remove(), arr[1].remove())
-                                    .then(() => menuSchema.save());
-                            }
-
-                            else if (arr.length === 2) {
-                                return arr[0].remove()
-                                    .then(() => menuSchema.save());
-                            }
-
-                            else {
-                                return menuSchema.save();
-                            }
-
-                        })
-                }
-            })
+        return menuSchema.save();
     }
 
     else {
@@ -102,7 +74,7 @@ function createMenu(file = './server/files/menu.xlsx') {
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
+    return new Date(year, month - 1, day, 0, 0, 0, 0);
 };
 
 
@@ -117,8 +89,8 @@ function getActuallAndNextMondayDate() {
 
 function validateMenu(menu) {
 
-    const [actuall, next] = getActuallAndNextMondayDate();
-    if (menu.fromDate != actuall && menu.fromDate !== next) return false;
+    if (!(menu.fromDate instanceof Date)) return false;
+    if (menu.fromDate.getDay() !== 1) return false;
 
     const menuInfo = menu.menuInfo;
 
