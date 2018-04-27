@@ -4,14 +4,11 @@ const Menu = require('../models/Menu');;
 
 module.exports = {
     findMenu,
-    addMenu
+    addMenu,
 }
 
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
-        .then((menu) => {
-            return menu;
-        });
 }
 
 function addMenu(file) {
@@ -23,7 +20,37 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return menuSchema.save();
+        return findMenu(menuSchema.fromDate).
+            then((menu) => {
+                if (menu) {
+                    return menu.remove()
+                        .then(() => menuSchema.save())
+                }
+                else {
+                    return Menu.find({})
+                        .then((arr) => {
+
+                            arr.sort((a, b) => {
+                                return (+new Date(a.fromDate)) - (+new Date(b.fromDate));
+                            })
+
+                            if (arr.length === 3) {
+                                return Promise.all(arr[0].remove(), arr[1].remove())
+                                    .then(() => menuSchema.save());
+                            }
+
+                            else if (arr.length === 2) {
+                                return arr[0].remove()
+                                    .then(() => menuSchema.save());
+                            }
+
+                            else {
+                                return menuSchema.save();
+                            }
+
+                        })
+                }
+            })
     }
 
     else {
@@ -34,9 +61,9 @@ function addMenu(file) {
 }
 
 
-function createMenu(file = './server/files/menu.xlsx') {
+function createMenu(file) {
     const XLSX = require('xlsx');
-    const workbook = XLSX.readFile(file);
+    const workbook = XLSX.read(file);
 
     const menuInfo = {};
     const sheets = workbook.Sheets[workbook.SheetNames[0]];
@@ -74,14 +101,23 @@ function createMenu(file = './server/files/menu.xlsx') {
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0);
+    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
 };
+
+
+function getActuallAndNextMondayDate() {
+    const today = new Date();
+    const actuall = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1, 0, 0, 0, 0);
+
+    const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
+    return [actuall.toString(), next.toString()];
+}
 
 
 function validateMenu(menu) {
 
-    if (!(menu.fromDate instanceof Date)) return false;
-    if (menu.fromDate.getDay() !== 1) return false;
+    const [actuall, next] = getActuallAndNextMondayDate();
+    if (menu.fromDate != actuall && menu.fromDate !== next) return false;
 
     const menuInfo = menu.menuInfo;
 
@@ -90,5 +126,6 @@ function validateMenu(menu) {
             if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return false;
         }
     }
+
     return true;
 };

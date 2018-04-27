@@ -1,17 +1,20 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');;
 
+const milisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+
 module.exports = {
     uploadOrder,
     deleteOrder,
     getDayOrders,
     getUserOrders,
-    getOrderPrice
+    getOrderPrice,
+    ordersForWeek
 }
 
-function uploadOrder(Date, username, uploadOrder) {
-    if (validateOrder(uploadOrder)) {
-        return Order.findOne({ Date })
+function uploadOrder(date, username, uploadOrder) {
+    if (validateOrder(uploadOrder, date)) {
+        return Order.findOne({ Date: date })
             .then((OrderSchema) => {
 
                 if (OrderSchema) {
@@ -25,7 +28,7 @@ function uploadOrder(Date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date,
+                        Date:date,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -40,11 +43,35 @@ function uploadOrder(Date, username, uploadOrder) {
     }
 }
 
-function validateOrder(order) {
-    /*if (typeof order.price !== Number)
-        return false;*/
+function ordersForWeek(dates, username) {
+    let getOrders = [];
+
+    for (let date of dates) {
+        getOrders.push(getUserOrders(date, username));
+    }
+
+    return Promise.all(getOrders);
+}
+
+function validateOrder(order, date) {
+    let [actuall, next] = getActuallAndNextMondayDate();
+
+    if (+new Date(date) >= +new Date(actuall) && +new Date(date) <= +new Date(next) + milisecondsInWeek) {
+        return false;
+    }
+
     return true;
 }
+
+
+function getActuallAndNextMondayDate() {
+    const today = new Date();
+    const actuall = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1, 0, 0, 0, 0);
+
+    const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
+    return [actuall.toString(), next.toString()];
+}
+
 
 function deleteOrder(Date, username) {
     return Order.findOne({ Date })
@@ -58,14 +85,14 @@ function deleteOrder(Date, username) {
                 }
 
                 const orders = OrderSchema.Orders;
-                return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
+                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
             }
             return false;
         });
 }
 
-function getDayOrders(Date) {
-    return Order.findOne({ Date })
+function getDayOrders(date) {
+    return Order.findOne({ Date:date })
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
@@ -74,21 +101,23 @@ function getDayOrders(Date) {
         })
 }
 
-function getUserOrders(Date, username) {
-    return getDayOrders(Date)
+function getUserOrders(date, username) {
+    return getDayOrders(date)
         .then(dayOrders => {
+            console.log(dayOrders);
+            dayOrders[username].date = date;
             return dayOrders[username];
         });
 }
 
-function getOrderPrice(Date, username) {
-    return getUserOrders(Date, username).then((order) => {
+function getOrderPrice(date, username) {
+    return getUserOrders(date, username).then((order) => {
         return order.price;
     })
 }
 
-function getTotal(Date) {
-    return getDayOrders(Date)
+function getTotal(date) {
+    return getDayOrders(date)
         .then((dayOrders) => {
             let total = {};
 
