@@ -6,7 +6,7 @@ const app = express();
 app.use('/static', express.static('public'));
 app.use(bodyParser.json());
 
-mongoose.connect(`mongodb://localhost:27017`, function(err) {
+mongoose.connect(`mongodb://localhost:27017`, function (err) {
     if (err)
         throw err;
     console.log('Successfully connected to database');

@@ -5,6 +5,7 @@ const Menu = require('../models/Menu');;
 module.exports = {
     findMenu,
     addMenu,
+    getActuallAndNextMondayDate,
 }
 
 function findMenu(fromDate) {
