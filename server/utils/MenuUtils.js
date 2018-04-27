@@ -4,14 +4,12 @@ const Menu = require('../models/Menu');;
 
 module.exports = {
     findMenu,
-    addMenu
+    addMenu,
+    getActuallAndNextMondayDate
 }
 
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
-        .then((menu) => {
-            return menu;
-        });
 }
 
 function addMenu(file) {
@@ -23,7 +21,37 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return menuSchema.save();
+        return findMenu(menuSchema.fromDate).
+            then((menu) => {
+                if (menu) {
+                    return menu.remove()
+                        .then(() => menuSchema.save())
+                }
+                else {
+                    return Menu.find({})
+                        .then((arr) => {
+
+                            arr.sort((a, b) => {
+                                return (+new Date(a.fromDate)) - (+new Date(b.fromDate));
+                            })
+
+                            if (arr.length === 3) {
+                                return Promise.all(arr[0].remove(), arr[1].remove())
+                                    .then(() => menuSchema.save());
+                            }
+
+                            else if (arr.length === 2) {
+                                return arr[0].remove()
+                                    .then(() => menuSchema.save());
+                            }
+
+                            else {
+                                return menuSchema.save();
+                            }
+
+                        })
+                }
+            })
     }
 
     else {
