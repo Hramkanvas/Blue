@@ -62,9 +62,9 @@ function addMenu(file) {
 }
 
 
-function createMenu(file = './server/files/menu.xlsx') {
+function createMenu(file) {
     const XLSX = require('xlsx');
-    const workbook = XLSX.readFile(file);
+    const workbook = XLSX.read(file);
 
     const menuInfo = {};
     const sheets = workbook.Sheets[workbook.SheetNames[0]];
