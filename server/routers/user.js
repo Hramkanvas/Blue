@@ -2,8 +2,9 @@ let router = require('express').Router();
 const order = require('../utils/OrderUtils');
 let methods = require('../utils/QueryMethods');
 
-router.post('/makeOrder',(req,res) => {
-    /*структура объекта uploadOrder
+router.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
+    //структура объекта uploadOrder
+    /*
      uploadOrder: {
         price:Number,
             info: {
@@ -28,7 +29,7 @@ router.get('/getTotal', (req,res) => {
         });
 });
 
-router.delete('/deleteOrder', (req,res) => {
+router.delete('/deleteOrder', (req, res) => {
     order.deleteOrder(new Date(req.body.date), req.body.username)
         .then(answer => res.status(200).send(answer))
         .catch(err => res.status(404));
