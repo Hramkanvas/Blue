@@ -60,8 +60,6 @@ function validateOrder(order, date) {
         return false;
     }
 
-    /*if (typeof order.price !== Number)
-        return false;*/
     return true;
 }
 

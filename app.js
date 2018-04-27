@@ -9,23 +9,32 @@ const app = express();
 app.use('/static', express.static('public'));
 app.use(bodyParser.json());
 
-mongoose.connect(`mongodb://localhost:27017`, function(err) {
+mongoose.connect(`mongodb://localhost:27017`, function (err) {
     if (err)
         throw err;
     console.log('Successfully connected to database');
 });
 
-app.post('/login',(req,res) =>{
-    let user = methods.login(req.body.login,req.body.password);
-    user ? res.status(200).send(user): res.status(404).send('Incorrect login or password!!!');
+app.post('/login', (req, res) => {
+    let user = methods.login(req.body.login, req.body.password);
+    user ? res.status(200).send(user) : res.status(404).send('Incorrect login or password!!!');
 });
 
 app.post('/downloadMenu', (req, res) => {
-    menu.addMenu()
-        .then(answer => { 
-            console.log(answer);
-            res.send(answer) })
-        .catch(err => console.log(err));
+    const buffer = [];
+    req.on('data', (chunk) => {
+        buffer.push(chunk);
+    }).on('end', () => {
+        const file = Buffer.concat(buffer);
+        console.log(file);
+        menu.addMenu(file)
+            .then(answer => {
+                console.log(answer);
+                res.send(answer)
+            })
+            .catch(err => console.log(err));
+    });
+
 });
 
 app.get('/getMenu', (req, res) => {
@@ -34,18 +43,18 @@ app.get('/getMenu', (req, res) => {
         .catch(err => console.log(err));
 });
 
-app.put('/upBalance',(req,res) =>{
-    let user = methods.addBalance(req.body.id,req.body.sum);
-    user ? res.status(200).send(user): res.status(404).send('Invalid id of user!!!');
+app.put('/upBalance', (req, res) => {
+    let user = methods.addBalance(req.body.id, req.body.sum);
+    user ? res.status(200).send(user) : res.status(404).send('Invalid id of user!!!');
 });
 
-app.post('/getTotalBalance', (req,res) => {
+app.post('/getTotalBalance', (req, res) => {
     let totalBalance = 23.4;
-   res.status(200).send({totalBalance});
+    res.status(200).send({ totalBalance });
 
 });
 
-app.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
+app.put('/makeOrder', (req, res) => {//сделать заказ(обновить заказ)
     //структура объекта uploadOrder
     /*
      uploadOrder: {
@@ -62,14 +71,14 @@ app.put('/makeOrder',(req,res) => {//сделать заказ(обновить 
         .catch(err => res.status(404));
 });
 
-app.post('/r' ,(req, res)=>{
-    order.ordersForWeek([new Date("2018-05-14T21:00:00Z"),new Date("2018-05-13T21:00:00Z"),new Date("2018-05-12T21:00:00Z"),new Date("2018-05-11T21:00:00Z")], 'Pavel')
-    .then(arr=>res.send(arr));
+app.post('/r', (req, res) => {
+    order.ordersForWeek([new Date("2018-05-14T21:00:00Z"), new Date("2018-05-13T21:00:00Z"), new Date("2018-05-12T21:00:00Z"), new Date("2018-05-11T21:00:00Z")], 'Pavel')
+        .then(arr => res.send(arr));
 })
 
 
-app.delete('/deleteOrder', (req,res) => {
-   order. deleteOrder(new Date(req.body.date), req.body.username)
+app.delete('/deleteOrder', (req, res) => {
+    order.deleteOrder(new Date(req.body.date), req.body.username)
         .then(answer => res.status(200).send(answer))
         .catch(err => res.status(404));
 });
