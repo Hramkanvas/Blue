@@ -1,17 +1,20 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');;
 
+const milisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+
 module.exports = {
     uploadOrder,
     deleteOrder,
     getDayOrders,
-    getOrder,
-    getOrderPrice
+    getUserOrders,
+    getOrderPrice,
+    ordersForWeek
 }
 
 function uploadOrder(date, username, uploadOrder) {
-    if (validateOrder(uploadOrder)) {
-        return Order.findOne({ date })
+    if (validateOrder(uploadOrder, date)) {
+        return Order.findOne({ Date: date })
             .then((OrderSchema) => {
 
                 if (OrderSchema) {
@@ -25,7 +28,7 @@ function uploadOrder(date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date: date,
+                        Date:date,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -40,27 +43,56 @@ function uploadOrder(date, username, uploadOrder) {
     }
 }
 
-function validateOrder(order) {
-    if (typeof order.price !== Number) return false;
+function ordersForWeek(dates, username) {
+    let getOrders = [];
+
+    for (let date of dates) {
+        getOrders.push(getUserOrders(date, username));
+    }
+
+    return Promise.all(getOrders);
 }
 
-function deleteOrder(date, username) {
-    return Order.findOne({ date })
+function validateOrder(order, date) {
+    let [actuall, next] = getActuallAndNextMondayDate();
+
+    if (+new Date(date) >= +new Date(actuall) && +new Date(date) <= +new Date(next) + milisecondsInWeek) {
+        return false;
+    }
+
+    return true;
+}
+
+
+function getActuallAndNextMondayDate() {
+    const today = new Date();
+    const actuall = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1, 0, 0, 0, 0);
+
+    const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
+    return [actuall.toString(), next.toString()];
+}
+
+
+function deleteOrder(Date, username) {
+    return Order.findOne({ Date })
         .then((OrderSchema) => {
-
             if (OrderSchema) {
+                if (!OrderSchema.Orders[username])
+                    return false;
                 delete OrderSchema.Orders[username];
-                const orders = OrderSchema.Orders;
+                if (Object.keys(OrderSchema.Orders).length === 0) {
+                    return OrderSchema.remove();
+                }
 
+                const orders = OrderSchema.Orders;
                 return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
             }
-
             return false;
         });
 }
 
 function getDayOrders(date) {
-    return Order.findOne({ date })
+    return Order.findOne({ Date:date })
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
@@ -69,15 +101,17 @@ function getDayOrders(date) {
         })
 }
 
-function getOrder(date, username) {
+function getUserOrders(date, username) {
     return getDayOrders(date)
         .then(dayOrders => {
+            console.log(dayOrders);
+            dayOrders[username].date = date;
             return dayOrders[username];
         });
 }
 
 function getOrderPrice(date, username) {
-    return getOrder(date, username).then((order) => {
+    return getUserOrders(date, username).then((order) => {
         return order.price;
     })
 }
