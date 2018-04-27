@@ -24,13 +24,16 @@ class AuthorizationClass extends HTMLElement {
         this.attachShadow({mode: 'open'}).innerHTML = templateTT;
         this.textField = this.shadowRoot.getElementById('valueText');
         this.value  = +this.textField.value || 0;
-
+        
+        this.customEvent = new CustomEvent("helloWorld");
     }
     static get observedAttributes() {return ['clicked']; }
 
     attributeChangedCallback(name, oldValue, newValue){
         this.value++;
         this.textField.innerText = this.value;
+
+        this.dispatchEvent(this.customEvent);
     }
 }
 

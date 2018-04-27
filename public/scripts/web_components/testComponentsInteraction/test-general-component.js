@@ -21,8 +21,6 @@
         width: 100%;
     }
     </style>
-    <link rel="shortcut icon" href="exadel_icon.ico">
-    <link rel="stylesheet" type="text/css" href="style.css">
     <div class="generalComponent">
         <button id="buttonTest">CLick</button>
         <test-inside-component clicked="flag" id="insideComp"></test-inside-component>
@@ -30,12 +28,20 @@
     `;
 
     class AuthorizationClass extends HTMLElement {
+
         constructor() {
             super();
             this.attachShadow({mode: 'open'}).innerHTML = templateT;
             this.buttonTest = this.shadowRoot.getElementById('buttonTest');
             this.clickFunc = this.clickFunc.bind(this);
             this.insideComponent = this.shadowRoot.getElementById('insideComp');
+            this.addEventListener = this.addEventListener.bind(this);
+            this.lol = this.lol.bind(this);
+            this.insideComponent.addEventListener("helloWorld", this.lol);
+        }
+
+        lol(e){
+            this.buttonTest.textContent = "Hello world!!!!!!!!!!!!!"
         }
 
         clickFunc(event) {
