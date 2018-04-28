@@ -61,9 +61,10 @@ app.put('/makeOrder',(req,res) => {//сделать заказ(обновить 
             info: {
             dishName: {
                 cost: Number,
-                count: Number
+                count: Number,
             }
         }
+        isАvailable: true; 
     }*/
     order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder)
         .then(answer => res.status(200).send(answer))

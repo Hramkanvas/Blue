@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');;
 
-const milisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+const milliSecondsInWeek = 7 * 24 * 60 * 60 * 1000;
 
 module.exports = {
     uploadOrder,
@@ -9,15 +9,15 @@ module.exports = {
     getDayOrders,
     getUserOrders,
     getOrderPrice,
-    ordersForWeek
-}
+    ordersForWeek,
+};
 
 function uploadOrder(date, username, uploadOrder) {
     if (validateOrder(uploadOrder, date)) {
         return Order.findOne({ Date: date })
             .then((OrderSchema) => {
 
-                if (OrderSchema) {
+                if (OrderSchema && OrderSchema.Orders[username] && OrderSchema.Orders[username].isAvailable) {
                     OrderSchema.Orders[username] = uploadOrder;
                     const orders = OrderSchema.Orders;
                     return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
@@ -28,7 +28,7 @@ function uploadOrder(date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date:date,
+                        Date: date,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -56,7 +56,7 @@ function ordersForWeek(dates, username) {
 function validateOrder(order, date) {
     let [actuall, next] = getActuallAndNextMondayDate();
 
-    if (+new Date(date) >= +new Date(actuall) && +new Date(date) <= +new Date(next) + milisecondsInWeek) {
+    if (+new Date(date) >= +new Date(actuall) && +new Date(date) <= +new Date(next) + milliSecondsInWeek) {
         return false;
     }
 
@@ -79,20 +79,25 @@ function deleteOrder(Date, username) {
             if (OrderSchema) {
                 if (!OrderSchema.Orders[username])
                     return false;
-                delete OrderSchema.Orders[username];
-                if (Object.keys(OrderSchema.Orders).length === 0) {
-                    return OrderSchema.remove();
-                }
+                if (OrderSchema.Orders[username].isAvailable) {
 
-                const orders = OrderSchema.Orders;
-                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                    delete OrderSchema.Orders[username];
+                    if (Object.keys(OrderSchema.Orders).length === 0) {
+                        return OrderSchema.remove();
+                    }
+
+                    const orders = OrderSchema.Orders;
+                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+
+                }
+                return false;
             }
             return false;
         });
 }
 
 function getDayOrders(date) {
-    return Order.findOne({ Date:date })
+    return Order.findOne({ Date: date })
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
@@ -132,6 +137,6 @@ function getTotal(date) {
                 }
             }
 
-            return total
+            return total;
         })
 }
