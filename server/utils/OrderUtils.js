@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');;
 
-const milliSecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+const moment = require('moment');
 
 module.exports = {
     uploadOrder,
@@ -54,24 +54,15 @@ function ordersForWeek(dates, username) {
 }
 
 function validateOrder(order, date) {
-    let [actuall, next] = getActuallAndNextMondayDate();
+    let now = moment().set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let severalDaysLater = moment(now).day(14);
 
-    if (+new Date(date) >= +new Date(actuall) && +new Date(date) <= +new Date(next) + milliSecondsInWeek) {
+    if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().date().day() === 0) {
         return false;
     }
 
     return true;
 }
-
-
-function getActuallAndNextMondayDate() {
-    const today = new Date();
-    const actuall = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1, 0, 0, 0, 0);
-
-    const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
-    return [actuall.toString(), next.toString()];
-}
-
 
 function deleteOrder(Date, username) {
     return Order.findOne({ Date })
@@ -109,7 +100,6 @@ function getDayOrders(date) {
 function getUserOrders(date, username) {
     return getDayOrders(date)
         .then(dayOrders => {
-            console.log(dayOrders);
             dayOrders[username].date = date;
             return dayOrders[username];
         });
