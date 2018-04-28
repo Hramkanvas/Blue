@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
-const Menu = require('../models/Menu');;
+const Menu = require('../models/Menu');
 
 
 module.exports = {
     findMenu,
     addMenu,
     getActuallAndNextMondayDate
-}
+};
 
 function findMenu(fromDate) {
     return Menu.findOne({ fromDate })
+        .then((menu) => {
+            return menu
+        });
 }
 
 function addMenu(file) {
@@ -112,7 +115,7 @@ function getActuallAndNextMondayDate() {
 
     const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
     return [actuall.toString(), next.toString()];
-}
+};
 
 
 function validateMenu(menu) {

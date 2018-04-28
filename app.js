@@ -1,8 +1,5 @@
 const express = require('express');
-const menu = require('./server/utils/MenuUtils');
-const order = require('./server/utils/OrderUtils');
 const mongoose = require('mongoose');
-let methods = require('./server/utils/QueryMethods');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -14,75 +11,14 @@ mongoose.connect(`mongodb://localhost:27017`, function (err) {
         throw err;
     console.log('Successfully connected to database');
 });
-app.post('/login',(req,res) =>{
-    let user = methods.login(req.body.login,req.body.password);
-    user ? res.status(200).send(user): res.status(404).send('Incorrect login or password!!!');
-});
 
-app.post('/downloadMenu', (req, res) => {
-    const buffer = [];
-    req.on('data', (chunk) => {
-        buffer.push(chunk);
-    }).on('end', () => {
-        const file = Buffer.concat(buffer);
-        console.log(file);
-        menu.addMenu(file)
-            .then(answer => {
-                console.log(answer);
-                res.send(answer)
-            })
-            .catch(err => console.log(err));
-    });
+let adminRouter = require('./server/routers/admin');
+let userRouter = require('./server/routers/user');
+let authorizationRouter = require('./server/routers/authorization');
 
-});
-
-app.get('/getMenu', (req, res) => {
-    menu.findMenu(new Date(2018, 6, 20))
-        .then(answer => res.send(answer))
-        .catch(err => console.log(err));
-});
-
-app.put('/upBalance', (req, res) => {
-    let user = methods.addBalance(req.body.id, req.body.sum);
-    user ? res.status(200).send(user) : res.status(404).send('Invalid id of user!!!');
-});
-
-app.post('/getTotalBalance', (req, res) => {
-    let totalBalance = 23.4;
-    res.status(200).send({ totalBalance });
-
-});
-
-app.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
-    //структура объекта uploadOrder
-    /*
-     uploadOrder: {
-        price:Number,
-            info: {
-            dishName: {
-                cost: Number,
-                count: Number,
-            }
-        }
-        isАvailable: true; 
-    }*/
-    order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder)
-        .then(answer => res.status(200).send(answer))
-        .catch(err => res.status(404));
-});
-
-app.post('/r', (req, res) => {
-    order.ordersForWeek([new Date("2018-05-14T21:00:00Z"), new Date("2018-05-13T21:00:00Z"), new Date("2018-05-12T21:00:00Z"), new Date("2018-05-11T21:00:00Z")], 'Pavel')
-        .then(arr => res.send(arr));
-})
-
-
-app.delete('/deleteOrder', (req, res) => {
-    order.deleteOrder(new Date(req.body.date), req.body.username)
-        .then(answer => res.status(200).send(answer))
-        .catch(err => res.status(404));
-});
-
+app.use('/',userRouter);
+app.use('/admin',adminRouter);
+app.use('/authorization',authorizationRouter);
 
 app.listen(3000, () => {
     console.log(`Server is running...`);
