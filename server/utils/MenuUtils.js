@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const Menu = require('../models/Menu');
 
+const moment = require('moment');
 
 module.exports = {
     findMenu,
     addMenu,
-    getActuallAndNextMondayDate
 };
 
 function findMenu(fromDate) {
@@ -108,20 +108,17 @@ function toNormalDateFrom(date) {
     return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
 };
 
-
-function getActuallAndNextMondayDate() {
-    const today = new Date();
-    const actuall = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1, 0, 0, 0, 0);
-
-    const next = new Date(actuall.getFullYear(), actuall.getMonth(), actuall.getDate() - actuall.getDay() + 8, 0, 0, 0, 0);
-    return [actuall.toString(), next.toString()];
-};
-
-
 function validateMenu(menu) {
 
-    const [actuall, next] = getActuallAndNextMondayDate();
-    if (menu.fromDate != actuall && menu.fromDate !== next) return false;
+
+    let fromDate = moment(new Date(menu.fromDate)).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+
+    let monday = moment().day(1).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let severalDaysLater = moment().day(8).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+
+    if (!monday.isSame(fromDate) && !severalDaysLater.isSame(fromDate)) {
+        return false;
+    }
 
     const menuInfo = menu.menuInfo;
 

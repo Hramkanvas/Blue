@@ -13,14 +13,22 @@ module.exports = {
 };
 
 function uploadOrder(date, username, uploadOrder) {
+    // console.log(date);
     if (validateOrder(uploadOrder, date)) {
-        return Order.findOne({ Date: date })
+
+        let resetedDate = moment(date).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+        return Order.findOne({ Date: resetedDate })
             .then((OrderSchema) => {
 
-                if (OrderSchema && OrderSchema.Orders[username] && OrderSchema.Orders[username].isAvailable) {
+                if (OrderSchema && OrderSchema.Orders) {
+                    if (OrderSchema.Orders[username] && !OrderSchema.Orders[username].isAvailable) {
+                        return false;
+                    }
                     OrderSchema.Orders[username] = uploadOrder;
                     const orders = OrderSchema.Orders;
+
                     return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                    //return OrderSchema.save();
                 }
 
                 else {
@@ -28,7 +36,7 @@ function uploadOrder(date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date: date,
+                        Date: resetedDate,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -53,11 +61,13 @@ function ordersForWeek(dates, username) {
     return Promise.all(getOrders);
 }
 
-function validateOrder(order, date) {
+function validateOrder(order, dat) {
     let now = moment().set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
     let severalDaysLater = moment(now).day(14);
 
-    if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().date().day() === 0) {
+    let date = moment(dat).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    //console.log(now, severalDaysLater, date);
+    if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
         return false;
     }
 
