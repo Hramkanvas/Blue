@@ -12,7 +12,8 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
                 cost: Number,
                 count: Number
             }
-        }
+        },
+        isAvailable: true  //доступен ли заказ для изменения
     }*/
     order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder)
         .then(answer => res.status(200).send(answer))
