@@ -2,15 +2,15 @@ import {queries} from "./queries.js";
 
 let template = `
     <style>
-    
+
     p {
         font-size: 16px;
     }
-      
+
     h1, h2, h3, h4, h5, h6, th {
         color: grey
     }
-    
+
     body {
         display: flex;
         width: 100%;
@@ -21,10 +21,10 @@ let template = `
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         color: #7a7a7a;
     }
-    
+
     .authorizationBlock {
         --fon: red;
-        background: #444444;
+        background: #ebebeb;
         border-radius: 3px;
         border: 1px solid #7a7a7a1a;
         padding: 30px;
@@ -32,24 +32,24 @@ let template = `
         height: max-content;
         margin: 10% auto;
     }
-    
+
     .bottomStuff h3 {
         font-size: 25px;
         text-align: center;
         margin-bottom: 25px;
     }
-    
+
     .bottomStuff p {
         margin: 0;
         color: #444444;
         font-size: 100%;
         font-weight: bold;
     }
-    
+
     button:hover {
         background: #72bb53;
     }
-    
+
     button {
         display: flex;
         margin: 0 auto;
@@ -61,18 +61,18 @@ let template = `
         background: #3d8af7;
         padding: 5px 10px;
     }
-    
+
     input {
         width: 100%;
         display: block;
         border: none;
-        
+
         outline: none;
         padding: 10px;
         margin-bottom: 20px;
         background-color: white;
     }
-    
+
     label {
         color: grey;
         font-size: 14px;
@@ -89,9 +89,9 @@ let template = `
         height: max-content;
         margin: 10% auto;
     }
-    
+
     </style>
-    
+
     <div class="authorizationBlock" id="authorizationBlock">
         <div class="bottomStuff">
             <h3>Авторизация</h3>
@@ -128,13 +128,14 @@ class AuthorizationClass extends HTMLElement {
         let login = this.authorizeForm.elements.login.value;
         let password = this.authorizeForm.elements.password.value;
         queries.authorize(login, password).then(
-            user => {
+            function (user) {
                 window.location.assign("../admin.html");
-            },
-            error => {
+            }.bind(this),
+            function (error) {
                 this.authorizationBlock.className = "authorizationBlockError";
-            }
+            }.bind(this)
         );
     }
 }
 
+customElements.define('pie-authorization', AuthorizationClass);
