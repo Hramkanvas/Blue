@@ -1,23 +1,34 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');;
 
+const moment = require('moment');
+
 module.exports = {
     uploadOrder,
     deleteOrder,
     getDayOrders,
-    getOrder,
-    getOrderPrice
-}
+    getUserOrders,
+    getOrderPrice,
+    ordersForWeek,
+};
 
 function uploadOrder(date, username, uploadOrder) {
-    if (validateOrder(uploadOrder)) {
-        return Order.findOne({ date })
+    // console.log(date);
+    if (validateOrder(uploadOrder, date)) {
+
+        let resetedDate = moment(date).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+        return Order.findOne({ Date: resetedDate })
             .then((OrderSchema) => {
 
-                if (OrderSchema) {
+                if (OrderSchema && OrderSchema.Orders) {
+                    if (OrderSchema.Orders[username] && !OrderSchema.Orders[username].isAvailable) {
+                        return false;
+                    }
                     OrderSchema.Orders[username] = uploadOrder;
                     const orders = OrderSchema.Orders;
+
                     return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                    //return OrderSchema.save();
                 }
 
                 else {
@@ -25,7 +36,7 @@ function uploadOrder(date, username, uploadOrder) {
                     Orders[username] = uploadOrder;
 
                     OrderSchema = new Order({
-                        Date: date,
+                        Date: resetedDate,
                         Orders,
                     })
                     return OrderSchema.save();
@@ -40,27 +51,54 @@ function uploadOrder(date, username, uploadOrder) {
     }
 }
 
-function validateOrder(order) {
-    if (typeof order.price !== Number) return false;
+function ordersForWeek(dates, username) {
+    let getOrders = [];
+
+    for (let date of dates) {
+        getOrders.push(getUserOrders(date, username));
+    }
+
+    return Promise.all(getOrders);
 }
 
-function deleteOrder(date, username) {
-    return Order.findOne({ date })
+function validateOrder(order, dat) {
+    let now = moment().set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let severalDaysLater = moment(now).day(14);
+
+    let date = moment(dat).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    //console.log(now, severalDaysLater, date);
+    if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
+        return false;
+    }
+
+    return true;
+}
+
+function deleteOrder(Date, username) {
+    return Order.findOne({ Date })
         .then((OrderSchema) => {
-
             if (OrderSchema) {
-                delete OrderSchema.Orders[username];
-                const orders = OrderSchema.Orders;
+                if (!OrderSchema.Orders[username])
+                    return false;
+                if (OrderSchema.Orders[username].isAvailable) {
 
-                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                    delete OrderSchema.Orders[username];
+                    if (Object.keys(OrderSchema.Orders).length === 0) {
+                        return OrderSchema.remove();
+                    }
+
+                    const orders = OrderSchema.Orders;
+                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+
+                }
+                return false;
             }
-
             return false;
         });
 }
 
 function getDayOrders(date) {
-    return Order.findOne({ date })
+    return Order.findOne({ Date: date })
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
@@ -69,15 +107,16 @@ function getDayOrders(date) {
         })
 }
 
-function getOrder(date, username) {
+function getUserOrders(date, username) {
     return getDayOrders(date)
         .then(dayOrders => {
+            dayOrders[username].date = date;
             return dayOrders[username];
         });
 }
 
 function getOrderPrice(date, username) {
-    return getOrder(date, username).then((order) => {
+    return getUserOrders(date, username).then((order) => {
         return order.price;
     })
 }
@@ -98,6 +137,6 @@ function getTotal(date) {
                 }
             }
 
-            return total
+            return total;
         })
 }
