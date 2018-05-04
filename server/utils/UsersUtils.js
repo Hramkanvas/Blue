@@ -195,7 +195,6 @@ function upBalance(username, amount) {
 
 function addUser(username, FIO) {
     let currentDate = new Date();
-
     let prMonday = new Date(currentDate.getFullYear(),
         currentDate.getMonth(),
         currentDate.getDate() - currentDate.getDay() - 6);
@@ -210,7 +209,7 @@ function addUser(username, FIO) {
             next: new Array()
         }
     });
-
+    
     newUser.save(function (err) {
         if (err) throw err;
     });

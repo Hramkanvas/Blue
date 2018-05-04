@@ -25,7 +25,7 @@ export let queries = (function () {
         getMenu: function () {
             return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/getMenu');
+                xhr.open('GET', '/admin/getMenu');
                 xhr.setRequestHeader('content-type', 'application/json');
 
                 xhr.onreadystatechange = function () {
@@ -43,10 +43,10 @@ export let queries = (function () {
             });
         },
 
-        upBalance: function (id, sum) {
+        upBalance: function (username, sum) {
             return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('PUT', '/upBalance');
+                xhr.open('PUT', '/admin/upBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
 
                 xhr.onreadystatechange = function () {
@@ -60,7 +60,8 @@ export let queries = (function () {
                         resolve(user);
                     }
                 }
-                xhr.send(JSON.stringify({id : id, sum: sum}));
+                //xhr.send(JSON.stringify({username : username, FIO: FIO}));
+                xhr.send(JSON.stringify({username : username, amount: sum}));
             });
         },
 

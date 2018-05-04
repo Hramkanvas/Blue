@@ -127,23 +127,34 @@ export let pieUpBalance = (function () {
             this.updateUserInfo = this.updateUserInfo.bind(this);
 
             this.currentUser = {};
-            this.users = [{
-                id: "1", login: "2", password: "2",
-                name: "Никита", surname: "Никифоров", phone: "+375256934099", balance: "35",
-                "type": "user"
-            },
-            { id: "2", login: "3", password: "3", name: "Лиза", surname: "Якимович", phone: "+375256934099", balance: "-15", type: "user" }];
+            this.users = [
+                {
+                username :"sasha",
+                FIO: "Александр Блок",
+                balance: 0
+                },
+                {
+                username :"holem",
+                FIO: "Никита Никифоров",
+                balance: 0
+                },
+                {
+                    username :"tereh",
+                    FIO: "Евгений Мудрый",
+                    balance: 0
+                 }
+            ]
         }
 
         updateUserInfo() {
             this.textBalance.textContent = this.currentUser.balance;
-            this.textWorkerName.textContent = this.currentUser.name;
+            this.textWorkerName.textContent = this.currentUser.FIO;
         }
 
         changeCurrentUserEvent(event) {
             this.currentUser = {};
-            this.currentUser.name = event.target.value;
-            this.currentUser = this.users.find(user => user.name === this.currentUser.name);
+            this.currentUser.FIO = event.target.value;
+            this.currentUser = this.users.find(user => user.FIO === this.currentUser.FIO);
             if (this.currentUser !== undefined) {
                 if (this.infoBlock.style.visibility === 'hidden') {
                     this.infoBlock.style.visibility = 'visible';
@@ -160,10 +171,10 @@ export let pieUpBalance = (function () {
             if (this.currentUser !== undefined) {
                 if (this.balanceInput.value.match(/^([0-9]+\.?[0-9]*)$/)) {
                     var inputBalance = Number(this.balanceInput.value);
-                    queries.upBalance(this.currentUser.id, inputBalance).then(function (value) {
+                    queries.upBalance(this.currentUser.username, inputBalance).then(function (value) {
                         this.currentUser = value;
                         this.updateUserInfo();
-                        var index = this.users.findIndex(x => x.name === this.currentUser.name);
+                        var index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
                         this.users[index] = value;
                     }.bind(this), function (reason) {
                         //компонент с ошибкой
@@ -183,7 +194,7 @@ export let pieUpBalance = (function () {
         loadUsers() {
             this.users.forEach(user => {
                 var option = document.createElement("option");
-                option.text = user.name;
+                option.text = user.FIO;
                 this.dataList.appendChild(option);
             });
         }
