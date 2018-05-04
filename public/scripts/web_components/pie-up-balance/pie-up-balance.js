@@ -158,19 +158,19 @@ export let pieUpBalance = (function () {
 
         clickUpBalanceEvent(event) {
             if (this.currentUser !== undefined) {
-                if (this.balanceInput.value.match('^([^-][0-9]+.{1}[0-9]*)|([^-][0-9]+)$')) {
+                if (this.balanceInput.value.match(/^([0-9]+\.?[0-9]*)$/)) {
                     var inputBalance = Number(this.balanceInput.value);
                     queries.upBalance(this.currentUser.id, inputBalance).then(function (value) {
                         this.currentUser = value;
                         this.updateUserInfo();
                         var index = this.users.findIndex(x => x.name === this.currentUser.name);
-                        console.log(index);
                         this.users[index] = value;
-                        console.log(this.users);
                     }.bind(this), function (reason) {
+                        //компонент с ошибкой
                         alert("Problems.");
                     });
                 } else {
+                    //компонент с ошибкой
                     alert("неправильный ввод. Должен выводиться компонент с ошибкой, но его пока нет");
                 }
             }
