@@ -182,17 +182,15 @@ function swapWeekAtDB(username) {
 };
 
 function upBalance(username, amount) {
-
     return Users.findOne({username})
         .then((user) => {
-            user.balance += amount;
-
-            return user.save(function (err) {
-                if (err) return err;
-
-                return true;
-            });
-        })
+            if(user) {
+                user.balance += +amount;
+                return user.save();
+            }
+            else
+                return false;
+        });
 };
 
 function addUser(username, FIO) {

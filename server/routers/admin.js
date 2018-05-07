@@ -1,6 +1,8 @@
 let router = require('express').Router();
 const menu = require('../utils/MenuUtils');
 let methods = require('../utils/QueryMethods');
+let users = require('../utils/UsersUtils');
+
 
 router.get('/getMenu', (req, res) => {
     menu.findMenu(new Date(2018, 6, 20))
@@ -9,8 +11,8 @@ router.get('/getMenu', (req, res) => {
 });
 
 router.put('/upBalance', (req, res) => {
-    let user = methods.addBalance(req.body.id, req.body.sum);
-    user ? res.status(200).send(user) : res.status(404).send('Invalid id of user!!!');
+    users.upBalance(req.body.username, req.body.amount)
+        .then((user) => user ? res.status(200).send(user) : res.status(404).send('Invalid username!!!'));
 });
 
 router.post('/downloadMenu', (req, res) => {

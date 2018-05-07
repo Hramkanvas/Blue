@@ -1,22 +1,30 @@
 const fs = require('fs');
 const users = JSON.parse(fs.readFileSync('./server/files/users.json'));
+const Users = require('../models/Users');
+const mongoose = require('mongoose');
 
 const methods = (function () {
+
     let login = function(login, password) {
         let user = users.find((user) => user.login === login && user.password === password);
-        return user;
+        if(user) {
+            return Users.findOne({username: user.username})
+                .then((user) => {
+                    if (user)
+                        return user;
+                    return false;
+                });
+        }
+        else
+            return new Promise((res, rej) => {
+                res(false);
+            })
+
     };
 
-    let addBalance = function (id,sum) {
-        let user = users.find((user) => user.id === id);
-        user.balance = (+sum + +user.balance).toString();
-        fs.writeFileSync('server/files/users.json', JSON.stringify(users))
-        return user;
-    }
 
     return {
-        login,
-        addBalance
+        login
     }
 
 })();
