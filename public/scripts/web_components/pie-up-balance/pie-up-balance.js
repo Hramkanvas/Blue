@@ -125,25 +125,19 @@ export let pieUpBalance = (function () {
             this.changeCurrentUserEvent = this.changeCurrentUserEvent.bind(this);
             this.loadUsers = this.loadUsers.bind(this);
             this.updateUserInfo = this.updateUserInfo.bind(this);
+            this.saveUsers = this.saveUsers.bind(this);
 
-            this.currentUser = {};
-            this.users = [
-                {
-                username :"sasha",
-                FIO: "Александр Блок",
-                balance: 0
-                },
-                {
-                username :"holem",
-                FIO: "Никита Никифоров",
-                balance: 0
-                },
-                {
-                    username :"tereh",
-                    FIO: "Евгений Мудрый",
-                    balance: 0
-                 }
-            ]
+            this.currentUser = {}; 
+
+            queries.getUsers().then(this.saveUsers, function(reason) {
+               // отказ
+             });
+          
+        }
+
+        saveUsers(users){
+            this.users = users;
+            this.loadUsers();
         }
 
         updateUserInfo() {
@@ -201,7 +195,6 @@ export let pieUpBalance = (function () {
 
         connectedCallback() {
             this.buttonUpBalance.addEventListener('click', this.clickUpBalanceEvent);
-            this.loadUsers();
             this.userInput.addEventListener('input', this.changeCurrentUserEvent);
         }
 

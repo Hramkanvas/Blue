@@ -86,6 +86,27 @@ export let queries = (function () {
             });
         },
 
+        getUsers:function(){
+            return new Promise(function(resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/admin/getUsers');
+                xhr.setRequestHeader('content-type', 'application/json');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var users;
+                        try {
+                            users = JSON.parse(xhr.response);
+                        } catch (err) {
+                            users = undefined;
+                        }
+                        resolve(users);
+                    }
+                }
+                xhr.send();
+            });
+        },
+
         downloadMenu: function (){
             
         }
