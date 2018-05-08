@@ -29,18 +29,22 @@ export let pieDragAndDrop = (function () {
             border: 2px dashed #ccc;
             border-radius: 5px;
         }
+
+        #drag {
+            margin-top: 60px;
+        }
         
         #dropZone:hover {
             background: #ddd;
             border-color: #aaa;
         }
         </style>
-        <form action="/" id="drag">
+        <div id = "drag">
             <div id="dropZone">
                 Для загрузки меню, перетащите файл сюда.
             </div>
-            <button id = "btUpload"> Загрузить файл </button>
-        </form>
+        </div>
+        <button id = "btUpload"> Загрузить файл </button>
         `;
 
     class UpBalanceClass extends HTMLElement {
@@ -64,7 +68,7 @@ export let pieDragAndDrop = (function () {
         }
 
         clickUpload(event){
-            //alert('load');
+            //queries.uploadMenu(this.currentFile);
         }
 
         dragOverEvent(event){
@@ -87,14 +91,14 @@ export let pieDragAndDrop = (function () {
 
         saveFile(){
             this.currentFile = this.fileReader.result;
+            if (this.btUpload.style.visibility === 'hidden'){
+                this.btUpload.style.visibility = 'visible';
+            }
         }
 
         dropEvent(event) {
             this.currentFileName = event.dataTransfer.files[0].name;
             this.dragNDropeZone.textContent = 'Вы загрузили файл "' + this.currentFileName + '". Для загрузки другого меню, перетащите файл сюда.';
-            if (this.btUpload.style.visibility === 'hidden'){
-                this.btUpload.style.visibility = 'visible';
-            }
             this.fileReader.onload = this.saveFile;
             this.fileReader.readAsBinaryString(event.dataTransfer.files[0]);
         }

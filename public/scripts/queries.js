@@ -1,12 +1,12 @@
 export let queries = (function () {
     return {
         authorize: function (login, password) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/login');
                 xhr.setRequestHeader('content-type', 'application/json');
                 var value = { login: login, password: password };
-                
+
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                         var user;
@@ -23,7 +23,7 @@ export let queries = (function () {
         },
 
         getMenu: function () {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('GET', '/getMenu');
                 xhr.setRequestHeader('content-type', 'application/json');
@@ -44,7 +44,7 @@ export let queries = (function () {
         },
 
         upBalance: function (id, sum) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('PUT', '/upBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
@@ -60,12 +60,12 @@ export let queries = (function () {
                         resolve(user);
                     }
                 }
-                xhr.send(JSON.stringify({id : id, sum: sum}));
+                xhr.send(JSON.stringify({ id: id, sum: sum }));
             });
         },
 
-        getTotalBalance: function(id){
-            return new Promise(function(resolve, reject) {
+        getTotalBalance: function (id) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/getTotalBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
@@ -81,12 +81,35 @@ export let queries = (function () {
                         resolve(balance);
                     }
                 }
-                xhr.send(JSON.stringify({id : id}));
+                xhr.send(JSON.stringify({ id: id }));
             });
         },
 
-        downloadMenu: function (){
-            
-        }
+        uploadMenu: function (file) {
+            return new Promise(function (resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/downloadMenu');
+                xhr.setRequestHeader('content-type', 'application/json');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState !== 4) {
+                        return;
+                    }
+                    if (xhr.status !== 200) {
+                        console.log(xhr.status + ': ' + xhr.statusText);
+                    }
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        console.log("DONE");
+                        try {
+                            //balance = JSON.parse(xhr.response);
+                        } catch (err) {
+                            
+                        }
+                        //resolve(balance);
+                    }
     }
-})();
+    xhr.send(JSON.stringify({ data: file }));
+});
+    }
+    }
+}) ();
