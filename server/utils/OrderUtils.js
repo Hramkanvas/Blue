@@ -22,11 +22,17 @@ function uploadOrder(date, username, uploadOrder) {
             .then((OrderSchema) => {
 
                 if (OrderSchema) {
-                    OrderSchema.Orders[username] = uploadOrder;
+                    if (!OrderSchema.isBlocked) {
+                        OrderSchema.Orders[username] = uploadOrder;
 
-                    const orders = OrderSchema.Orders;
+                        const orders = OrderSchema.Orders;
 
-                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                        return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                    }
+                    else {
+                        return false;
+                    }
+
                 }
 
                 else {
@@ -36,6 +42,7 @@ function uploadOrder(date, username, uploadOrder) {
                     OrderSchema = new Order({
                         Date: resetedDate,
                         Orders,
+                        isBlocked: false
                     })
                     return OrderSchema.save();
                 }
@@ -91,15 +98,16 @@ function deleteOrder(date, username) {
                 if (validateTime(date, OrderSchema.Orders[username])) {
                     return false;
                 }
-                
-                delete OrderSchema.Orders[username];
-                if (Object.keys(OrderSchema.Orders).length === 0) {
-                    return OrderSchema.remove();
+
+                if (!OrderSchema.isBlocked) {
+                    delete OrderSchema.Orders[username];
+                    if (Object.keys(OrderSchema.Orders).length === 0) {
+                        return OrderSchema.remove();
+                    }
+
+                    const orders = OrderSchema.Orders;
+                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
                 }
-
-                const orders = OrderSchema.Orders;
-                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
-
 
                 return false;
             }
@@ -151,4 +159,13 @@ function getTotal(date) {
 
             return total;
         })
+}
+
+function confirmOrdersForDay(date) {
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+
+    return Order.findOne({ Date: resetedDate })
+        .then((OrderSchema) => {
+            return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
+        });
 }
