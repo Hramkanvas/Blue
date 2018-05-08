@@ -38,6 +38,9 @@ export let pieError = (function () {
             background: #3d8af7;
             padding: 5px 10px;
         }
+        button:hover {
+            background: #72bb53;
+        }
         </style>
         <div id = "error">
            <div id = "errorBlock">
