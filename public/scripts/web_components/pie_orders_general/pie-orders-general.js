@@ -1,4 +1,4 @@
-export let menuGeneralComponent = (function () {
+export let ordersGeneralComponent = (function () {
 
     let template = `
     <style>
@@ -11,22 +11,25 @@ export let menuGeneralComponent = (function () {
         padding: 0;
         box-sizing: border-box;
     }
+    
     .tabContent {
         display: none;
     }
+    
     .tabContent.active{
         display: block;
     }
+    
     </style>
     
     <div id="menu" class="tabContent">
-        <pie-drag-and-drop></pie-drag-and-drop>
-        <pie-general-info></pie-general-info>
-        <pie-items></pie-items>
+        <pie-table-orders></pie-table-orders>
+        <pie-statistics-day></pie-statistics-day>
+        <pie-make-order></pie-make-order>
     </div>
     `;
 
-    class MenuGeneralClass extends HTMLElement {
+    class OrdersGeneralClass extends HTMLElement {
         constructor() {
             super();
             this.attachShadow({mode: 'open'}).innerHTML = template;
@@ -50,5 +53,5 @@ export let menuGeneralComponent = (function () {
         }
     }
 
-    customElements.define('pie-menu-general', MenuGeneralClass);
+    customElements.define('pie-orders-general', OrdersGeneralClass);
 }());
