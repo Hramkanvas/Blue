@@ -15,6 +15,12 @@ router.put('/upBalance', (req, res) => {
         .then((user) => user ? res.status(200).send(user) : res.status(404).send('Invalid username!!!'));
 });
 
+router.get('/getUsers', (req, res) => {
+    users.getUsers()
+        .then(answer => res.send(answer))
+        .catch(err => console.log(err));
+});
+
 router.post('/downloadMenu', (req, res) => {
     const buffer = [];
     req.on('data', (chunk) => {
