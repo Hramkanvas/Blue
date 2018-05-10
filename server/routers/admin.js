@@ -23,9 +23,11 @@ router.get('/getUsers', (req, res) => {
 
 router.post('/downloadMenu', (req, res) => {
     const buffer = [];
+    
     req.on('data', (chunk) => {
         buffer.push(chunk);
     }).on('end', () => {
+        console.log(buffer);
         const file = Buffer.concat(buffer);
         console.log(file);
         menu.addMenu(file)
