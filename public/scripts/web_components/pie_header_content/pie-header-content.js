@@ -1,9 +1,6 @@
-(function () {
+export let pieHeaderContent = (function () {
 
-    let userInfo = {
-        name: "Алексей",
-        balance: 90
-    }
+    let userInfo =  JSON.parse(localStorage.getItem("user"));
 
     let template = `
         <style>
@@ -72,10 +69,10 @@
                     <b>${userInfo.balance}</b> руб.
                 </span>
                 <span class="userInfoName">
-                    ${userInfo.name}
+                    ${userInfo.FIO}
                 </span>
                 <span class="userInfoButton">
-                    <a href="">Выход</a>
+                    <a>Выход</a>
                 </span>
             </div>
         </div>
@@ -95,7 +92,7 @@
         }
 
         out() {
-            document.location.href = '../index.html'
+            window.location.assign("./index.html");
         }
 
         disconnectedCallback() {
@@ -104,7 +101,7 @@
 
     }
 
-    customElements.define('header-content', HeaderContent);
+    customElements.define('pie-header-content', HeaderContent);
 
 })();
 
