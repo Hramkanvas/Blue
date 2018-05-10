@@ -156,8 +156,27 @@ export let queries = (function () {
                 //var blob = new Blob([file], {type: 'text/plain'}); 
                 xhr.send(file);
             });
-        }
+        },
 
+        getDayOrders: function(){
+            return new Promise(function(resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/admin/getDayOrders');
+                xhr.setRequestHeader('content-type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var orders;
+                        try {
+                            orders = JSON.parse(xhr.response);
+                        } catch (err) {
+                            orders = undefined;
+                        }
+                        resolve(orders);
+                    }
+                }
+                xhr.send();
+            });
+        }
     }
 })();
 

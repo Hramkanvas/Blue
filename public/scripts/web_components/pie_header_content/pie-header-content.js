@@ -64,10 +64,10 @@ export let pieHeaderContent = (function () {
                 <img src="img/logoExadel.png" alt="logoExadel">
             </div>
             <div class="userInfo">
-                <span class="userInfoBalans">
+                <!--span class="userInfoBalans">
                     Баланс:
                     <b>${userInfo.balance}</b> руб.
-                </span>
+                </span-->
                 <span class="userInfoName">
                     ${userInfo.FIO}
                 </span>
