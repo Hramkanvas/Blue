@@ -130,8 +130,8 @@ export let pieUpBalance = (function () {
             this.currentUser = {}; 
 
             queries.getUsers().then(this.saveUsers, function(reason) {
-               // отказ
-             });
+                
+            });
           
         }
 

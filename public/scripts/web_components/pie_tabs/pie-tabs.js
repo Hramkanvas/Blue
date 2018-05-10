@@ -1,5 +1,5 @@
-
-let template = `
+export let pieTabs = (function () {
+    let template = `
 <style>
 
 p {
@@ -116,5 +116,5 @@ class TabsClass extends HTMLElement {
         }
     }
 }
-
 customElements.define('pie-tabs', TabsClass);
+}());
