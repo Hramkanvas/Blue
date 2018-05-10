@@ -25,7 +25,7 @@ export let queries = (function () {
         getMenu: function () {
             return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/getMenu');
+                xhr.open('GET', '/admin/getMenu');
                 xhr.setRequestHeader('content-type', 'application/json');
 
                 xhr.onreadystatechange = function () {
@@ -43,10 +43,10 @@ export let queries = (function () {
             });
         },
 
-        upBalance: function (id, sum) {
-            return new Promise(function (resolve, reject) {
+        upBalance: function (username, sum) {
+            return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('PUT', '/upBalance');
+                xhr.open('PUT', '/admin/upBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
 
                 xhr.onreadystatechange = function () {
@@ -60,7 +60,7 @@ export let queries = (function () {
                         resolve(user);
                     }
                 }
-                xhr.send(JSON.stringify({ id: id, sum: sum }));
+                xhr.send(JSON.stringify({username : username, amount: sum}));
             });
         },
 
@@ -84,8 +84,49 @@ export let queries = (function () {
                 xhr.send(JSON.stringify({ id: id }));
             });
         },
+]
+        getUsers:function(){
+            return new Promise(function(resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/admin/getUsers');
+                xhr.setRequestHeader('content-type', 'application/json');
 
-        uploadMenu: function (file) {
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var users;
+                        try {
+                            users = JSON.parse(xhr.response);
+                        } catch (err) {
+                            users = undefined;
+                        }
+                        resolve(users);
+                    }
+                }
+                xhr.send();
+            });
+        },
+
+        getTodayOrdersStatistics: function (date) {
+            return new Promise(function (resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/admin/getTodayOrdersStatistics');
+                xhr.setRequestHeader('content-type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        let dayStatistics;
+                        try {
+                            dayStatistics = JSON.parse(xhr.response);
+                        } catch (err) {
+                            reject("you shall not take my statistics, cause smth gone wrong");
+                        }
+                        resolve(dayStatistics);
+                    }
+                };
+                xhr.send();
+            })
+        },
+		
+		uploadMenu: function (file) {
             return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/admin/downloadMenu');
@@ -113,5 +154,7 @@ export let queries = (function () {
                 xhr.send(file);
             });
     }
+
     }
-}) ();
+})();
+        

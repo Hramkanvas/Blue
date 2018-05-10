@@ -189,6 +189,7 @@ function addUser(username, FIO) {
             next: new Array()
         }
     });
-
-    return newUser.save();
+    newUser.save(function (err) {
+        if (err) throw err;
+    });
 };
