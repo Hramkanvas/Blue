@@ -89,8 +89,9 @@ export let queries = (function () {
             return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/admin/downloadMenu');
-                xhr.setRequestHeader('content-type', 'application/json');
-
+                xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
+                //xhr.setRequestHeader("Content-Length", 741);  
+ 
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState !== 4) {
                         return;
@@ -107,9 +108,10 @@ export let queries = (function () {
                         }
                         //resolve(balance);
                     }
-    }
-    xhr.send(JSON.stringify({ data: file }));
-});
+                }
+                //var blob = new Blob([file], {type: 'text/plain'}); 
+                xhr.send(file);
+            });
     }
     }
 }) ();

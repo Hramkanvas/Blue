@@ -47,7 +47,7 @@ export let pieDragAndDrop = (function () {
         <button id = "btUpload"> Загрузить файл </button>
         `;
 
-    class UpBalanceClass extends HTMLElement {
+    class DragAndDropClass extends HTMLElement {
         constructor() {
             super();
             this.attachShadow({ mode: 'open' }).innerHTML = templateT;
@@ -119,5 +119,5 @@ export let pieDragAndDrop = (function () {
             this.dragNDropeZone.removeEventListener('dragover');
         }
     }
-    customElements.define('pie-drag-and-drop', UpBalanceClass);
+    customElements.define('pie-drag-and-drop', DragAndDropClass);
 }());
