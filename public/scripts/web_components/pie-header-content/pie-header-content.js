@@ -1,4 +1,4 @@
-(function goooo() {
+export let pieHeaderContent = (function () {
 
     let userInfo = {
         name: "Алексей",
