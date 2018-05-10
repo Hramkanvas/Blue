@@ -1,4 +1,4 @@
-export let pieHeaderContent = (function () {
+(function () {
 
     let userInfo = {
         name: "Алексей",
@@ -7,9 +7,22 @@ export let pieHeaderContent = (function () {
 
     let template = `
         <style>
-        
+     
         a {
             text-decoration: none;
+        }
+        
+        .header-content {
+            position: relative;
+            top: 0px;
+            display: flex;
+            background-color: var(--white-grey);
+            z-index: 2;
+            align-items: center;
+            justify-content: space-around;
+            color: var(--grey-dark);
+            box-shadow: rgba(165, 164, 164, 0.45) 0px 4px 8px;
+            padding: 10px 0px;
         }
 
         .logo {
@@ -49,27 +62,27 @@ export let pieHeaderContent = (function () {
         }
 
         </style>
-
-        <div class="logo">
-            <img src="./img/logoExadel.png" alt="logoExadel">
-        </div>
-
-        <div class="userInfo">
-            <span class="userInfoBalans">
-                Баланс:
-                <b>${userInfo.balance}</b> руб.
-            </span>
-            <span class="userInfoName">
-                ${userInfo.name}
-            </span>
-            <span class="userInfoButton">
-                <a href="#">Выход</a>
-            </span>
+        <div class="header-content">
+            <div class="logo">
+                <img src="img/logoExadel.png" alt="logoExadel">
+            </div>
+            <div class="userInfo">
+                <span class="userInfoBalans">
+                    Баланс:
+                    <b>${userInfo.balance}</b> руб.
+                </span>
+                <span class="userInfoName">
+                    ${userInfo.name}
+                </span>
+                <span class="userInfoButton">
+                    <a href="">Выход</a>
+                </span>
+            </div>
         </div>
     `;
 
     class HeaderContent extends HTMLElement {
-       
+
         constructor() {
             super();
             this.attachShadow({ mode: 'open' }).innerHTML = template;
@@ -91,7 +104,7 @@ export let pieHeaderContent = (function () {
 
     }
 
-    customElements.define('pie-header-content', HeaderContent);
+    customElements.define('header-content', HeaderContent);
 
 })();
 
