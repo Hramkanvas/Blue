@@ -51,7 +51,7 @@ export let pieHeaderContent = (function () {
         </style>
 
         <div class="logo">
-            <img src="../img/logoExadel.png" alt="logoExadel">
+            <img src="./img/logoExadel.png" alt="logoExadel">
         </div>
 
         <div class="userInfo">
@@ -91,7 +91,7 @@ export let pieHeaderContent = (function () {
 
     }
 
-    customElements.define('header-content', HeaderContent);
+    customElements.define('pie-header-content', HeaderContent);
 
 })();
 
