@@ -1,4 +1,4 @@
-export let ordersGeneralComponent = (function () {
+export let upBalanceGeneralComponent = (function () {
 
     let template = `
     <style>
@@ -23,13 +23,11 @@ export let ordersGeneralComponent = (function () {
     </style>
     
     <div id="menu" class="tabContent">
-        <pie-table-orders></pie-table-orders>
-        <pie-statistics-day></pie-statistics-day>
-        <pie-make-order></pie-make-order>
+        <pie-up-balance></pie-up-balance>
     </div>
     `;
 
-    class OrdersGeneralClass extends HTMLElement {
+    class UpBalanceGeneralClass extends HTMLElement {
         constructor() {
             super();
             this.attachShadow({mode: 'open'}).innerHTML = template;
@@ -49,9 +47,8 @@ export let ordersGeneralComponent = (function () {
                     this.tabContent.classList.remove('active');
                 }
             }
-
         }
     }
 
-    customElements.define('pie-orders-general', OrdersGeneralClass);
+    customElements.define('pie-upbalance-general', UpBalanceGeneralClass);
 }());
