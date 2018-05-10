@@ -28,7 +28,7 @@ router.get('/getDayOrders', (req, res) => {
         .catch(err => console.log(err));
 });
 
-router.post('/downloadMenu', (req, res) => {
+router.post('/uploaddMenu', (req, res) => {
     const buffer = [];
     
     req.on('data', (chunk) => {
