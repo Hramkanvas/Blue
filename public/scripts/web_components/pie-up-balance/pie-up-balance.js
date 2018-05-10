@@ -1,6 +1,5 @@
 import { queries } from "../../queries.js";
 import {pieError} from "../pie_error/pie-error.js";
-
 export let pieUpBalance = (function () {
     let templateT = `
         <style>
@@ -108,6 +107,7 @@ export let pieUpBalance = (function () {
         </div>
     </div>`;
 
+
     class UpBalanceClass extends HTMLElement {
         constructor() {
             super();
@@ -130,9 +130,7 @@ export let pieUpBalance = (function () {
             this.currentUser = {}; 
 
             queries.getUsers().then(this.saveUsers, function(reason) {
-                
             });
-          
         }
 
         saveUsers(users){

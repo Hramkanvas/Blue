@@ -1,7 +1,8 @@
+
+
 export let pieTabs = (function () {
     let template = `
-<style>
-
+		<style>
 p {
     font-size: 16px;
 }
