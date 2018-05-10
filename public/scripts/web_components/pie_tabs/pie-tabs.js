@@ -50,8 +50,8 @@ body {
     <div><a href="#" id="ordersRef"      class="tabMenuItem">Заказы</a> </div>
 </div>
 <pie-menu-general tabState="activeTab" id="pieMenuGeneral"></pie-menu-general>
-<pie-up-balance tabState="nonactiveTab" id="pieUpBalance"></pie-up-balance>
-<pie-statistics-day tabState="nonactiveTab" id="pieStatisticsDay"></pie-statistics-day>
+<pie-upbalance-general tabState="nonactiveTab" id="pieUpBalance"></pie-upbalance-general>
+<pie-orders-general tabState="nonactiveTab" id="pieStatisticsDay"></pie-orders-general>
 `;
 
 class TabsClass extends HTMLElement {
