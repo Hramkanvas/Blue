@@ -1,7 +1,7 @@
 let router = require('express').Router();
 const menu = require('../utils/MenuUtils');
-let methods = require('../utils/QueryMethods');
 let users = require('../utils/UsersUtils');
+let orders = require('../utils/OrderUtils');
 
 
 router.get('/getMenu', (req, res) => {
@@ -17,6 +17,12 @@ router.put('/upBalance', (req, res) => {
 
 router.get('/getUsers', (req, res) => {
     users.getUsers()
+        .then(answer => res.send(answer))
+        .catch(err => console.log(err));
+});
+
+router.get('/getOrders', (req, res) => {
+    orders.getDayOrders(req.query.data)
         .then(answer => res.send(answer))
         .catch(err => console.log(err));
 });
