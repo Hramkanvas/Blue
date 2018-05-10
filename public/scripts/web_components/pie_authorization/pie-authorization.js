@@ -1,27 +1,28 @@
-import {queries} from "./queries.js";
+export let pieAuthorization = (function () {
+    import {queries} from "./queries.js";
 
-let template = `
+    let template = `
     <style>
-
+    
     p {
         font-size: 16px;
     }
-
+      
     h1, h2, h3, h4, h5, h6, th {
         color: grey
     }
-
+    
     body {
         display: flex;
         width: 100%;
         margin: 0 auto;
         min-width: 320px;
-        flex-direction: column;
+        flex-direction: column;             
         min-height: 100vh;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         color: #7a7a7a;
     }
-
+    
     .authorizationBlock {
         --fon: red;
         background: #ebebeb;
@@ -32,24 +33,24 @@ let template = `
         height: max-content;
         margin: 10% auto;
     }
-
+    
     .bottomStuff h3 {
         font-size: 25px;
         text-align: center;
         margin-bottom: 25px;
     }
-
+    
     .bottomStuff p {
         margin: 0;
         color: #444444;
         font-size: 100%;
         font-weight: bold;
     }
-
+    
     button:hover {
         background: #72bb53;
     }
-
+    
     button {
         display: flex;
         margin: 0 auto;
@@ -61,18 +62,18 @@ let template = `
         background: #3d8af7;
         padding: 5px 10px;
     }
-
+    
     input {
         width: 100%;
         display: block;
         border: none;
-
+        
         outline: none;
         padding: 10px;
         margin-bottom: 20px;
         background-color: white;
     }
-
+    
     label {
         color: grey;
         font-size: 14px;
@@ -89,9 +90,9 @@ let template = `
         height: max-content;
         margin: 10% auto;
     }
-
+    
     </style>
-
+    
     <div class="authorizationBlock" id="authorizationBlock">
         <div class="bottomStuff">
             <h3>Авторизация</h3>
@@ -106,36 +107,37 @@ let template = `
     </div>
     `;
 
-class AuthorizationClass extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({mode: 'open'}).innerHTML = template;
-        this.authBtn = this.shadowRoot.getElementById('authorizeBt');
-        this.authorize = this.authorize.bind(this);
-        this.authorizationBlock = this.shadowRoot.getElementById('authorizationBlock');
-        this.authorizeForm = this.shadowRoot.getElementById('authorizeForm');
+    class AuthorizationClass extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({mode: 'open'}).innerHTML = template;
+            this.authBtn = this.shadowRoot.getElementById('authorizeBt');
+            this.authorize = this.authorize.bind(this);
+            this.authorizationBlock = this.shadowRoot.getElementById('authorizationBlock');
+            this.authorizeForm = this.shadowRoot.getElementById('authorizeForm');
+        }
+
+        connectedCallback() {
+            this.authBtn.addEventListener("click", this.authorize)
+        }
+
+        disconnectedCallback() {
+            this.authBtn.removeEventListener("click", this.authorize)
+        }
+
+        authorize(event) {
+            let login = this.authorizeForm.elements.login.value;
+            let password = this.authorizeForm.elements.password.value;
+            queries.authorize(login, password).then(
+                function (user) {
+                    window.location.assign("../admin.html");
+                }.bind(this),
+                function (error) {
+                    this.authorizationBlock.className = "authorizationBlockError";
+                }.bind(this)
+            );
+        }
     }
 
-    connectedCallback() {
-        this.authBtn.addEventListener("click", this.authorize)
-    }
-
-    disconnectedCallback() {
-        this.authBtn.removeEventListener("click", this.authorize)
-    }
-
-    authorize(event) {
-        let login = this.authorizeForm.elements.login.value;
-        let password = this.authorizeForm.elements.password.value;
-        queries.authorize(login, password).then(
-            function (user) {
-                window.location.assign("../admin.html");
-            }.bind(this),
-            function (error) {
-                this.authorizationBlock.className = "authorizationBlockError";
-            }.bind(this)
-        );
-    }
-}
-
-customElements.define('pie-authorization', AuthorizationClass);
+    customElements.define('pie-authorization', AuthorizationClass);
+}());
