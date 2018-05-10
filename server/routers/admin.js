@@ -21,8 +21,9 @@ router.get('/getUsers', (req, res) => {
         .catch(err => console.log(err));
 });
 
-router.get('/getOrders', (req, res) => {
-    orders.getDayOrders(req.query.data)
+router.get('/getDayOrders', (req, res) => {
+    let date = req.query.date || new Date;
+    orders.getDayOrders(date)
         .then(answer => res.send(answer))
         .catch(err => console.log(err));
 });
