@@ -1,5 +1,5 @@
 import { queries } from "../../queries.js";
-
+import {pieError} from "../pie_error/pie-error.js";
 export let pieUpBalance = (function () {
     let templateT = `
         <style>
@@ -130,9 +130,7 @@ export let pieUpBalance = (function () {
             this.currentUser = {}; 
 
             queries.getUsers().then(this.saveUsers, function(reason) {
-               // отказ
-             });
-          
+            });
         }
 
         saveUsers(users){
@@ -171,16 +169,14 @@ export let pieUpBalance = (function () {
                         var index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
                         this.users[index] = value;
                     }.bind(this), function (reason) {
-                        //компонент с ошибкой
-                        alert("Problems.");
+                        pieError.showError(reason);
                     });
                 } else {
-                    //компонент с ошибкой
-                    alert("неправильный ввод. Должен выводиться компонент с ошибкой, но его пока нет");
+                    pieError.showError("Неправильный ввод")
                 }
             }
             else {
-                alert("Пользователь не выбран");
+                pieError.showError("Пользователь не выбран")
             }
 
         }

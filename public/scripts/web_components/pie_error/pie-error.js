@@ -1,5 +1,6 @@
 
 export let pieError = (function () {
+
     let templateT = `
         <style>
         #error{
@@ -80,4 +81,12 @@ export let pieError = (function () {
         }
     }
     customElements.define('pie-error', ErrorClass);
+
+    return {
+        showError: function(message){
+            var node = document.createElement("pie-error");
+            node.message =  message;
+            document.body.appendChild(node);
+        }
+    }
 }());

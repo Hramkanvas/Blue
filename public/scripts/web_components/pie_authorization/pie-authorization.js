@@ -1,5 +1,5 @@
+import {queries} from "../../queries.js";
 export let pieAuthorization = (function () {
-    import {queries} from "./queries.js";
 
     let template = `
     <style>
@@ -130,7 +130,7 @@ export let pieAuthorization = (function () {
             let password = this.authorizeForm.elements.password.value;
             queries.authorize(login, password).then(
                 function (user) {
-                    window.location.assign("../admin.html");
+                   window.location.assign("./admin.html");
                 }.bind(this),
                 function (error) {
                     this.authorizationBlock.className = "authorizationBlockError";

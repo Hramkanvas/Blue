@@ -3,19 +3,23 @@ export let queries = (function () {
         authorize: function (login, password) {
             return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/login');
+                xhr.open('POST', '/authorization/login');
                 xhr.setRequestHeader('content-type', 'application/json');
                 var value = { login: login, password: password };
-
+                
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var user;
-                        try {
-                            user = JSON.parse(xhr.response);
-                        } catch (err) {
-                            user = undefined;
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status !== 200){
+                            reject(xhr.status);
+                        } else {
+                            var user;
+                            try {
+                                user = JSON.parse(xhr.response);
+                            } catch (err) {
+                                user = undefined;
+                            }
+                            resolve(user);
                         }
-                        resolve(user);
                     }
                 }
                 xhr.send(JSON.stringify(value));
@@ -44,7 +48,7 @@ export let queries = (function () {
         },
 
         upBalance: function (username, sum) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('PUT', '/admin/upBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
@@ -84,13 +88,12 @@ export let queries = (function () {
                 xhr.send(JSON.stringify({ id: id }));
             });
         },
-]
+
         getUsers:function(){
             return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('GET', '/admin/getUsers');
                 xhr.setRequestHeader('content-type', 'application/json');
-
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                         var users;
@@ -125,14 +128,14 @@ export let queries = (function () {
                 xhr.send();
             })
         },
-		
-		uploadMenu: function (file) {
+
+        uploadMenu: function (file) {
             return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/admin/downloadMenu');
                 xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
                 //xhr.setRequestHeader("Content-Length", 741);  
- 
+
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState !== 4) {
                         return;
@@ -145,7 +148,7 @@ export let queries = (function () {
                         try {
                             //balance = JSON.parse(xhr.response);
                         } catch (err) {
-                            
+
                         }
                         //resolve(balance);
                     }
@@ -153,8 +156,8 @@ export let queries = (function () {
                 //var blob = new Blob([file], {type: 'text/plain'}); 
                 xhr.send(file);
             });
-    }
+        }
 
     }
 })();
-        
+

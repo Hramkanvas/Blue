@@ -8,24 +8,12 @@
     <link rel="shortcut icon" href="img/exadel_icon.ico">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
-
+<script type="module" src="scripts/main.js"></script>
 <body>
     <main>
         <div class="container">
-            <div class="authorizationBlock" id="authorizationBlock">
-                <div class="bottomStuff">
-                    <h3>Авторизация</h3>
-                </div>
-                <form name="authorize">
-                    <label for="username">ИМЯ:</label>
-                    <input name="login" type="text" id="username">
-                    <label for="password">ПАРОЛЬ:</label>
-                    <input name="password" type="password" id="password">
-                    <button id="authorize" type="button">Готово</button>
-                </form>
-            </div>
+            <pie-authorization></pie-authorization>
         </div>
     </main>
 </body>
-<script type="module" src="scripts/main.js"></script>
 </html>
