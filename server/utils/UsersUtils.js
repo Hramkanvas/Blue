@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const Users = require('../models/Users');
 const weekMillisec = 1000 * 60 * 60 * 24 * 7;
 
@@ -9,80 +10,60 @@ module.exports = {
     deleteOrderFromHistory,
     getBalance,
     getOrders,
-    getFIO
+    getFIO,
+    getUsers
 }
 
-function addOrderToHistory(username, date) {
-
-    return Users.findOne({username})
+function addOrderToHistory(username, receved_date) {
+    return swapWeekAtDB(username)
         .then((user) => {
-
-            swapWeekAtDB(username)
-
-            let currentDate = new Date();
-
-            let deadline = new Date(date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                10);
-
-            if (currentDate > deadline) {
+            if (!user) {
+                return false;
+            }
+            let date = new Date(receved_date);
+            if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
                 return false;
             }
 
-            date.setHours(0, 0, 0, 0);
-            switch (Math.floor((date - user.history.previousMonday) / (weekMillisec))) {
+            date.setHours(3, 0, 0, 0);
+            switch (getWeekKey(date, user.history.previousMonday)) {
                 case 1:
                     if (user.history.current.indexOf(date.toString()) != -1)
-                        return false;
+                        return true;
 
                     user.history.current.push(date);
-                    user.history.current.sort(function (a, b) {
-                        return b - a;
-                    });
+                    user.history.current.sort((a, b) => b - a);
                     break;
                 case 2:
                     if (user.history.next.indexOf(date.toString()) != -1)
-                        return false;
+                        return true;
                     user.history.next.push(date);
-                    user.history.next.sort(function (a, b) {
-                        return b - a;
-                    });
+                    user.history.next.sort((a, b) => b - a);
                     break;
                 default:
                     return false;
             }
 
-            return user.save(function (err) {
-                if (err) return err;
-                return true;
-            });
-        })
+            return user.save();
+        });
 };
 
-function deleteOrderFromHistory(username, date) {
 
-    return Users.findOne({username})
+function deleteOrderFromHistory(username, receved_date) {
+    return swapWeekAtDB(username)
         .then((user) => {
-
-            swapWeekAtDB(username);
-
-            let currentDate = new Date();
-
-            let deadline = new Date(date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                10);
-
-            if (currentDate > deadline) {
+            if (!user) {
+                return false;
+            }
+            let date = new Date(receved_date);
+            if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
                 return false;
             }
 
-            date.setHours(0, 0, 0, 0);
-            switch (Math.floor((date - user.history.previousMonday) / (weekMillisec))) {
+            date.setHours(3, 0, 0, 0);
+            switch (getWeekKey(date, user.history.previousMonday)) {
                 case 1:
                     let i = user.history.current.indexOf(date.toString());
-
                     if (i != -1)
                         user.history.current.splice(i, 1);
                     else
@@ -99,92 +80,93 @@ function deleteOrderFromHistory(username, date) {
                     return false;
             }
 
-            return user.save(function (err) {
-                if (err) return err;
-                return true;
-            });
-        })
+            return user.save();
+        });
 };
 
-function getOrders(username, date) {
-
-    return Users.findOne({username})
+function getOrders(username, key = 1) {//ключ: 0 - предыдущая неделя, 1 - текущая, 2 - следующая. Default - 1
+    return swapWeekAtDB(username)
         .then((user) => {
-
-            switch (Math.floor((date - user.history.previousMonday) / (weekMillisec))) {
+            if (!user) {
+                return false;
+            }
+            switch (key) {
                 case 0:
                     return user.history.previous;
-                    break;
                 case 1:
                     return user.history.current;
-                    break;
                 case 2:
                     return user.history.next;
-                    break;
                 default:
                     return false;
             }
-        })
+        });
 };
 
-function getFIO(username) {
+function getUsers() {
+    return Users.find({}, {username: 1, FIO: 1, balance: 1});
+}
 
+function getFIO(username) {
     return Users.findOne({username})
         .then((user) => {
-            return user.FIO.toString();
-        })
+            return (user ? user.FIO : false);
+        });
 };
 
 function getBalance(username) {
     return Users.findOne({username})
         .then((user) => {
             return user.balance;
-        })
+        });
 };
 
 function swapWeekAtDB(username) {
-    let currentDate = new Date();
 
-    let prMonday = new Date(currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate() - currentDate.getDay() - 6);
+    let prMonday = new Date(moment().day(-6));
+    prMonday.setHours(3, 0, 0, 0);
 
-    Users.findOne({username})
+    return Users.findOne({username})
         .then((user) => {
-
-            switch (Math.floor((prMonday - user.history.previousMonday) / (weekMillisec))) {
+            if (!user) {
+                return false;
+            }
+            //console.log(getWeekKey(prMonday, user.history.previousMonday));
+            switch (getWeekKey(prMonday, user.history.previousMonday)) {
                 case 0:
-                    return true;
-                    break;
+                    return user;
                 case 1:
                     user.history.previousMonday = prMonday;
                     user.history.previous = user.history.current;
                     user.history.current = user.history.next;
-                    user.history.next = new Array();
+                    user.history.next = [];
                     break;
                 case 2:
                     user.history.previousMonday = prMonday;
                     user.history.previous = user.history.next;
-                    user.history.current = new Array();
-                    user.history.next = new Array();
+                    user.history.current = [];
+                    user.history.next = [];
                     break;
                 default:
-                    user.history.previous = new Array();
-                    user.history.current = new Array();
-                    user.history.next = new Array();
+                    user.history.previous = [];
+                    user.history.current = [];
+                    user.history.next = [];
             }
 
-            return user.save(function (err) {
-                if (err) return err;
-                return true;
-            });
-        })
+            return user.save();
+
+        });
 };
+
+function getWeekKey(date, prMonday) {
+    return ((date - prMonday > 0) ? Math.floor((date - prMonday) / (weekMillisec)) : Math.ceil((date - prMonday) / (weekMillisec)));
+};
+
 
 function upBalance(username, amount) {
     return Users.findOne({username})
         .then((user) => {
-            if(user) {
+            if (user) {
                 user.balance += +amount;
                 return user.save();
             }
@@ -194,11 +176,8 @@ function upBalance(username, amount) {
 };
 
 function addUser(username, FIO) {
-    let currentDate = new Date();
-
-    let prMonday = new Date(currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate() - currentDate.getDay() - 6);
+    let prMonday = new Date(moment().day(-6));
+    prMonday.setHours(3, 0, 0, 0);
     var newUser = new Users({
         username,
         FIO,
@@ -210,7 +189,6 @@ function addUser(username, FIO) {
             next: new Array()
         }
     });
-
     newUser.save(function (err) {
         if (err) throw err;
     });

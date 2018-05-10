@@ -1,7 +1,7 @@
 export let queries = (function () {
     return {
         authorize: function (login, password) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/login');
                 xhr.setRequestHeader('content-type', 'application/json');
@@ -23,9 +23,9 @@ export let queries = (function () {
         },
 
         getMenu: function () {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/getMenu');
+                xhr.open('GET', '/admin/getMenu');
                 xhr.setRequestHeader('content-type', 'application/json');
 
                 xhr.onreadystatechange = function () {
@@ -43,10 +43,10 @@ export let queries = (function () {
             });
         },
 
-        upBalance: function (id, sum) {
+        upBalance: function (username, sum) {
             return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('PUT', '/upBalance');
+                xhr.open('PUT', '/admin/upBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
 
                 xhr.onreadystatechange = function () {
@@ -60,12 +60,12 @@ export let queries = (function () {
                         resolve(user);
                     }
                 }
-                xhr.send(JSON.stringify({id : id, sum: sum}));
+                xhr.send(JSON.stringify({username : username, amount: sum}));
             });
         },
 
-        getTotalBalance: function(id){
-            return new Promise(function(resolve, reject) {
+        getTotalBalance: function (id) {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/getTotalBalance');
                 xhr.setRequestHeader('content-type', 'application/json');
@@ -81,13 +81,31 @@ export let queries = (function () {
                         resolve(balance);
                     }
                 }
-                xhr.send(JSON.stringify({id : id}));
+                xhr.send(JSON.stringify({ id: id }));
+            });
+        },
+]
+        getUsers:function(){
+            return new Promise(function(resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/admin/getUsers');
+                xhr.setRequestHeader('content-type', 'application/json');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        var users;
+                        try {
+                            users = JSON.parse(xhr.response);
+                        } catch (err) {
+                            users = undefined;
+                        }
+                        resolve(users);
+                    }
+                }
+                xhr.send();
             });
         },
 
-        downloadMenu: function (){
-
-        },
         getTodayOrdersStatistics: function (date) {
             return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
@@ -106,7 +124,37 @@ export let queries = (function () {
                 };
                 xhr.send();
             })
-        }
+        },
+		
+		uploadMenu: function (file) {
+            return new Promise(function (resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/downloadMenu');
+                xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
+                //xhr.setRequestHeader("Content-Length", 741);  
+ 
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState !== 4) {
+                        return;
+                    }
+                    if (xhr.status !== 200) {
+                        console.log(xhr.status + ': ' + xhr.statusText);
+                    }
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        console.log("DONE");
+                        try {
+                            //balance = JSON.parse(xhr.response);
+                        } catch (err) {
+                            
+                        }
+                        //resolve(balance);
+                    }
+                }
+                //var blob = new Blob([file], {type: 'text/plain'}); 
+                xhr.send(file);
+            });
+    }
 
     }
 })();
+        
