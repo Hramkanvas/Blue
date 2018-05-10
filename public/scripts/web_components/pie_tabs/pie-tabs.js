@@ -50,9 +50,9 @@ body {
     <div><a href="#" id="upBalanceRef"   class="tabMenuItem">Пополнить баланс</a> </div>
     <div><a href="#" id="ordersRef"      class="tabMenuItem">Заказы</a> </div>
 </div>
-<pie-menu-general tabState="activeTab" id="pieMenuGeneral"></pie-menu-general>
-<pie-upbalance-general tabState="nonactiveTab" id="pieUpBalance"></pie-upbalance-general>
-<pie-orders-general tabState="nonactiveTab" id="pieStatisticsDay"></pie-orders-general>
+<pie-menu-general tabstate="activeTab" id="pieMenuGeneral"></pie-menu-general>
+<pie-upbalance-general tabstate="nonactiveTab" id="pieUpBalance"></pie-upbalance-general>
+<pie-orders-general tabstate="nonactiveTab" id="pieStatisticsDay"></pie-orders-general>
 `;
 
 class TabsClass extends HTMLElement {
@@ -87,8 +87,8 @@ class TabsClass extends HTMLElement {
             case "menuRef":
                 this.activeTabName.classList.remove("active");
                 this.menuRef.classList.add("active");
-                this.activeComponent.setAttribute("tabState","nonactiveTab");
-                this.pieMenuGeneral.setAttribute("tabState","activeTab");
+                this.activeComponent.setAttribute("tabstate","nonactiveTab");
+                this.pieMenuGeneral.setAttribute("tabstate","activeTab");
                 this.activeTabName = this.menuRef;
                 this.activeComponent = this.pieMenuGeneral;
                 break;
@@ -96,8 +96,8 @@ class TabsClass extends HTMLElement {
             case "upBalanceRef":
                 this.activeTabName.classList.remove("active");
                 this.upBalanceRef.classList.add("active");
-                this.activeComponent.setAttribute("tabState","nonactiveTab");
-                this.pieUpBalance.setAttribute("tabState","activeTab");
+                this.activeComponent.setAttribute("tabstate","nonactiveTab");
+                this.pieUpBalance.setAttribute("tabstate","activeTab");
                 this.activeTabName = this.upBalanceRef;
                 this.activeComponent = this.pieUpBalance;
                 break;
@@ -105,8 +105,8 @@ class TabsClass extends HTMLElement {
             case "ordersRef":
                 this.activeTabName.classList.remove("active");
                 this.ordersRef.classList.add("active");
-                this.activeComponent.setAttribute("tabState","nonactiveTab");
-                this.pieStatisticsDay.setAttribute("tabState","activeTab");
+                this.activeComponent.setAttribute("tabstate","nonactiveTab");
+                this.pieStatisticsDay.setAttribute("tabstate","activeTab");
                 this.activeTabName = this.ordersRef;
                 this.activeComponent = this.pieStatisticsDay;
                 break;
