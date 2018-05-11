@@ -1,4 +1,5 @@
 import { queries } from "../../queries.js";
+import {pieError} from "../pie_error/pie-error.js";
 
 export let pieTableOrders = (function () {
     let statisticsDay = {
@@ -169,7 +170,23 @@ export let pieTableOrders = (function () {
             this.inputZone = this.shadowRoot.getElementById('inputZone');
             this.ordersTable = this.shadowRoot.getElementById('ordersTable');
             this.loadOrders = this.loadOrders.bind(this);
+            this.showAllUsers = this.showAllUsers.bind(this);
             this.loadOrders();
+        }
+
+        showAllUsers(){
+            this.ordersTable.innerHTML = "";
+            let template2 = ``;
+            statisticsDay.personalStatistics.forEach(function (item) {
+                template2 += `
+                <tr class="ordersTableHeader">
+                    <th>${item.name}</th>
+                    <th>${item.listOfOrders}</th>
+                    <th>${item.smthElse}</th>
+                </tr>
+                `;
+            }.bind(this))
+            this.ordersTable.innerHTML = template2;
         }
 
         loadOrders() {
@@ -184,29 +201,21 @@ export let pieTableOrders = (function () {
         connectedCallback() {
             this.inputZone.addEventListener('input', this.getPerson)
             let template1 = ``;
-            let template2 = ``;
             statisticsDay.personalStatistics.forEach(function (item) {
                 template1 += `
                     <option value=${item.name}></option>
                 `;
-                template2 += `
-                <tr class="ordersTableHeader">
-                    <th>${item.name}</th>
-                    <th>${item.listOfOrders}</th>
-                    <th>${item.smthElse}</th>
-                </tr>
-                `;
             }.bind(this))
             this.nameList.innerHTML = template1;
-            this.ordersTable.innerHTML = template2;
+            this.showAllUsers();
         }
 
         disconnectedCallback() {
             this.inputZone.removeEventListener('', getPerson);
         }
         getPerson(event) {
-            let iNeedThisPerson = statisticsDay.personalStatistics.filter(item => item.name.match(new RegExp(`^${this.inputZone.value}.*`)));
-            if (iNeedThisPerson !== undefined){
+            let iNeedThisPerson = statisticsDay.personalStatistics.filter(item => item.name.toLowerCase().match(new RegExp(`^${this.inputZone.value.toLowerCase()}.*`)));
+            if (iNeedThisPerson.length !== 0){
                 this.ordersTable.innerHTML = "";
                 var appendingRes = "";
                 iNeedThisPerson.forEach(function(item, i, arr) {
@@ -219,8 +228,11 @@ export let pieTableOrders = (function () {
                     appendingRes += templateOrder;
                   }.bind(this));
                 this.ordersTable.innerHTML = appendingRes;
+            } else {
+                pieError.showError("Такой пользователь не найден.");
+                this.inputZone.value = "";
+                this.showAllUsers();
             }
-            
         }
 
     }
