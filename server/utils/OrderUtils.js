@@ -16,8 +16,8 @@ module.exports = {
 function uploadOrder(date, username, uploadOrder) {
 
     if (validateOrder(uploadOrder, date)) {
-        let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
-        return Order.findOne({Date: resetedDate})
+        let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+        return Order.findOne({ Date: resetedDate })
             .then((OrderSchema) => {
 
                 if (OrderSchema && OrderSchema.Orders) {
@@ -27,7 +27,7 @@ function uploadOrder(date, username, uploadOrder) {
                     OrderSchema.Orders[username] = uploadOrder;
                     const orders = OrderSchema.Orders;
 
-                    return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
+                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
 
                 }
 
@@ -62,10 +62,10 @@ function ordersForWeek(dates, username) {
 }
 
 function validateOrder(order, dat) {
-    let now = moment().set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let now = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
     let severalDaysLater = moment(now).day(14);
 
-    let date = moment(dat).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let date = moment(dat).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
     //console.log(now, severalDaysLater, date);
     if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
         return false;
@@ -76,8 +76,8 @@ function validateOrder(order, dat) {
 
 function deleteOrder(Date, username) {
     if (validateOrder(uploadOrder, Date)) {
-        let resetedDate = moment(Date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
-        return Order.findOne({Date:resetedDate})
+        let resetedDate = moment(Date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+        return Order.findOne({ Date: resetedDate })
             .then((OrderSchema) => {
                 if (OrderSchema) {
                     if (!OrderSchema.Orders[username])
@@ -90,7 +90,7 @@ function deleteOrder(Date, username) {
                         }
 
                         const orders = OrderSchema.Orders;
-                        return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
+                        return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
 
                     }
                     return false;
@@ -107,8 +107,8 @@ function deleteOrder(Date, username) {
 }
 
 function getDayOrders(date) {
-    let resetedDate = moment(Date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
-    return Order.findOne({Date: resetedDate})
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    return Order.findOne({ Date: resetedDate })
         .then(OrderSchema => {
             if (OrderSchema)
                 return OrderSchema.Orders;

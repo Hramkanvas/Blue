@@ -1,3 +1,5 @@
+import { queries } from "../../queries.js";
+
 export let pieTableOrders = (function () {
     let statisticsDay = {
         personalStatistics: [ //example of how to organize json, which comes from the server on the getStatistics request
@@ -166,10 +168,21 @@ export let pieTableOrders = (function () {
             this.nameList = this.shadowRoot.getElementById('name');
             this.inputZone = this.shadowRoot.getElementById('inputZone');
             this.ordersTable = this.shadowRoot.getElementById('ordersTable');
+            this.loadOrders = this.loadOrders.bind(this);
+            this.loadOrders();
+        }
+
+        loadOrders() {
+            queries.getDayOrders().then(function (orders) {
+                console.log(orders);
+            }.bind(this),
+            function (error) {
+                console.log(error);
+            }.bind(this));
         }
 
         connectedCallback() {
-            this.inputZone.addEventListener('', this.getPerson)//??? ????? ?????????? ??????? getPerson, ??? ?????????? ??????? ???? ??? ????? ?????, ????? ?????? ?????????? ???????
+            this.inputZone.addEventListener('input', this.getPerson)
             let template1 = ``;
             let template2 = ``;
             statisticsDay.personalStatistics.forEach(function (item) {
@@ -189,18 +202,25 @@ export let pieTableOrders = (function () {
         }
 
         disconnectedCallback() {
-            this.inputZone.removeEventListener('', getPerson);//??? ??????? ???? ????-?? ??????????? ?????
+            this.inputZone.removeEventListener('', getPerson);
         }
         getPerson(event) {
-            let iNeedThisPerson = statisticsDay.personalStatistics.find(item => item.name === input.value);// ??? ??? ??? ??? ???????
-            let template2 = `
+            let iNeedThisPerson = statisticsDay.personalStatistics.filter(item => item.name.match(new RegExp(`^${this.inputZone.value}.*`)));
+            if (iNeedThisPerson !== undefined){
+                this.ordersTable.innerHTML = "";
+                var appendingRes = "";
+                iNeedThisPerson.forEach(function(item, i, arr) {
+                    let templateOrder = `
                 <tr class="ordersTableHeader">
-                    <th>${iNeedThisPerson.name}</th>
-                    <th>${iNeedThisPerson.listOfOrders}</th>
-                    <th>${iNeedThisPerson.smthElse}</th>
-                </tr>
-                `
-            this.ordersTable.innerHTML = template2;
+                    <th>${item.name}</th>
+                    <th>${item.listOfOrders}</th>
+                    <th>${item.smthElse}</th>
+                </tr> `
+                    appendingRes += templateOrder;
+                  }.bind(this));
+                this.ordersTable.innerHTML = appendingRes;
+            }
+            
         }
 
     }

@@ -162,7 +162,6 @@ export let queries = (function () {
             return new Promise(function(resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('GET', '/admin/getDayOrders');
-                xhr.setRequestHeader('content-type', 'application/json');
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                         var orders;
