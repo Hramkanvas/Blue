@@ -2,8 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-users.addUser("2", "Nikiforov");
-
 const app = express();
 app.use('/static', express.static('public'));
 app.use(bodyParser.json());
