@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');
-;
-
 const moment = require('moment');
 
 module.exports = {

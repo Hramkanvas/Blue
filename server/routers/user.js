@@ -1,10 +1,11 @@
-let router = require('express').Router();
+const router = require('express').Router();
 const order = require('../utils/OrderUtils');
-let methods = require('../utils/QueryMethods');
-let users = require('../utils/UsersUtils');
-
+const methods = require('../utils/QueryMethods');
+const users = require('../utils/UsersUtils');
 
 router.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
+   console.log("!!!!");
+
     //структура объекта uploadOrder
     /*
      uploadOrder: {
@@ -15,7 +16,6 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
                     count: Number
                 }
             },
-        isAvailable: true  //доступен ли заказ для изменения
     }*/
     Promise.all([ order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder),
                   users.addOrderToHistory(req.body.username, new Date(req.body.date))])
