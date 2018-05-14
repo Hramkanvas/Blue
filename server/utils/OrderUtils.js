@@ -18,6 +18,8 @@ function uploadOrder(date, username, uploadOrder) {
 
         let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
+        uploadOrder.price = calculateOrderPrice(uploadOrder);
+        
         return Order.findOne({ Date: resetedDate })
             .then((OrderSchema) => {
 
@@ -135,6 +137,13 @@ function getOrderPrice(date, username) {
     return getUserOrders(date, username).then((order) => {
         return order.price;
     })
+}
+
+function calculateOrderPrice(order) {
+    let price = 0;
+    for (dish of order.info) {
+        price += dish.cost * dish.count;
+    }
 }
 
 function getTotal(date) {
