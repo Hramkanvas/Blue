@@ -1,8 +1,7 @@
-let router = require('express').Router();
+const router = require('express').Router();
 const menu = require('../utils/MenuUtils');
-let users = require('../utils/UsersUtils');
-let orders = require('../utils/OrderUtils');
-
+const users = require('../utils/UsersUtils');
+const orders = require('../utils/OrderUtils');
 
 router.get('/getMenu', (req, res) => {
     menu.findMenu(new Date(2018, 6, 20))
@@ -24,11 +23,14 @@ router.get('/getUsers', (req, res) => {
 router.get('/getDayOrders', (req, res) => {
     let date = req.query.date || new Date;
     orders.getDayOrders(date)
-        .then(answer => res.send(answer))
+        .then(answer => {
+            answer.FIO = users.getFIO(answer.username);
+            res.send(answer)
+        })
         .catch(err => console.log(err));
 });
 
-router.post('/downloadMenu', (req, res) => {
+router.post('/uploaddMenu', (req, res) => {
     const buffer = [];
     
     req.on('data', (chunk) => {
