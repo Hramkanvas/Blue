@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 const Menu = require('../models/Menu');
-
 const moment = require('moment');
 
 module.exports = {
-    findMenu,
+    findMenu,    
     addMenu,
 };
 
 function findMenu(fromDate) {
-    return Menu.findOne({ fromDate })
+    let resetedDate = moment(fromDate).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    return Menu.findOne({ fromDate: resetedDate })
         .then((menu) => {
-            return menu
+            return menu;
         });
 }
 
-function addMenu(file) {
 
+function addMenu(file) {
     const menu = createMenu(file);
     if (validateMenu(menu)) {
         const menuSchema = new Menu({
@@ -28,7 +28,7 @@ function addMenu(file) {
             then((menu) => {
                 if (menu) {
                     return menu.remove()
-                        .then(() => menuSchema.save())
+                        .then(() => menuSchema.save());
                 }
                 else {
                     return Menu.find({})
