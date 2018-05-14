@@ -8,14 +8,13 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
     //структура объекта uploadOrder
     /*
      uploadOrder: {
-            price:Number,
-            info: {
-                dishName: {
-                    cost: Number,
-                    count: Number
-                }
-            },
-        isAvailable: true  //доступен ли заказ для изменения
+        price:Number,
+        info: {
+            dishName: {
+                cost: Number,
+                count: Number
+            }
+        },
     }*/
     Promise.all([ order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder),
                   users.addOrderToHistory(req.body.username, new Date(req.body.date))])
