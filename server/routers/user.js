@@ -9,13 +9,13 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
     //структура объекта uploadOrder
     /*
      uploadOrder: {
-            price:Number,
-            info: {
-                dishName: {
-                    cost: Number,
-                    count: Number
-                }
-            },
+        price:Number,
+        info: {
+            dishName: {
+                cost: Number,
+                count: Number
+            }
+        },
     }*/
     Promise.all([ order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder),
                   users.addOrderToHistory(req.body.username, new Date(req.body.date))])
@@ -62,6 +62,5 @@ router.post('/getMainPage', (req,res) => {
         });
     //еще надо добавить все три менюшки,но для этого надо переделать метод findMenu
 });
-
 
 module.exports = router;
