@@ -123,7 +123,7 @@ export let pieUpBalance = (function () {
 
             this.clickUpBalanceEvent = this.clickUpBalanceEvent.bind(this);
             this.changeCurrentUserEvent = this.changeCurrentUserEvent.bind(this);
-            this.loadUsers = this.loadUsers.bind(this);
+            //this.loadUsers = this.loadUsers.bind(this);
             this.updateUserInfo = this.updateUserInfo.bind(this);
             this.saveUsers = this.saveUsers.bind(this);
 
@@ -144,9 +144,8 @@ export let pieUpBalance = (function () {
         }
 
         changeCurrentUserEvent(event) {
-            this.currentUser = {};
-            this.currentUser.FIO = event.target.value;
-            this.currentUser = this.users.find(user => user.FIO === this.currentUser.FIO);
+            const fio = event.target.value;
+            this.currentUser = this.users.find(user => user.FIO === fio);
             if (this.currentUser !== undefined) {
                 if (this.infoBlock.style.visibility === 'hidden') {
                     this.infoBlock.style.visibility = 'visible';
@@ -162,28 +161,26 @@ export let pieUpBalance = (function () {
         clickUpBalanceEvent(event) {
             if (this.currentUser !== undefined) {
                 if (this.balanceInput.value.match(/^([0-9]+\.?[0-9]*)$/)) {
-                    var inputBalance = Number(this.balanceInput.value);
-                    queries.upBalance(this.currentUser.username, inputBalance).then(function (value) {
+                    let inputBalance = Number(this.balanceInput.value);
+                    queries.upBalance(this.currentUser.username, inputBalance).then((value)=>{
                         this.currentUser = value;
                         this.updateUserInfo();
-                        var index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
+                        let index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
                         this.users[index] = value;
-                    }.bind(this), function (reason) {
+                    }, (reason) => {
                         pieError.showError(reason);
                     });
                 } else {
-                    pieError.showError("Неправильный ввод")
+                    pieError.showError("Неправильный ввод");
                 }
+            } else {
+                pieError.showError("Пользователь не выбран");
             }
-            else {
-                pieError.showError("Пользователь не выбран")
-            }
-
         }
 
         loadUsers() {
             this.users.forEach(user => {
-                var option = document.createElement("option");
+                let option = document.createElement("option");
                 option.text = user.FIO;
                 this.dataList.appendChild(option);
             });

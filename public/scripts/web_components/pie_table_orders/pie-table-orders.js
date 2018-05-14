@@ -190,12 +190,12 @@ export let pieTableOrders = (function () {
         }
 
         loadOrders() {
-            queries.getDayOrders().then(function (orders) {
+            queries.getDayOrders().then(orders => {
                 console.log(orders);
-            }.bind(this),
-            function (error) {
+            },
+            error => {
                 console.log(error);
-            }.bind(this));
+            });
         }
 
         connectedCallback() {
@@ -217,7 +217,7 @@ export let pieTableOrders = (function () {
             let iNeedThisPerson = statisticsDay.personalStatistics.filter(item => item.name.toLowerCase().match(new RegExp(`^${this.inputZone.value.toLowerCase()}.*`)));
             if (iNeedThisPerson.length !== 0){
                 this.ordersTable.innerHTML = "";
-                var appendingRes = "";
+                let appendingRes = "";
                 iNeedThisPerson.forEach(function(item, i, arr) {
                     let templateOrder = `
                 <tr class="ordersTableHeader">

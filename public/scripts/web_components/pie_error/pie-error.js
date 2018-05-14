@@ -84,7 +84,7 @@ export let pieError = (function () {
 
     return {
         showError: function(message){
-            var node = document.createElement("pie-error");
+            let node = document.createElement("pie-error");
             node.message =  message;
             document.body.appendChild(node);
         }

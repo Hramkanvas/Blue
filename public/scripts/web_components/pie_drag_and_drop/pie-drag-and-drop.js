@@ -57,9 +57,7 @@ export let pieDragAndDrop = (function () {
             this.photoLoaded = undefined;
             this.currentFileName = undefined;
             this.currentFile = undefined;
-            this.fileReader =  new FileReader();
 
-            this.saveFile = this.saveFile.bind(this);
             this.clickUpload = this.clickUpload.bind(this);
             this.dragEnterEvent = this.dragEnterEvent.bind(this);
             this.dragLeaveEvent = this.dragLeaveEvent.bind(this);    
@@ -68,7 +66,7 @@ export let pieDragAndDrop = (function () {
         }
 
         clickUpload(event){
-            //queries.uploadMenu(this.currentFile);
+            queries.uploadMenu(this.currentFile);
         }
 
         dragOverEvent(event){
@@ -99,8 +97,10 @@ export let pieDragAndDrop = (function () {
         dropEvent(event) {
             this.currentFileName = event.dataTransfer.files[0].name;
             this.dragNDropeZone.textContent = 'Вы загрузили файл "' + this.currentFileName + '". Для загрузки другого меню, перетащите файл сюда.';
-            this.fileReader.onload = this.saveFile;
-            this.fileReader.readAsBinaryString(event.dataTransfer.files[0]);
+            this.currentFile =  event.dataTransfer.files[0];
+            if (this.btUpload.style.visibility === 'hidden'){
+                this.btUpload.style.visibility = 'visible';
+            }
         }
 
         connectedCallback() {

@@ -1,28 +1,23 @@
 export let queries = (function () {
+
+   
+    let myInit = {
+        method: 'GET',
+        body: undefined
+    }
+
+    function giveMeHeader(strType, strWhat){
+        let myHeaders = new Headers();
+        myHeaders.append(strType, strWhat);
+        return myHeaders;
+    }
+
     return {
         authorize: function (login, password) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/authorization/login');
-                xhr.setRequestHeader('content-type', 'application/json');
-                var value = { login: login, password: password };
-                
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status !== 200){
-                            reject(xhr.status);
-                        } else {
-                            var user;
-                            try {
-                                user = JSON.parse(xhr.response);
-                            } catch (err) {
-                                user = undefined;
-                            }
-                            resolve(user);
-                        }
-                    }
-                }
-                xhr.send(JSON.stringify(value));
+            myInit.method = 'POST';
+            myInit.body = JSON.stringify({ login: login, password: password });
+            return fetch('/authorization/login', myInit).then(response => {
+                return response.json();
             });
         },
 
@@ -48,23 +43,11 @@ export let queries = (function () {
         },
 
         upBalance: function (username, sum) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('PUT', '/admin/upBalance');
-                xhr.setRequestHeader('content-type', 'application/json');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var user;
-                        try {
-                            user = JSON.parse(xhr.response);
-                        } catch (err) {
-                            //инфо об ошибке
-                        }
-                        resolve(user);
-                    }
-                }
-                xhr.send(JSON.stringify({username : username, amount: sum}));
+            myInit.method = 'PUT';
+            myInit.headers = giveMeHeader('Content-Type', 'application/json');
+            myInit.body = JSON.stringify({ username: username, amount: sum });
+            return fetch('/admin/upBalance', myInit).then(response => {
+                return response.json();
             });
         },
 
@@ -89,23 +72,12 @@ export let queries = (function () {
             });
         },
 
-        getUsers:function(){
-            return new Promise(function(resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/admin/getUsers');
-                xhr.setRequestHeader('content-type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var users;
-                        try {
-                            users = JSON.parse(xhr.response);
-                        } catch (err) {
-                            users = undefined;
-                        }
-                        resolve(users);
-                    }
-                }
-                xhr.send();
+        getUsers: function () {
+            myInit.method = 'GET';
+            myInit.body = undefined;
+            myInit.headers = giveMeHeader('Content-Type', 'application/json');
+            return fetch('/admin/getUsers', myInit).then(response => {
+                return response.json();
             });
         },
 
@@ -130,36 +102,16 @@ export let queries = (function () {
         },
 
         uploadMenu: function (file) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/downloadMenu');
-                xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-                //xhr.setRequestHeader("Content-Length", 741);  
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState !== 4) {
-                        return;
-                    }
-                    if (xhr.status !== 200) {
-                        console.log(xhr.status + ': ' + xhr.statusText);
-                    }
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        console.log("DONE");
-                        try {
-                            //balance = JSON.parse(xhr.response);
-                        } catch (err) {
-
-                        }
-                        //resolve(balance);
-                    }
-                }
-                //var blob = new Blob([file], {type: 'text/plain'}); 
-                xhr.send(file);
+            myInit.method = 'POST';
+            myInit.body = file;
+            myInit.headers = giveMeHeader('Content-Type', 'text/plain');
+            return fetch('/admin/downloadMenu', myInit).then(response => {
+                return response;
             });
         },
 
-        getDayOrders: function(){
-            return new Promise(function(resolve, reject) {
+        getDayOrders: function () {
+            return new Promise(function (resolve, reject) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('GET', '/admin/getDayOrders');
                 xhr.onreadystatechange = function () {
@@ -167,6 +119,7 @@ export let queries = (function () {
                         var orders;
                         try {
                             orders = JSON.parse(xhr.response);
+                            console.log(orders);
                         } catch (err) {
                             orders = undefined;
                         }

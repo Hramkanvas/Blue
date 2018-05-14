@@ -128,15 +128,13 @@ export let pieAuthorization = (function () {
         authorize(event) {
             let login = this.authorizeForm.elements.login.value;
             let password = this.authorizeForm.elements.password.value;
-            queries.authorize(login, password).then(
-                function (user) {
+            queries.authorize(login, password).then( user => {
                     localStorage.setItem("user", JSON.stringify(user));
                     window.location.assign("./admin.html");
-                }.bind(this),
-                function (error) {
-                    this.authorizationBlock.className = "authorizationBlockError";
-                }.bind(this)
-            );
+                }
+            ).catch(error => {
+                this.authorizationBlock.className = "authorizationBlockError";
+            });
         }
     }
 
