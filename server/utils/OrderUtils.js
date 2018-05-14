@@ -10,6 +10,7 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
+    confirmOrdersForDay
 };
 
 function uploadOrder(date, username, uploadOrder) {
@@ -74,10 +75,6 @@ function validateTime(date) {
     let resetdDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
-        return false;
-    }
-
-    if (moment(date).set({ 'h': 10, 'm': 0, 's': 0, 'ms': 0 }).isBefore(moment())) {
         return false;
     }
 
