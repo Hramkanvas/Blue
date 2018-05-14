@@ -22,9 +22,11 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
             if(answers[0] && answers[1])
                 res.status(200).send('Success!!!')
 
-            res.status(204).send('Invalid data!!!')
+            res.status(400).send('Invalid data!!!')
         })
         .catch(err => res.status(404));
+    //поле price надо не писать самому, а считать и записывать в методе uploadOrder
+    //здесь надо сразу отнимать баланс у user'а
 });
 
 router.delete('/deleteOrder', (req, res) => {
@@ -35,7 +37,7 @@ router.delete('/deleteOrder', (req, res) => {
             if(answers[0] && answers[1])
                 res.status(200).send('Success!!!');
 
-            res.status(204).send('Invalid data!!!');
+            res.status(400).send('Invalid data!!!');
         })
         .catch(err => res.status(404));
 });
@@ -47,11 +49,10 @@ router.post('/getMainPage', (req,res) => {
     let currentArr = users.getOrders(username,1);
     let nextArr = users.getOrders(username,2);
     let prom = [];
-    //console.log(new Date(date.setDate(date.getDate() + 7)));
-   // console.log(previousArr,currentArr,nextArr);
+
     Promise.all([previousArr,currentArr,nextArr])
         .then((arrays) =>{
-            //console.log(arrays);
+            console.log(arrays);
             arrays.forEach((item)=>{
                 prom.push(order.ordersForWeek(item, username));
             });
