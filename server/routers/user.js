@@ -1,10 +1,11 @@
-let router = require('express').Router();
+const router = require('express').Router();
 const order = require('../utils/OrderUtils');
-let methods = require('../utils/QueryMethods');
-let users = require('../utils/UsersUtils');
-
+const methods = require('../utils/QueryMethods');
+const users = require('../utils/UsersUtils');
 
 router.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
+   console.log("!!!!");
+
     //структура объекта uploadOrder
     /*
      uploadOrder: {
@@ -61,6 +62,5 @@ router.post('/getMainPage', (req,res) => {
         });
     //еще надо добавить все три менюшки,но для этого надо переделать метод findMenu
 });
-
 
 module.exports = router;

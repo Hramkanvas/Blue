@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const Order = require('../models/Order');;
-
+const Order = require('../models/Order');
 const moment = require('moment');
 
 module.exports = {
@@ -44,7 +43,7 @@ function uploadOrder(date, username, uploadOrder) {
                         Date: resetedDate,
                         Orders,
                         isBlocked: false
-                    })
+                    });
                     return OrderSchema.save();
                 }
             })
