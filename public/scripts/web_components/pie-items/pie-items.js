@@ -91,7 +91,7 @@
         }
     };
 
-    
+
     let template1 = `
         <style>
             .items {
@@ -108,7 +108,7 @@
 
     class Items extends HTMLElement {
         constructor() {
-            super(); 
+            super();
             this.attachShadow({ mode: 'open' }).innerHTML = template1;
             this.addItems = this.addItems.bind(this);
             this.place = this.shadowRoot.querySelector(".items");
@@ -120,16 +120,14 @@
 
         addItems(menu) {
             for (let day in menu.menuInfo){
-                let item = document.createElement('item-menu');
+                let item = document.createElement('pie-menu-item');
                 item.setAttribute("data-day", day);
-                item.innerHTML = day;
                 this.place.appendChild(item);
             }
         }
 
     }
-   
-    customElements.define('items-menu', Items);
-    
-})();
 
+    customElements.define('pie-items', Items);
+
+})();
