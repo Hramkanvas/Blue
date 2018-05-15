@@ -3,8 +3,7 @@ export let pieHeaderContent = (function () {
     let userInfo =  JSON.parse(localStorage.getItem("user"));
 
     let template = `
-        <style>
-     
+        <style> 
         a {
             text-decoration: none;
         }
@@ -73,9 +72,6 @@ export let pieHeaderContent = (function () {
                 </span>
             </div>
         </div>
-        <template> 
-            
-        </template>
     `;
 
     class HeaderContent extends HTMLElement {
@@ -103,7 +99,7 @@ export let pieHeaderContent = (function () {
         disconnectedCallback() {
             this.exitButton.removeEventListener("click", this.out);
         }
-
+        
     }
 
     customElements.define('pie-header-content', HeaderContent);

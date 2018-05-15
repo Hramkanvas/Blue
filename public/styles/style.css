@@ -9,6 +9,10 @@ html {
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 :root {
     --grey-dark: var(--grey-dark);
     --grey-black: #444444;
