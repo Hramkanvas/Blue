@@ -102,7 +102,7 @@ export let pieAuthorization = (function () {
             <input name="login" type="text" id="username">
             <label for="password">ПАРОЛЬ:</label>
             <input name="password" type="password" id="password">
-            <button id="authorizeBt" type="button">Готово</button>
+            <button id="authorizeBt" type="button">Войти</button>
         </form>
     </div>
     `;

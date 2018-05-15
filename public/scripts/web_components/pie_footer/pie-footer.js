@@ -1,17 +1,18 @@
-export let pieFooterContent = (function () {
+export let pieFooter = (function () {
 
     let template = `
         <style>
-            bottom-content {
+            .bottom-content {
                 display: flex;
                 flex-basis: 100%;
-                padding: 20px 0 20px 0;
+                //padding: 1px 0 1px 0;
                 justify-content: center;
                 background: #eaeaea;
             }
         </style>
-
+        <div class = "bottom-content">
         <p>Exadel</p>
+        </div>
     `;
 
     class FooterContent extends HTMLElement {
@@ -21,7 +22,6 @@ export let pieFooterContent = (function () {
         }
     }
 
-    customElements.define('bottom-content', FooterContent);
-
+    customElements.define('pie-footer', FooterContent);
 })();
 

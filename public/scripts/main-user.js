@@ -1,1 +1,3 @@
-import {pieHeaderContent} from "./web_components/pie_header_content/pie-header-content.js";
+import {pieHeaderContent} from "./web_components/pie_header/pie-header.js";
+import {pieFooter} from "./web_components/pie_footer/pie-footer.js";
+import {generalInfo} from "./web_components/pie_general_info/pie-general-info.js";

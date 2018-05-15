@@ -35,7 +35,6 @@ export let generalInfo = (function go() {
         }
     }
 
-    customElements.define('general-info', GeneralInfo);
-    
+    customElements.define('pie-general-info', GeneralInfo);
 })();
 
