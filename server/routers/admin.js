@@ -1,8 +1,7 @@
-let router = require('express').Router();
+const router = require('express').Router();
 const menu = require('../utils/MenuUtils');
-let users = require('../utils/UsersUtils');
-let orders = require('../utils/OrderUtils');
-
+const users = require('../utils/UsersUtils');
+const orders = require('../utils/OrderUtils');
 
 router.get('/getMenu', (req, res) => {
     menu.findMenu(new Date(2018, 6, 20))
@@ -21,14 +20,26 @@ router.get('/getUsers', (req, res) => {
         .catch(err => console.log(err));
 });
 
-router.get('/getDayOrders', (req, res) => {
+router.get('/getDayOrders', (req, res) => {//для таблицы
     let date = req.query.date || new Date;
+
     orders.getDayOrders(date)
+        .then(dayOrders => {
+            forEach((order)=> order.FIO = users.getFIO(dayOrders.username));
+            res.send(dayOrders);
+        })
+        .catch(err => console.log(err));
+});
+
+router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового заказа
+    let date = req.query.date || new Date;
+
+    orders.getTotal(date)
         .then(answer => res.send(answer))
         .catch(err => console.log(err));
 });
 
-router.post('/uploaddMenu', (req, res) => {
+router.post('/uploadMenu', (req, res) => {
     const buffer = [];
     
     req.on('data', (chunk) => {
