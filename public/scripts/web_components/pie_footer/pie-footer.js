@@ -5,7 +5,6 @@ export let pieFooter = (function () {
             .bottom-content {
                 display: flex;
                 flex-basis: 100%;
-                //padding: 1px 0 1px 0;
                 justify-content: center;
                 background: #eaeaea;
             }

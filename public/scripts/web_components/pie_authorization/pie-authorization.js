@@ -126,8 +126,8 @@ export let pieAuthorization = (function () {
         }
 
         authorize(event) {
-            let login = this.authorizeForm.elements.login.value;
-            let password = this.authorizeForm.elements.password.value;
+            const login = this.authorizeForm.elements.login.value;
+            const password = this.authorizeForm.elements.password.value;
             queries.authorize(login, password).then( user => {
                     localStorage.setItem("user", JSON.stringify(user));
                     if (user.type === "admin"){

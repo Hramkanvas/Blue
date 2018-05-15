@@ -1,4 +1,5 @@
 import {pieTabs} from "./web_components/pie_tabs/pie-tabs.js";
+import {pieMakeOrder} from "./web_components/pie_make_order/pie-make-order.js";
 import {pieDragAndDrop} from "./web_components/pie_drag_and_drop/pie-drag-and-drop.js";
 import {pieUpBalanceGeneralComponent} from "./web_components/pie_upbalance_general/pie-upbalance-general.js";
 import {pieUpBalance} from "./web_components/pie_up_balance/pie-up-balance.js";
