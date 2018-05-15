@@ -1,9 +1,9 @@
-export let pieMenuItem = (function () {
+(function () {
 
     let menu = {
-        id: 1,
-        fromDate: "20.02.2018",
-        menuInfo: {
+        'id': 1,
+        'fromDate': "20.02.2018",
+        'menuInfo': {
             "mon": {
                 "bread": {
                     weight: 2,
@@ -26,14 +26,44 @@ export let pieMenuItem = (function () {
                 "soup": {
                     weight: 22,
                     count: 1
+                }
+            },
+            "tr": {
+                "bread": {
+                    weight: 2,
+                    count: 1
+                }
+            },
+            "th": {
+                "bread": {
+                    weight: 2,
+                    count: 1
+                },
+                "soup": {
+                    weight: 22,
+                    count: 1
+                }
+            },
+            "fr": {
+                
+                "soup": {
+                    weight: 22,
+                    count: 1
                 },
                 "egg": {
                     weight: 12,
                     count: 1
                 }
+            },
+            "sb": {
+                "bread": {
+                    weight: 2,
+                    count: 1
+                }
             }
         }
     };
+
 
     let template = `
     
@@ -89,9 +119,9 @@ export let pieMenuItem = (function () {
 
             .item {
                 position: relative;
-                min-width: 350px;
+                
                 max-width: 450px;
-                min-height: 450px;
+                min-height: 400px;
                 text-align: center;
                 background: #f7f6f6;
                 border-radius: var(--border-radius-component);
@@ -177,36 +207,7 @@ export let pieMenuItem = (function () {
                     <table>
                         <caption>Меню на день:</caption>
                         <tbody>
-                            <tr>
-                                <th>Продукт</th>
-                                <th>Цена</th>
-                            </tr>
-
-                            <tr>
-                                <td>Мясо</td>
-                                <td><b>56</b> руб.</td>
-                            </tr>
-
-                            <tr>
-                                <td>Картошка</td>
-                                <td><b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Мясо</td>
-                                <td><b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td><b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Мясо</td>
-                                <td><b>56</b> руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Картошка</td>
-                                <td><b>56</b> руб.</td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -216,12 +217,42 @@ export let pieMenuItem = (function () {
     class MenuItem extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({ mode: 'open' }).innerHTML = template; /* tmpl.content.cloneNode(true) */
-            this.buttonMake = this.shadowRoot.getElementById("makeOrder");
+            this.attachShadow({ mode: 'open' }).innerHTML = template; 
+            this.renderTable = this.renderTable.bind(this);
+            this.place = this.shadowRoot.querySelector("tbody")            
+        }
+
+        static get observedAttributes() {
+            return ['data-day'];
+        }
+
+        attributeChangedCallback(attrName, oldVal, newVal){
+            this.renderTable(newVal)
+        }
+
+        renderTable (atrr) {
+            
+            let index = menu.menuInfo[atrr];
+
+            console.log(Object.keys(menu.menuInfo[atrr]).length);
+
+            let table = `<tr><th>Продукт</th><th>Цена</th></tr>`;
+
+            for (let i = 0; i < Object.keys(menu.menuInfo[atrr]).length; i++) {
+                
+                let food = Object.keys(menu.menuInfo[atrr]);
+
+                // let price = menu.menuInfo[atrr].food[i].count;
+                
+                table += `<tr><td>${food[i]}</td><td><b>${1}</b> руб.</td></tr>`                
+
+            }
+            
+            this.place.innerHTML = table;
         }
 
     }
 
-    customElements.define('menu-item', MenuItem);
+customElements.define('item-menu', MenuItem);
 
 })();
