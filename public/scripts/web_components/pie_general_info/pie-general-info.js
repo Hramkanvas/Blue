@@ -1,4 +1,4 @@
-export let generalInfo = (function go() {
+export let pieGeneralInfo = (function go() {
 
     let generalInfo = {
         week: "02.05.2018",

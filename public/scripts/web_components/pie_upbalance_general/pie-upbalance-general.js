@@ -1,4 +1,4 @@
-export let upBalanceGeneralComponent = (function () {
+export let pieUpBalanceGeneralComponent = (function () {
 
     let template = `
     <style>

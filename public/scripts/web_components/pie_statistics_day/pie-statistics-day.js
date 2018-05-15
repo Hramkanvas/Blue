@@ -1,4 +1,4 @@
-export let statisticsDayComponent = (function () {
+export let pieStatisticsDayComponent = (function () {
     let statisticsDay = {
         personalStatistics: [ //example of how to organize json, which comes from the server on the getStatistics request
             {

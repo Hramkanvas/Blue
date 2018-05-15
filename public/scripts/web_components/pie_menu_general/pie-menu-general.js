@@ -1,4 +1,4 @@
-export let menuGeneralComponent = (function () {
+export let pieMenuGeneralComponent = (function () {
 
     let template = `
     <style>

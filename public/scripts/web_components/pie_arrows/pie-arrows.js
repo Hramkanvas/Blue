@@ -1,7 +1,7 @@
 export let pieArrows = (function () {
 
     let template = `
-        <link rel="stylesheet" type="text/css" href="../styles/font-awesome.css">
+        <link rel="stylesheet" type="text/css" href="../../styles/font-awesome.css">
 
         <style>
             
@@ -79,6 +79,6 @@ export let pieArrows = (function () {
 
     }
 
-    customElements.define('menu-arrows', Arrows);
+    customElements.define('pie-arrows', Arrows);
 
 })();
