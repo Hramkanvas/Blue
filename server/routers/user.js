@@ -50,16 +50,31 @@ router.delete('/deleteOrder', (req, res) => {
 });
 
 router.post('/getMainPage', (req,res) => {
+    let currentOrders;
     let username = req.body.username;
-    let currentArr = users.getOrders(username,req.body.number)
+    let number = +req.body.number;
+    let currentArr = users.getOrders(username,number)
         .then(array =>{
-            return order.ordersForWeek(array, username);
+            if(array)
+                return order.ordersForWeek(array, username);
+            res.status(404).send('User not found');
         })
         .then(ans => {
-            res.send(ans);
+            currentOrders = ans;
+            return menu.findMenu(number);
+        })
+        .then(ans => {
+            let answer = [];
+            if(ans)
+            {
+                answer.push(currentOrders);
+                answer.push(ans);
+                res.send(answer);
+            }
+            res.status(404).send('Menu not found');;
         })
         .catch(err => res.status(404));
-    //еще надо выдать меню на неделю
+
 });
 
 module.exports = router;
