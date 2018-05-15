@@ -8,17 +8,25 @@ const methods = (function () {
     let login = function(login, password) {
         let user = users.find((user) => user.login === login && user.password === password);
         if(user) {
-            return Users.findOne({username: user.username})
-                .then((user) => {
-                    if (user)
-                        return user;
-                    return false;
+            if(user.type === 'user') {
+                return Users.findOne({username: user.username})
+                    .then((user) => {
+                        if (user)
+                            return user;
+                        return false;
+                    });
+            }
+            else
+                return new Promise((res,rej) => {
+                    res(user);
                 });
+
+
         }
         else
             return new Promise((res, rej) => {
                 res(false);
-            })
+            });
 
     };
 

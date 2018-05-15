@@ -2,7 +2,8 @@
 {
 "login":"admin",
 "password":"admin",
-"type":"admin"
+"type":"admin",
+"FIO":"Margarita Mihailovna"
 },
 {
 "login":"2",

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const Order = require('../models/Order');;
-
+const Order = require('../models/Order');
 const moment = require('moment');
 
 module.exports = {
@@ -10,26 +9,21 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
+    getTotal,
     confirmOrdersForDay
 };
 
 function uploadOrder(date, username, uploadOrder) {
 
     if (validateTime(date)) {
-
         let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
-
         uploadOrder.price = calculateOrderPrice(uploadOrder);
-
         return Order.findOne({ Date: resetedDate })
             .then((OrderSchema) => {
-
                 if (OrderSchema) {
                     if (!OrderSchema.isBlocked) {
                         OrderSchema.Orders[username] = uploadOrder;
-
                         const orders = OrderSchema.Orders;
-
                         return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
                     }
                     else {
@@ -37,7 +31,6 @@ function uploadOrder(date, username, uploadOrder) {
                     }
 
                 }
-
                 else {
                     const Orders = {};
                     Orders[username] = uploadOrder;
@@ -46,7 +39,7 @@ function uploadOrder(date, username, uploadOrder) {
                         Date: resetedDate,
                         Orders,
                         isBlocked: false
-                    })
+                    });
                     return OrderSchema.save();
                 }
             })
@@ -63,7 +56,6 @@ function ordersForWeek(dates, username) {
     let getOrders = [];
 
     for (let date of dates) {
-
         getOrders.push(getUserOrders(date, username));
     }
 
@@ -71,10 +63,8 @@ function ordersForWeek(dates, username) {
 }
 
 function validateTime(date) {
-    let now = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let now = moment().set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
     let severalDaysLater = moment(now).day(14);
-
-    let resetdDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
         return false;
@@ -94,7 +84,7 @@ function deleteOrder(date, username) {
                     return false;
                 }
 
-                if (validateTime(date, OrderSchema.Orders[username])) {
+                if (!validateTime(date, OrderSchema.Orders[username])) {
                     return false;
                 }
 
@@ -142,9 +132,10 @@ function getOrderPrice(date, username) {
 
 function calculateOrderPrice(order) {
     let price = 0;
-    for (dish of order.info) {
-        price += dish.cost * dish.count;
+    for (dish in order.info) {
+        price += order.info[dish].cost * order.info[dish].count;
     }
+    return price;
 }
 
 function getTotal(date) {

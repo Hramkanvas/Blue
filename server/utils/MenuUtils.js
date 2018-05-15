@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Menu = require('../models/Menu');
-
 const moment = require('moment');
 module.exports = {
     findMenu,
@@ -19,7 +18,6 @@ function findMenu(weekNumber) {
 
 
 function addMenu(file) {
-
     const menu = createMenu(file);
     if (validateMenu(menu)) {
         const menuSchema = new Menu({
