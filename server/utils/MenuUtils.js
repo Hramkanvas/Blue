@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 const Menu = require('../models/Menu');
 const moment = require('moment');
-
 module.exports = {
-    findMenu,    
+    findMenu,
     addMenu,
 };
 
-function findMenu(fromDate) {
-    let resetedDate = moment(fromDate).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+function findMenu(weekNumber) {
+
+    let resetedDate = moment().day((weekNumber - 1) * 7 + 1).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+
     return Menu.findOne({ fromDate: resetedDate })
         .then((menu) => {
             return menu;
