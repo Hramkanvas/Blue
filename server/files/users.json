@@ -1,26 +1,26 @@
 [
-{
-"login":"admin",
-"password":"admin",
-"type":"admin",
-"FIO":"Margarita Mihailovna"
-},
-{
-"login":"2",
-"password":"2",
-"username":"sasha",
-"type":"user"
-},
-{
-"login":"3",
-"password":"3",
-"username":"dima",
-"type":"user"
-},
-{
-"login":"12345678",
-"password":"12345678",
-"username":"Алексей",
-"type":"user"
-}
+    {
+        "login": "admin",
+        "password": "admin",
+        "type": "admin",
+        "FIO": "Margarita Mihailovna"
+    },
+    {
+        "login": "2",
+        "password": "2",
+        "username": "sasha",
+        "type": "user"
+    },
+    {
+        "login": "3",
+        "password": "3",
+        "username": "dima",
+        "type": "user"
+    },
+    {
+        "login": "12345678",
+        "password": "12345678",
+        "username": "Алексей",
+        "type": "user"
+    }
 ]

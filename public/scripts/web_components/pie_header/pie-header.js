@@ -64,10 +64,7 @@ export let pieHeaderContent = (function () {
                 <img src="img/logoExadel.png" alt="logoExadel">
             </div>
             <div class="userInfo">
-                <!--span class="userInfoBalans">
-                    Баланс:
-                    <b>${userInfo.balance}</b> руб.
-                </span-->
+            <span class="userInfoBalans" id = "balance"> </span>
                 <span class="userInfoName">
                     ${userInfo.FIO}
                 </span>
@@ -76,6 +73,9 @@ export let pieHeaderContent = (function () {
                 </span>
             </div>
         </div>
+        <template> 
+            
+        </template>
     `;
 
     class HeaderContent extends HTMLElement {
@@ -85,6 +85,11 @@ export let pieHeaderContent = (function () {
             this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.exitButton = this.shadowRoot.querySelector("span.userInfoButton");
             this.out = this.out.bind(this);
+
+            if (userInfo.type !== "admin"){
+                let temp = `Баланс: <b>${userInfo.balance}</b> руб.`
+                this.shadowRoot.getElementById("balance").innerHTML = temp;
+            }
         }
 
         connectedCallback() {
@@ -92,7 +97,7 @@ export let pieHeaderContent = (function () {
         }
 
         out() {
-            window.location.assign("./index.html");
+            window.location.assign("./");
         }
 
         disconnectedCallback() {
