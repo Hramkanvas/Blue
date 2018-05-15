@@ -1,8 +1,10 @@
+import { queries } from "../../queries.js";
+
 export let pieGeneralInfo = (function go() {
+    let userInfo = JSON.parse(localStorage.getItem("user"));
 
     let generalInfo = {
-        week: "02.05.2018",
-        balance: 90
+        week: "02.05.2018"
     }
 
     let template = `
@@ -23,15 +25,24 @@ export let pieGeneralInfo = (function go() {
                 <div class="timeShedule">
                     <p>Неделя ${generalInfo.week}</p>
                 </div>
-                <div class="countMoney">
-                    <p>Итого за неделю: ${generalInfo.balance} руб.</p>
-                </div>
+                <div class="countMoney" id = "moneyForWeek"> </div>
         </div>`;
 
     class GeneralInfo extends HTMLElement {
         constructor() {
             super();
             this.attachShadow({ mode: 'open' }).innerHTML = template;
+        }
+
+        connectedCallback() {
+            if (userInfo.type !== "admin") {
+                queries.getTotalPriceForWeek(userInfo.username).then(balance => {
+                    let template = ` <p>Итого за неделю: ${balance.totalPriceForWeek} руб.</p>`;
+                    this.shadowRoot.getElementById("moneyForWeek").innerHTML = template;
+                }).catch(error => {
+
+                });
+            }
         }
     }
 

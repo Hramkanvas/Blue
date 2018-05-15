@@ -9,13 +9,13 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
-    confirmOrdersForDay
+    confirmDayOrders,
+    isDayOrdersBlocked
 };
 
 function uploadOrder(date, username, uploadOrder) {
 
     if (validateTime(date)) {
-
         let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
         uploadOrder.price = calculateOrderPrice(uploadOrder);
         return Order.findOne({ Date: resetedDate })
@@ -63,9 +63,8 @@ function ordersForWeek(dates, username) {
 }
 
 function validateTime(date) {
-    let now = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let now = moment().set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
     let severalDaysLater = moment(now).day(14);
-    let resetdDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
         return false;
@@ -159,11 +158,23 @@ function getTotal(date) {
         })
 }
 
-function confirmOrdersForDay(date) {
+
+
+function confirmDayOrders(date) {
     let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     return Order.findOne({ Date: resetedDate })
         .then((OrderSchema) => {
             return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
+        });
+}
+
+
+function isDayOrdersBlocked(){
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+
+    return Order.findOne({ Date: resetedDate })
+        .then((OrderSchema) => {
+            return OrderSchema.isBlocked;
         });
 }

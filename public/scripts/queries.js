@@ -118,6 +118,15 @@ export let queries = (function () {
             return fetch('/admin/getDayOrders', myInit).then(response => {
                 return response.json();
             });
+        }, 
+
+        getTotalPriceForWeek: function(username){
+            myInit.method = 'GET';
+            myInit.body = undefined;
+            myInit.headers = giveMeHeader('Content-Type', 'application/json');
+            return fetch('/getTotalPriceForWeek?username=' + username , myInit).then(response => {
+                return response.json();
+            });
         }
     }
 })();

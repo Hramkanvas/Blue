@@ -49,6 +49,22 @@ router.delete('/deleteOrder', (req, res) => {
         .catch(err => res.status(404));
 });
 
+router.get('/getTotalPriceForWeek', (req,res) => {
+    let username = req.query.username;
+    users.getOrders(username)
+        .then(array =>{
+            return order.ordersForWeek(array, username);
+        })
+        .then(orders => {
+            let total = {totalPriceForWeek: 0};
+            orders.forEach(function (order) {
+                total.totalPriceForWeek += order.price;
+            });
+            res.send(total);
+        })
+        .catch(err => res.status(err));
+});
+
 router.post('/getMainPage', (req,res) => {
     let username = req.body.username;
     let currentArr = users.getOrders(username,req.body.number)
