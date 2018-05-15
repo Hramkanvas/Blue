@@ -9,6 +9,7 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
+    getTotal,
     confirmOrdersForDay
 };
 
