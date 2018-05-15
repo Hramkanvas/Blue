@@ -1,4 +1,4 @@
-(function () {
+export let pieItems = (function () {
 
     let menu = {
         'id': 1,
@@ -127,7 +127,6 @@
         }
 
     }
-
     customElements.define('pie-items', Items);
 
 })();

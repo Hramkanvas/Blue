@@ -1,3 +1,6 @@
+import {pieMenuItem} from "./web_components/pie_menu_item/pie-menu-item.js";
+import {pieGeneralInfo} from "./web_components/pie_general_info/pie-general-info.js";
+import {pieItems} from "./web_components/pie_items/pie-items.js";
 import {pieTabs} from "./web_components/pie_tabs/pie-tabs.js";
 import {pieMakeOrder} from "./web_components/pie_make_order/pie-make-order.js";
 import {pieDragAndDrop} from "./web_components/pie_drag_and_drop/pie-drag-and-drop.js";
