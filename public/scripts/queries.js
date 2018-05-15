@@ -15,6 +15,7 @@ export let queries = (function () {
     return {
         authorize: function (login, password) {
             myInit.method = 'POST';
+            myInit.headers = giveMeHeader('Content-Type', 'application/json');
             myInit.body = JSON.stringify({ login: login, password: password });
             return fetch('/authorization/login', myInit).then(response => {
                 return response.json();
@@ -111,22 +112,11 @@ export let queries = (function () {
         },
 
         getDayOrders: function () {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/admin/getDayOrders');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var orders;
-                        try {
-                            orders = JSON.parse(xhr.response);
-                            console.log(orders);
-                        } catch (err) {
-                            orders = undefined;
-                        }
-                        resolve(orders);
-                    }
-                }
-                xhr.send();
+            myInit.method = 'GET';
+            myInit.body = undefined;
+            myInit.headers = giveMeHeader('Content-Type', 'application/json');
+            return fetch('/admin/getDayOrders', myInit).then(response => {
+                return response.json();
             });
         }
     }
