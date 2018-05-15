@@ -9,8 +9,8 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
-    getTotal,
-    confirmOrdersForDay
+    confirmDayOrders,
+    isDayOrdersBlocked
 };
 
 function uploadOrder(date, username, uploadOrder) {
@@ -162,11 +162,23 @@ function getTotal(date) {
         })
 }
 
-function confirmOrdersForDay(date) {
+
+
+function confirmDayOrders(date) {
     let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     return Order.findOne({ Date: resetedDate })
         .then((OrderSchema) => {
             return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
+        });
+}
+
+
+function isDayOrdersBlocked(){
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+
+    return Order.findOne({ Date: resetedDate })
+        .then((OrderSchema) => {
+            return OrderSchema.isBlocked;
         });
 }
