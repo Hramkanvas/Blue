@@ -95,6 +95,7 @@ export let pieDragAndDrop = (function () {
         }
 
         dropEvent(event) {
+            event.preventDefault();
             this.currentFileName = event.dataTransfer.files[0].name;
             this.dragNDropeZone.textContent = 'Вы загрузили файл "' + this.currentFileName + '". Для загрузки другого меню, перетащите файл сюда.';
             this.currentFile =  event.dataTransfer.files[0];
