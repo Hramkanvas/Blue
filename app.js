@@ -11,9 +11,9 @@ mongoose.connect(`mongodb://localhost:27017`, function (err) {
     console.log('Successfully connected to database');
 });
 
-app.use('',require('./server/routers/user'));
-app.use('/admin',require('./server/routers/admin'));
-app.use('/authorization',require('./server/routers/authorization'));
+app.use('', require('./server/routers/user'));
+app.use('/admin', require('./server/routers/admin'));
+app.use('/authorization', require('./server/routers/authorization'));
 
 app.listen(3000, () => {
     console.log(`Server is running...`);

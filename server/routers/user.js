@@ -4,7 +4,7 @@ const methods = require('../utils/QueryMethods');
 const users = require('../utils/UsersUtils');
 const menu = require('../utils/MenuUtils')
 
-router.put('/makeOrder',(req,res) => {//сделать заказ(обновить заказ)
+router.put('/makeOrder', (req, res) => {//сделать заказ(обновить заказ)
     //структура объекта uploadOrder
     /*
      uploadOrder: {
@@ -17,13 +17,13 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
     }*/
     order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder)
         .then(answer => {
-            if(answer)
+            if (answer)
                 return users.addOrderToHistory(req.body.username, new Date(req.body.date));
             else
                 return;
         })
         .then(answer => {
-            if(answer)
+            if (answer)
                 res.send('Success!!!');
             else
                 res.status(404);
@@ -35,13 +35,13 @@ router.put('/makeOrder',(req,res) => {//сделать заказ(обновит
 router.delete('/deleteOrder', (req, res) => {
     order.deleteOrder(new Date(req.body.date), req.body.username)
         .then(answer => {
-            if(answer)
+            if (answer)
                 return users.deleteOrderFromHistory(req.body.username, new Date(req.body.date));
             else
                 return;
         })
         .then(answer => {
-            if(answer)
+            if (answer)
                 res.send('Success!!!');
             else
                 res.status(404).send('Invalid data!!!');
@@ -49,10 +49,10 @@ router.delete('/deleteOrder', (req, res) => {
         .catch(err => res.status(404));
 });
 
-router.get('/getTotalPriceForWeek', (req,res) => {
+router.get('/getTotalPriceForWeek', (req, res) => {
     let username = req.query.username;
     users.getOrders(username)
-        .then(array =>{
+        .then(array => {
             return order.ordersForWeek(array, username);
         })
         .then(orders => {
@@ -65,13 +65,13 @@ router.get('/getTotalPriceForWeek', (req,res) => {
         .catch(err => res.send(err));
 });
 
-router.post('/getMainPage', (req,res) => {
+router.post('/getMainPage', (req, res) => {
     let currentOrders;
     let username = req.body.username;
     let number = +req.body.number;
-    let currentArr = users.getOrders(username,number)
-        .then(array =>{
-            if(array)
+    let currentArr = users.getOrders(username, number)
+        .then(array => {
+            if (array)
                 return order.ordersForWeek(array, username);
             res.status(404).send('User not found');
         })
@@ -81,13 +81,13 @@ router.post('/getMainPage', (req,res) => {
         })
         .then(ans => {
             let answer = [];
-            if(ans)
-            {
+            if (ans) {
                 answer.push(currentOrders);
                 answer.push(ans);
                 res.send(answer);
             }
-            res.status(404).send('Menu not found');;
+            res.status(404).send('Menu not found');
+            ;
         })
         .catch(err => res.status(404));
 

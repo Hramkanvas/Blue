@@ -6,13 +6,13 @@ const us = require('../utils/UsersUtils');
 
 const methods = (function () {
 
-    let login = function(login, password) {
+    let login = function (login, password) {
         let user = users.find((user) => user.login === login && user.password === password);
-        if(user) {
-            if(user.type === 'user') {
+        if (user) {
+            if (user.type === 'user') {
                 return Users.findOne({username: user.username})
                     .then((ans) => {
-                        if (!ans){
+                        if (!ans) {
                             return us.addUser(user.username, user.FIO)
                         }
                         else
@@ -21,7 +21,7 @@ const methods = (function () {
 
             }
             else
-                return new Promise((res,rej) => {
+                return new Promise((res, rej) => {
                     res(user);
                 });
 

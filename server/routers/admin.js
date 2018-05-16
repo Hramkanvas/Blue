@@ -6,9 +6,14 @@ const moment = require('moment');
 
 router.get('/getMenu', (req, res) => {
     //переделать на 0 , 1 , 2
-    menu.findMenu(req.body.number)
-        .then(answer => res.send(answer))
-        .catch(err => console.log(err));
+    menu.findMenu(req.query.number)
+        .then(answer => {
+            if (answer)
+                res.send(answer)
+            else
+                res.status(404).send('Menu not found');
+        })
+        .catch(err => res.status(404).send('Menu not found'));
 });
 
 router.put('/upBalance', (req, res) => {
@@ -55,7 +60,7 @@ router.get('/getDayOrdersStatistic', (req, res) => {//для итогового 
 router.get('/isMakingOrder', (req, res) => {
     orders.getDayOrders()
         .then(answer => {
-            if(answer === true || answer === false) {
+            if (answer === true || answer === false) {
                 res.send(!answer)
             } else res.status(400).send();
         })
@@ -73,7 +78,6 @@ router.post('/uploadMenu', (req, res) => {
         console.log(file);
         menu.addMenu(file)
             .then(answer => {
-                console.log(answer);
                 res.send(answer)
             })
             .catch(err => console.log(err));
@@ -90,21 +94,21 @@ router.get('/confirmDayOrders', (req, res) => {
     let prom = [];
     orders.createDayOrdersSchema(date)
         .then((ans) => {
-            if(ans)
+            if (ans)
                 return orders.confirmDayOrders(date)
             else
                 return Promise.reject(new Error('На эту дату подтвержден заказ'));
         })
-        .then(()=> orders.getDayOrders(date) )
-        .then((userOrders)=>{
-            for(let user in userOrders){
+        .then(() => orders.getDayOrders(date))
+        .then((userOrders) => {
+            for (let user in userOrders) {
                 prom.push(users.withdrawFromBalance(user, userOrders[user].price));
             }
 
             return Promise.all(prom);
         })
         .then(() => res.send('Success'))
-        .catch((error)=> res.status(404).send(error.message));
+        .catch((error) => res.status(404).send(error.message));
 
 
 });
