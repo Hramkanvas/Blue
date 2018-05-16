@@ -16,14 +16,19 @@ module.exports = {
 
 function createDayOrdersSchema(date) {
     let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
-    const Orders = {};
 
-    OrderSchema = new Order({
-        Date: resetedDate,
-        Orders,
-        isBlocked: false
-    });
-    return OrderSchema.save();
+    return Order.findOne({ Date: resetedDate }).then((OrderSchema) => {
+        if (!OrderSchema) {
+
+            OrderSchema = new Order({
+                Date: resetedDate,
+                Orders: {},
+                isBlocked: false
+            });
+            return OrderSchema.save();
+        }
+        return OrderSchema.Orders;
+    })
 }
 
 function uploadOrder(date, username, uploadOrder) {
@@ -156,7 +161,7 @@ function getTotal(date) {
         .then((dayOrders) => {
 
             let total = {
-                price:0
+                price: 0
             };
 
             for (user in dayOrders) {
