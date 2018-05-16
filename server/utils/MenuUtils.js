@@ -19,7 +19,10 @@ function findMenu(weekNumber) {
 
 function addMenu(file) {
     const menu = createMenu(file);
-    if (validateMenu(menu)) {
+
+    let answer = validateMenu(menu);
+
+    if (answer.body) {
         const menuSchema = new Menu({
             fromDate: menu.fromDate,
             menuInfo: menu.menuInfo
@@ -29,7 +32,10 @@ function addMenu(file) {
             then((menu) => {
                 if (menu) {
                     return menu.remove()
-                        .then(() => menuSchema.save());
+                        .then(() => menuSchema.save())
+                        .then(() => {
+                            return { body: true, message: "Меню обновлено" }
+                        });
                 }
                 else {
                     return Menu.find({})
@@ -41,16 +47,25 @@ function addMenu(file) {
 
                             if (arr.length === 3) {
                                 return Promise.all(arr[0].remove(), arr[1].remove())
-                                    .then(() => menuSchema.save());
+                                    .then(() => menuSchema.save())
+                                    .then(() => {
+                                        return { body: true, message: "Меню добавлено" }
+                                    });
                             }
 
                             else if (arr.length === 2) {
                                 return arr[0].remove()
-                                    .then(() => menuSchema.save());
+                                    .then(() => menuSchema.save())
+                                    .then(() => {
+                                        return { body: true, message: "Меню добавлено" }
+                                    });
                             }
 
                             else {
-                                return menuSchema.save();
+                                return menuSchema.save()
+                                    .then(() => {
+                                        return { body: true, message: "Меню добавлено" }
+                                    });
                             }
 
                         })
@@ -60,7 +75,7 @@ function addMenu(file) {
 
     else {
         return new Promise((res, rej) => {
-            res(false);
+            res(answer);
         });
     }
 }
@@ -118,16 +133,16 @@ function validateMenu(menu) {
     let severalDaysLater = moment().day(8).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
 
     if (!monday.isSame(fromDate) && !severalDaysLater.isSame(fromDate)) {
-        return false;
+        return { body: false, message: "Меню на дату, на которую нельзя" };
     }
 
     const menuInfo = menu.menuInfo;
 
     for (days in menuInfo) {
         for (dish in menuInfo[days]) {
-            if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return false;
+            if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return { body: false, message: `Ошибка цене или весе ${dish}` };
         }
     }
 
-    return true;
+    return { body: true, message: "Успешно" };
 };
