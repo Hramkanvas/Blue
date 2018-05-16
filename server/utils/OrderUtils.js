@@ -9,7 +9,8 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
-    confirmDayOrders
+    confirmDayOrders,
+    isDayOrdersBlocked
 };
 
 function uploadOrder(date, username, uploadOrder) {
