@@ -12,14 +12,45 @@ export let queries = (function () {
         return myHeaders;
     }
 
+    function ajax(method, strHeaderType, strHeaderContent, body, query){
+        myInit.method = method;
+        myInit.headers = giveMeHeader(strHeaderType, strHeaderContent);
+        myInit.body = body;
+        return fetch(query, myInit).then(response => {
+            return response.json();
+        });
+    }
+
     return {
         authorize: function (login, password) {
-            myInit.method = 'POST';
-            myInit.headers = giveMeHeader('Content-Type', 'application/json');
-            myInit.body = JSON.stringify({ login: login, password: password });
-            return fetch('/authorization/login', myInit).then(response => {
-                return response.json();
-            });
+            const object = { login: login, password: password };
+            return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(object), '/authorization/login');
+        },
+
+        upBalance: function (username, sum) {
+            const object = { username: username, amount: sum };
+            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(object), '/admin/upBalance'); 
+        },
+
+        getUsers: function () {
+            return ajax( 'GET', 'Content-Type', 'application/json', undefined, '/admin/getUsers');
+        },
+
+        uploadMenu: function (file) {
+            const object = file;
+            return ajax('POST', 'Content-Type', 'text/plain', file, '/admin/downloadMenu');
+        },
+
+        getDayOrders: function () {
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrders');
+        }, 
+
+        getTotalPriceForWeek: function(username){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/getTotalPriceForWeek?username=' + username);
+        },
+
+        isMakingOrdersForToday(){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/isMakingOrder');
         },
 
         getMenu: function () {
@@ -41,46 +72,7 @@ export let queries = (function () {
                 }
                 xhr.send();
             });
-        },
-
-        upBalance: function (username, sum) {
-            myInit.method = 'PUT';
-            myInit.headers = giveMeHeader('Content-Type', 'application/json');
-            myInit.body = JSON.stringify({ username: username, amount: sum });
-            return fetch('/admin/upBalance', myInit).then(response => {
-                return response.json();
-            });
-        },
-
-        getTotalBalance: function (id) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/getTotalBalance');
-                xhr.setRequestHeader('content-type', 'application/json');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var balance;
-                        try {
-                            balance = JSON.parse(xhr.response);
-                        } catch (err) {
-                            //инфо об ошибке
-                        }
-                        resolve(balance);
-                    }
-                }
-                xhr.send(JSON.stringify({ id: id }));
-            });
-        },
-
-        getUsers: function () {
-            myInit.method = 'GET';
-            myInit.body = undefined;
-            myInit.headers = giveMeHeader('Content-Type', 'application/json');
-            return fetch('/admin/getUsers', myInit).then(response => {
-                return response.json();
-            });
-        },
+        },  
 
         getTodayOrdersStatistics: function (date) {
             return new Promise(function (resolve, reject) {
@@ -101,33 +93,6 @@ export let queries = (function () {
                 xhr.send();
             })
         },
-
-        uploadMenu: function (file) {
-            myInit.method = 'POST';
-            myInit.body = file;
-            myInit.headers = giveMeHeader('Content-Type', 'text/plain');
-            return fetch('/admin/downloadMenu', myInit).then(response => {
-                return response;
-            });
-        },
-
-        getDayOrders: function () {
-            myInit.method = 'GET';
-            myInit.body = undefined;
-            myInit.headers = giveMeHeader('Content-Type', 'application/json');
-            return fetch('/admin/getDayOrders', myInit).then(response => {
-                return response.json();
-            });
-        }, 
-
-        getTotalPriceForWeek: function(username){
-            myInit.method = 'GET';
-            myInit.body = undefined;
-            myInit.headers = giveMeHeader('Content-Type', 'application/json');
-            return fetch('/getTotalPriceForWeek?username=' + username , myInit).then(response => {
-                return response.json();
-            });
-        }
     }
 })();
 

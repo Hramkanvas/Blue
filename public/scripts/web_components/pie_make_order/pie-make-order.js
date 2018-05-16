@@ -1,3 +1,5 @@
+import { queries } from "../../queries.js";
+
 export let pieMakeOrder = (function () {
 
     let template = `
@@ -39,10 +41,14 @@ export let pieMakeOrder = (function () {
     class MakeOrder extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
-            
-            this.btMakeOrder = this.shadowRoot.getElementById("btMakeOrder");
-            this.makeOrderClick = this.makeOrderClick.bind(this);
+            queries.isMakingOrdersForToday().then(orderIsMaking=> {
+                 if (orderIsMaking === true){
+                    this.attachShadow({mode: 'open'}).innerHTML = template;
+                    this.btMakeOrder = this.shadowRoot.getElementById("btMakeOrder");
+                    this.makeOrderClick = this.makeOrderClick.bind(this);
+                }
+            }).catch(error => {
+            });
         }
 
         makeOrderClick(){
