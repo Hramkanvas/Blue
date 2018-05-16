@@ -22,11 +22,41 @@ router.get('/getUsers', (req, res) => {
 
 router.get('/getDayOrders', (req, res) => {//для таблицы
     let date = req.query.date || new Date;
-
+    let prom = [];
+    let p;
     orders.getDayOrders(date)
         .then(dayOrders => {
-            forEach((order)=> order.FIO = users.getFIO(dayOrders.username));
-            res.send(dayOrders);
+            for(let user in dayOrders){
+                p = users.getFIO(user)
+                    .then(ans => {
+                        dayOrders[user].FIO = ans;
+                    });
+                prom.push(p);
+            }
+            console.log(dayOrders);
+            Promise.all(prom)
+                .then(ans => {
+                    res.send(dayOrders);
+                });
+
+        })
+        .catch(err => console.log(err));
+});
+
+router.get('/getDayOrdersStatistic', (req, res) => {//для итогового заказа
+    let date = req.query.date || new Date;
+
+    orders.getTotal(date)
+        .then(answer => res.send(answer))
+        .catch(err => console.log(err));
+});
+
+router.get('/isMakingOrder', (req, res) => {
+    orders.getDayOrders()
+        .then(answer => {
+            if(answer === true || answer === false) {
+                res.send(!answer)
+            } else res.status(400).send();
         })
         .catch(err => console.log(err));
 });
@@ -41,7 +71,7 @@ router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового за
 
 router.post('/uploadMenu', (req, res) => {
     const buffer = [];
-    
+
     req.on('data', (chunk) => {
         buffer.push(chunk);
     }).on('end', () => {
@@ -57,5 +87,13 @@ router.post('/uploadMenu', (req, res) => {
     });
 
 });
+/*
+router.post('/confirmDayOrders', (req, res) => {
+    let date = req.query.date || new Date;
 
+    orders.getTotal(date)
+        .then(answer => res.send(answer))
+        .catch(err => console.log(err));
+});
+*/
 module.exports = router;

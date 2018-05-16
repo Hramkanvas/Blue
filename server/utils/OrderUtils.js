@@ -10,8 +10,26 @@ module.exports = {
     getOrderPrice,
     ordersForWeek,
     confirmDayOrders,
-    isDayOrdersBlocked
+    isDayOrdersBlocked,
+    createDayOrdersSchema
 };
+
+function createDayOrdersSchema(date) {
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+
+    return Order.findOne({ Date: resetedDate }).then((OrderSchema) => {
+        if (!OrderSchema) {
+
+            OrderSchema = new Order({
+                Date: resetedDate,
+                Orders: {},
+                isBlocked: false
+            });
+            return OrderSchema.save();
+        }
+        return OrderSchema.Orders;
+    })
+}
 
 function uploadOrder(date, username, uploadOrder) {
 
@@ -141,17 +159,21 @@ function calculateOrderPrice(order) {
 function getTotal(date) {
     return getDayOrders(date)
         .then((dayOrders) => {
-            let total = {};
 
-            for (order in dayOrders) {
-                for (dish in order.info) {
+            let total = {
+                price: 0
+            };
+
+            for (user in dayOrders) {
+                for (dish in dayOrders[user].info) {
                     if (total[dish]) {
-                        total[dish]++;
+                        total[dish] += +dayOrders[user].info[dish].count;
                     }
                     else {
-                        total[dish] = 0;
+                        total[dish] = +dayOrders[user].info[dish].count;
                     }
                 }
+                total.price += +dayOrders[user].price;
             }
 
             return total;
@@ -169,8 +191,7 @@ function confirmDayOrders(date) {
         });
 }
 
-
-function isDayOrdersBlocked(){
+function isDayOrdersBlocked() {
     let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     return Order.findOne({ Date: resetedDate })
