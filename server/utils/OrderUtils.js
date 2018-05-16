@@ -10,8 +10,21 @@ module.exports = {
     getOrderPrice,
     ordersForWeek,
     confirmDayOrders,
-    isDayOrdersBlocked
+    isDayOrdersBlocked,
+    createDayOrdersSchema
 };
+
+function createDayOrdersSchema(date) {
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    const Orders = {};
+
+    OrderSchema = new Order({
+        Date: resetedDate,
+        Orders,
+        isBlocked: false
+    });
+    return OrderSchema.save();
+}
 
 function uploadOrder(date, username, uploadOrder) {
 
@@ -174,7 +187,7 @@ function confirmDayOrders(date) {
 }
 
 
-function isDayOrdersBlocked(){
+function isDayOrdersBlocked() {
     let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     return Order.findOne({ Date: resetedDate })
