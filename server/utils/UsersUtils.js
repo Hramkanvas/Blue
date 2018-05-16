@@ -188,6 +188,7 @@ function withdrawFromBalance(username, amount) {
                 return false;
         });
 };
+
 function addUser(username, FIO) {
     let prMonday = new Date(moment().day(-6));
     prMonday.setHours(3, 0, 0, 0);
@@ -203,5 +204,5 @@ function addUser(username, FIO) {
         }
     });
 
-    return newUser.save();
+    return newUser.save().then(()=> newUser);
 };

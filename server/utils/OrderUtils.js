@@ -19,7 +19,6 @@ function createDayOrdersSchema(date) {
 
     return Order.findOne({ Date: resetedDate }).then((OrderSchema) => {
         if (!OrderSchema) {
-
             OrderSchema = new Order({
                 Date: resetedDate,
                 Orders: {},
@@ -27,7 +26,6 @@ function createDayOrdersSchema(date) {
             });
             return OrderSchema.save();
         }
-        return OrderSchema.Orders;
     })
 }
 
@@ -187,7 +185,9 @@ function confirmDayOrders(date) {
 
     return Order.findOne({ Date: resetedDate })
         .then((OrderSchema) => {
-            return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
+            if(!OrderSchema.isBlocked)
+                return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
+            return false;
         });
 }
 

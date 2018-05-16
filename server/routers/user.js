@@ -62,7 +62,7 @@ router.get('/getTotalPriceForWeek', (req,res) => {
             });
             res.send(total);
         })
-        .catch(err => res.status(err));
+        .catch(err => res.send(err));
 });
 
 router.post('/getMainPage', (req,res) => {
