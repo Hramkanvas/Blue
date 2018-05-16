@@ -256,8 +256,12 @@
             this.day = this.shadowRoot.querySelector(".itemFunc");
             this.place = this.shadowRoot.querySelector("tbody");
             
+            this.sendOrder = this.shadowRoot.getElementById("sendOrder");
             
 
+            this.item = this.shadowRoot.querySelector(".item");
+            this.table = ``;
+            this.dayMenu = ``;
         }
 
         connectedCallback() {
@@ -270,6 +274,11 @@
                 place.innerHTML = `${pastPrice + priceChange}`
 
             }.bind(this))
+            
+            this.makeOrder = this.shadowRoot.getElementById("makeOrder");
+            this.makeOrder.addEventListener("click", (e) => {
+                this.setAttribute("data-state", "editMenu")
+            })
         }
 
         static get observedAttributes() {
@@ -288,50 +297,80 @@
         
         renderTable (attr) {
             
+            this.dayMenu = attr;
             this.day.innerHTML = `<h5>${attr}</h5>`;
 
             let index = Object.keys(menu.menuInfo[attr]);
-            let table = `<tr><th>Продукт</th><th>Цена</th></tr>`;
+            this.table = ``;
 
             for (let i = 0; i < index.length; i++) {
                 
                 let food = Object.keys(menu.menuInfo[attr]);
                 let price = menu.menuInfo[attr][food[i]].weight;
                 
-                table += `<tr><td>${food[i]}</td><td><b>${price}</b> руб.</td></tr>`                
+                this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> руб.</td></tr>`                
             }
-            
-            this.place.innerHTML = table;
-
         }
-
+        
         itemState(attr) {
-            let link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'styles/font-awesome.css';
-
+                        
             let itemState = this.shadowRoot.querySelector(".item");
             
-            let total = document.createElement("div");
-            total.className = "price";
-            total.innerHTML = `Итого: <b id="price">0</b> руб.`;
-
-            let buttons = document.createElement("div");
-            buttons.className = "itemFuncButtons";
-            buttons.innerHTML = `<span><i class="fa fa-pencil"></i></span ><span><i class="fa fa-trash"></i></span>`;
-
-            let button = document.createElement("button");
-            button.className = "orderButton";
-            button.innerHTML = "Сформировать заказ"
-
-
             switch (attr) {
                 case "pastMenu":
+                    this.item.innerHTML = `
+                        <div class="itemFunc">
+                            <h5>${this.dayMenu}</h5>
+                        </div>
+
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Оформленный заказ:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="price">
+                            Итого: 56 руб.
+                        </div>`
                     itemState.classList.add(attr);
-                    itemState.appendChild(total);
                 break;
 
                 case "futureMenu":
+                    this.item.innerHTML = `
+                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                        <div class="itemFunc">
+                            <h5>${this.dayMenu}</h5>
+                            <div class="itemFuncButtons">
+                                <span>
+                                    <i class="fa fa-pencil"></i>                           
+                                </span>
+                            
+                                <span>
+                                    <i class="fa fa-trash"></i>                  
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Оформленный заказ:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="price">
+                            Итого: 56 руб.
+                        </div>
+                    `;
                     itemState.classList.add(attr);                            
                     itemState.appendChild(total);
                     this.day.appendChild(link);
@@ -339,25 +378,60 @@
                 break;
 
                 case "clear":
-                    itemState.classList.add(attr);
-                    itemState.appendChild(button);
+                
+                    this.item.innerHTML = `
+                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                        <div class="itemFunc">
+                            <h5>${this.dayMenu}</h5>
+                        </div>
+
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Меню на день:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="orderButton" id="makeOrder">
+                            Сформировать заказ
+                        </button>
+                    `;
+                    itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
+                    
                 break;
 
                 case "editMenu":
-                    total.classList.add("edit");
-                    button.classList.add("edit");
-                    button.innerHTML = "Заказать";
 
+                    this.item.innerHTML = `
+                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                        <div class="itemFunc">
+                            <h5>${this.dayMenu}</h5>
+                            <div class="itemFuncButtons">                   
+                                <span>
+                                    <i class="fa fa-trash"></i>                  
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Меню на день:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th><th>Кол-во</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="price edit">Итого: <b id="price">0</b> руб.</div>
+                        <button class="orderButton edit" id="sendOrder">Заказать</button>
+                    `;
                     itemState.classList.add(attr);
-                    itemState.appendChild(total);
-                    itemState.appendChild(button);
-
-                    this.day.appendChild(link);                
-                    buttons.innerHTML = `<span><i class="fa fa-trash"></i></span>`;
-                    this.day.appendChild(buttons);
-
-                    let mainTr = this.shadowRoot.querySelector("tr");
-                    mainTr.innerHTML = `<th>Продукт</th><th>Цена</th><th>Кол-во</th>`;
 
                     let trs = this.shadowRoot.querySelectorAll("tr~tr");                    
                     trs.forEach(item => {
@@ -366,6 +440,7 @@
                         td.appendChild(counter);                       
                         item.appendChild(td);
                     });
+
                 break;
 
                 default:
