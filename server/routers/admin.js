@@ -51,6 +51,16 @@ router.get('/getDayOrdersStatistic', (req, res) => {//для итогового 
         .catch(err => console.log(err));
 });
 
+router.get('/isMakingOrder', (req, res) => {
+    orders.getDayOrders()
+        .then(answer => {
+            if(answer === true || answer === false) {
+                res.send(!answer)
+            } else res.status(400).send();
+        })
+        .catch(err => console.log(err));
+});
+
 router.post('/uploadMenu', (req, res) => {
     const buffer = [];
 
