@@ -91,6 +91,7 @@ function getOrders(username, key = 1) {//ключ: 0 - предыдущая не
             if (!user) {
                 return false;
             }
+            console.log(key);
             switch (key) {
                 case 0:
                     return user.history.previous;
