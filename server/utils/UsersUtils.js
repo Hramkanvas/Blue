@@ -57,9 +57,9 @@ function deleteOrderFromHistory(username, receved_date) {
                 return false;
             }
             let date = new Date(receved_date);
-           /* if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
-                return false;
-            }*/
+            /* if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
+                 return false;
+             }*/
 
             date.setHours(3, 0, 0, 0);
             switch (getWeekKey(date, user.history.previousMonday)) {
@@ -188,6 +188,7 @@ function withdrawFromBalance(username, amount) {
                 return false;
         });
 };
+
 function addUser(username, FIO) {
     let prMonday = new Date(moment().day(-6));
     prMonday.setHours(3, 0, 0, 0);
@@ -202,7 +203,5 @@ function addUser(username, FIO) {
             next: new Array()
         }
     });
-    newUser.save(function (err) {
-        if (err) throw err;
-    });
+    return newUser.save().then(() => newUser);
 };
