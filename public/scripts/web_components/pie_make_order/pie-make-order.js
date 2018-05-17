@@ -46,17 +46,17 @@ export let pieMakeOrder = (function () {
                     this.attachShadow({mode: 'open'}).innerHTML = template;
                     this.btMakeOrder = this.shadowRoot.getElementById("btMakeOrder");
                     this.makeOrderClick = this.makeOrderClick.bind(this);
+                    this.btMakeOrder.addEventListener("click", this.makeOrderClick);
                 }
             }).catch(error => {
             });
         }
 
         makeOrderClick(){
-            console.log("Order make click");
-        }
-
-        connectedCallback() {
-            this.btMakeOrder.addEventListener("click", this.makeOrderClick);
+            queries.confirmDayOrder().then(ok =>{
+                console.log("OK");
+            }).catch(error => {
+            });
         }
 
         disconnectedCallback() {

@@ -45,12 +45,17 @@ export let queries = (function () {
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrders');
         }, 
 
-        getTotalPriceForWeek: function(username){
-            return ajax('GET', 'Content-Type', 'application/json', undefined, '/getTotalPriceForWeek?username=' + username);
+        getTotalPriceForWeek: function(username, week){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/getTotalPriceForWeek?username=' + username
+                    + '&week=' + week);
         },
 
         isMakingOrdersForToday(){
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/isMakingOrder');
+        },
+
+        confirmDayOrder(){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/confirmDayOrders');
         },
 
         getMenu: function () {

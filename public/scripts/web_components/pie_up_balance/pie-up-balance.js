@@ -123,7 +123,6 @@ export let pieUpBalance = (function () {
 
             this.clickUpBalanceEvent = this.clickUpBalanceEvent.bind(this);
             this.changeCurrentUserEvent = this.changeCurrentUserEvent.bind(this);
-            //this.loadUsers = this.loadUsers.bind(this);
             this.updateUserInfo = this.updateUserInfo.bind(this);
             this.saveUsers = this.saveUsers.bind(this);
 

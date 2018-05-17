@@ -22,9 +22,7 @@ export let pieGeneralInfo = (function go() {
         </style>
 
         <div class="generalInfo">
-                <div class="timeShedule">
-                    <p>Неделя ${generalInfo.week}</p>
-                </div>
+                <div class="timeShedule" id = "week"> </div>
                 <div class="countMoney" id = "moneyForWeek"> </div>
         </div>`;
 
@@ -32,18 +30,37 @@ export let pieGeneralInfo = (function go() {
         constructor() {
             super();
             this.attachShadow({ mode: 'open' }).innerHTML = template;
+            this.choosenWeek = this.shadowRoot.getElementById('week');
+            this.moneyForWeek = this.shadowRoot.getElementById('moneyForWeek');
+            this.week = 1;
+            this.updateInfo = this.updateInfo.bind(this);
         }
 
-        connectedCallback() {
-            if (userInfo.type !== "admin") {
-                queries.getTotalPriceForWeek(userInfo.username).then(balance => {
-                    let template = ` <p>Итого за неделю: ${balance.totalPriceForWeek} руб.</p>`;
-                    this.shadowRoot.getElementById("moneyForWeek").innerHTML = template;
+        updateInfo(){
+            if (userInfo.type !== 'admin') {
+                queries.getTotalPriceForWeek(userInfo.username, this.week).then(balance => {
+                    const templateMoney = `<p>Итого за неделю: ${balance.totalPriceForWeek} руб.</p>`;
+                    const templateWeek = `<p id = "week">Неделя ${balance.range}</p>`;
+                    this.moneyForWeek.innerHTML = templateMoney;
+                    this.choosenWeek.innerHTML = templateWeek;
                 }).catch(error => {
-
+                    
                 });
             }
         }
+
+        connectedCallback() {
+            this.updateInfo();
+        }
+
+        static get observedAttributes() {
+            return ['week']; 
+        }
+        
+        attributeChangedCallback(name, oldValue, newValue) {
+            this.week = newValue;
+            this.updateInfo();
+        }   
     }
 
     customElements.define('pie-general-info', GeneralInfo);
