@@ -1,70 +1,8 @@
+import {queries} from "../../queries.js";
+export var menu = undefined;
 export let pieItems = (function () {
 
-    let menu = {
-        'id': 1,
-        'fromDate': "20.02.2018",
-        'menuInfo': {
-            "пн": {
-                "хлеб": {
-                    weight: 2,
-                    count: 1
-                },
-                "суп": {
-                    weight: 22,
-                    count: 1
-                },
-                "бутерброд": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "вт": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                }
-            },
-            "Ср": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                }
-            },
-            "Чт": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                }
-            },
-            "пт": {
-
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "сб": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                }
-            }
-        }
-    };
-
-
+    let userInfo =  JSON.parse(localStorage.getItem("user"));
     let template1 = `
         <style>
             .items {
@@ -86,7 +24,12 @@ export let pieItems = (function () {
         }
 
         connectedCallback() {
-            this.addItems(menu);
+            this.menu = undefined;
+            queries.getMenu(1).then(res =>{
+                menu = res;
+                this.addItems(menu);
+            });
+            
         }
 
         addItems(menu) {
@@ -94,7 +37,12 @@ export let pieItems = (function () {
                 let item = document.createElement('pie-menu-item');
                 item.setAttribute("data-day", day);
                 item.setAttribute("data-holder", "admin");
-                item.setAttribute("data-state", "editMenu");
+                if (userInfo.type === 'admin'){
+                    item.setAttribute("data-state", "clear");
+                } else {
+                    item.setAttribute("data-state", "editMenu");
+                }
+                
                 this.place.appendChild(item);
             }
         }

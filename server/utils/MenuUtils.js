@@ -10,9 +10,10 @@ module.exports = {
 function findMenu(weekNumber) {
 
     let resetedDate = moment().day((weekNumber - 1) * 7 + 1).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
-
+console.log(resetedDate);
     return Menu.findOne({fromDate: resetedDate})
         .then((menu) => {
+            console.log(menu);
             return menu;
         });
 }
@@ -129,7 +130,7 @@ function createMenu(file) {
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
+    return new Date(year, month - 1, day, 3, 0, 0, 0).toString();
 };
 
 function validateMenu(menu) {

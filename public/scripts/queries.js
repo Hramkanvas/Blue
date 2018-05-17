@@ -64,25 +64,8 @@ export let queries = (function () {
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/confirmDayOrders');
         },
 
-        getMenu: function () {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/admin/getMenu');
-                xhr.setRequestHeader('content-type', 'application/json');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var menu;
-                        try {
-                            menu = JSON.parse(xhr.response);
-                        } catch (err) {
-                            menu = undefined;
-                        }
-                        resolve(menu);
-                    }
-                }
-                xhr.send();
-            });
+        getMenu: function (weekNumber) {
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getMenu?number=' + weekNumber);
         },  
 
         getTodayOrdersStatistics: function (date) {
