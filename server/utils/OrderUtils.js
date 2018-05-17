@@ -170,7 +170,7 @@ function confirmDayOrders(date) {
 
 
 function isDayOrdersBlocked(){
-    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
     return Order.findOne({ Date: resetedDate })
         .then((OrderSchema) => {
