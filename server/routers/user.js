@@ -47,7 +47,6 @@ router.put('/makeOrder', (req, res) => {//сделать заказ(обнови
             }
         },
     }*/
-
     users.getUser(req.body.username)
         .then((user) => {
             if(user && user.balance > -20){
