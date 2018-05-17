@@ -10,8 +10,7 @@ module.exports = {
     getOrderPrice,
     ordersForWeek,
     confirmDayOrders,
-    isDayOrdersBlocked,
-    createDayOrdersSchema
+    isDayOrdersBlocked
 };
 
 function createDayOrdersSchema(date) {
@@ -157,21 +156,17 @@ function calculateOrderPrice(order) {
 function getTotal(date) {
     return getDayOrders(date)
         .then((dayOrders) => {
+            let total = {};
 
-            let total = {
-                price: 0
-            };
-
-            for (user in dayOrders) {
-                for (dish in dayOrders[user].info) {
+            for (order in dayOrders) {
+                for (dish in order.info) {
                     if (total[dish]) {
-                        total[dish] += +dayOrders[user].info[dish].count;
+                        total[dish]++;
                     }
                     else {
-                        total[dish] = +dayOrders[user].info[dish].count;
+                        total[dish] = 0;
                     }
                 }
-                total.price += +dayOrders[user].price;
             }
 
             return total;
@@ -190,9 +185,9 @@ function confirmDayOrders(date) {
         });
 }
 
-function isDayOrdersBlocked() {
-    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
 
+function isDayOrdersBlocked(){
+    let resetedDate = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
     return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
             return OrderSchema.isBlocked;

@@ -5,30 +5,29 @@ const orders = require('../utils/OrderUtils');
 const moment = require('moment');
 
 router.get('/getMenu', (req, res) => {
-    //переделать на 0 , 1 , 2
     menu.findMenu(req.query.number)
         .then(answer => {
             if (answer)
                 res.send(answer)
             else
-                res.status(404).send('Menu not found');
+                return Promise.reject(new Error('Menu not found'));;
         })
         .catch(err => res.status(404).send('Menu not found'));
 });
 
 router.put('/upBalance', (req, res) => {
     users.upBalance(req.body.username, req.body.amount)
-        .then((user) => user ? res.status(200).send(user) : res.status(404).send('Invalid username!!!'));
+        .then((user) => user ? res.status(200).send(user) : res.status(404).send('Invalid username'));
 });
 
 router.get('/getUsers', (req, res) => {
     users.getUsers()
         .then(answer => res.send(answer))
-        .catch(err => console.log(err));
+        .catch(err => res.status(404).send(err));
 });
 
 router.get('/getDayOrders', (req, res) => {//для таблицы
-    let date = req.query.date || new Date;
+    let date = req.query.date || momemt();
     let prom = [];
     let p;
     orders.getDayOrders(date)
@@ -47,24 +46,25 @@ router.get('/getDayOrders', (req, res) => {//для таблицы
                 });
 
         })
-        .catch(err => console.log(err));
+        .catch(err => res.status(404).send(err));
 });
 
 router.get('/getDayOrdersStatistic', (req, res) => {//для итогового заказа
-    let date = req.query.date || new Date;
+    let date = req.query.date || momemt();
     orders.getTotal(date)
         .then(answer => res.send(answer))
-        .catch(err => console.log(err));
+        .catch(err => res.status(404).send(err));
 });
 
 router.get('/isMakingOrder', (req, res) => {
-    orders.getDayOrders()
+    orders.isDayOrdersBlocked()
         .then(answer => {
             if (answer === true || answer === false) {
                 res.send(!answer)
-            } else res.status(400).send();
+            }
+            res.status(404).send();
         })
-        .catch(err => console.log(err));
+        .catch(err => res.status(404).send(err));
 });
 
 router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового заказа
@@ -77,26 +77,20 @@ router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового за
 
 router.post('/uploadMenu', (req, res) => {
     const buffer = [];
-
     req.on('data', (chunk) => {
         buffer.push(chunk);
     }).on('end', () => {
-        console.log(buffer);
         const file = Buffer.concat(buffer);
-        console.log(file);
         menu.addMenu(file)
             .then(answer => {
                 console.log(answer);
                 res.send(answer)
             })
-            .catch(err => console.log(err));
+            .catch(err => res.status(404).send(err));
     });
 
 });
 
-//посчитать итого за день
-//списать с баланса price у каждого пользователя
-//isBlock = true
 router.get('/confirmDayOrders', (req, res) => {
     //нужно вызвать запрос  'getDayOrdersStatistic' перед этим,чтобы посчитать кол-во продуктов
     let date = moment();
@@ -106,7 +100,7 @@ router.get('/confirmDayOrders', (req, res) => {
             if (ans)
                 return orders.confirmDayOrders(date)
             else
-                return Promise.reject(new Error('На эту дату подтвержден заказ'));
+                return Promise.reject(new Error('On this date the order is confirmed'));
         })
         .then(() => orders.getDayOrders(date))
         .then((userOrders) => {
