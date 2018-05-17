@@ -10,7 +10,7 @@ const methods = (function () {
         let user = users.find((user) => user.login === login && user.password === password);
         if (user) {
             if (user.type === 'user') {
-                return Users.findOne({username: user.username})
+                us.getUser(user.username)
                     .then((ans) => {
                         if (!ans) {
                             return us.addUser(user.username, user.FIO)

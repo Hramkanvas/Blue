@@ -47,20 +47,29 @@ router.put('/makeOrder', (req, res) => {//сделать заказ(обнови
             }
         },
     }*/
-    order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder)
+
+    users.getUser(req.body.username)
+        .then((user) => {
+            if(user && user.balance > -20){
+                return order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder);
+            }
+                return Promise.reject(new Error('Not enough money'));
+        })
         .then(answer => {
             if (answer)
                 return users.addOrderToHistory(req.body.username, new Date(req.body.date));
             else
-                return;
+                return Promise.reject(new Error('Invalid order'));
         })
         .then(answer => {
-            if (answer)
+            if (answer) {
                 res.send('Success!!!');
-            else
-                res.status(404);
+            }
+            else {
+                return Promise.reject(new Error('Invalid user'));
+            }
         })
-        .catch(err => res.status(404));
+        .catch(err => res.status(404).send(err.message));
     //здесь надо сразу отнимать баланс у user'а
 });
 
@@ -70,15 +79,15 @@ router.delete('/deleteOrder', (req, res) => {
             if (answer)
                 return users.deleteOrderFromHistory(req.body.username, new Date(req.body.date));
             else
-                return;
+                return Promise.reject(new Error('Invalid date'));
         })
         .then(answer => {
             if (answer)
                 res.send('Success!!!');
             else
-                res.status(404).send('Invalid data!!!');
+                return Promise.reject(new Error('Invalid data'));
         })
-        .catch(err => res.status(404));
+        .catch(err => res.status(404).send(err.message));
 });
 
 router.post('/getMainPage', (req,res) => {
@@ -89,7 +98,7 @@ router.post('/getMainPage', (req,res) => {
         .then(array => {
             if (array)
                 return order.ordersForWeek(array, username);
-            res.status(404).send('User not found');
+            return Promise.reject(new Error('User not found'));
         })
         .then(ans => {
             currentOrders = ans;
@@ -102,10 +111,10 @@ router.post('/getMainPage', (req,res) => {
                 answer.push(ans);
                 res.send(answer);
             }
-            res.status(404).send('Menu not found');
-            ;
+            return Promise.reject(new Error('Menu not found'));
+
         })
-        .catch(err => res.status(404));
+        .catch(err => res.status(404).send(err.message));
 
 });
 

@@ -4,7 +4,7 @@ const moment = require('moment');
 module.exports = {
     findMenu,
     findMenuByDate,
-    addMenu,
+    addMenu
 };
 
 function findMenu(weekNumber) {
@@ -19,7 +19,7 @@ function findMenu(weekNumber) {
 
 
 function findMenuByDate(date) {
-    let resetedDate = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
     return Menu.findOne({ fromDate: resetedDate })
         .then((menu) => {
             return menu;
@@ -129,7 +129,7 @@ function createMenu(file) {
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
+    return new Date(year, month - 1, day, 3, 0, 0, 0).toString();
 };
 
 function validateMenu(menu) {
