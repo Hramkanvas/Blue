@@ -4,11 +4,48 @@ export let pieItems = (function () {
         'id': 1,
         'fromDate': "20.02.2018",
         'menuInfo': {
-            "mon": {
+            "пн": {
+                "хлеб": {
+                    weight: 2,
+                    count: 1
+                },
+                "суп": {
+                    weight: 22,
+                    count: 1
+                },
+                "бутерброд": {
+                    weight: 12,
+                    count: 1
+                }
+            },
+            "вт": {
                 "bread": {
                     weight: 2,
                     count: 1
                 },
+                "soup": {
+                    weight: 22,
+                    count: 1
+                }
+            },
+            "Ср": {
+                "bread": {
+                    weight: 2,
+                    count: 1
+                }
+            },
+            "Чт": {
+                "bread": {
+                    weight: 2,
+                    count: 1
+                },
+                "soup": {
+                    weight: 22,
+                    count: 1
+                }
+            },
+            "пт": {
+
                 "soup": {
                     weight: 22,
                     count: 1
@@ -18,73 +55,9 @@ export let pieItems = (function () {
                     count: 1
                 }
             },
-            "wen": {
+            "сб": {
                 "bread": {
                     weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "tr": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "th": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "fr": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "sb": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
                     count: 1
                 }
             }
@@ -100,9 +73,7 @@ export let pieItems = (function () {
                 grid-gap: 50px 30px;
             }
         </style>
-
         <div class="items">
-
         </div>
     `;
 
@@ -122,11 +93,13 @@ export let pieItems = (function () {
             for (let day in menu.menuInfo){
                 let item = document.createElement('pie-menu-item');
                 item.setAttribute("data-day", day);
+                item.setAttribute("data-holder", "admin");
+                item.setAttribute("data-state", "editMenu");
                 this.place.appendChild(item);
             }
         }
-
     }
+
     customElements.define('pie-items', Items);
 
 })();

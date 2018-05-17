@@ -2,6 +2,7 @@ export let pieShowMainPart = (function () {
     let template = `
         <pie-general-info id = "info"></pie-general-info>
         <pie-arrows id = "arrows"></pie-arrows>
+        <pie-items></pie-items>
     `;
 
     class ShowMainPartClass extends HTMLElement {

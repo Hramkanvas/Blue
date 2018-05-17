@@ -1,4 +1,4 @@
-(function () {
+export let pieMenuItem = (function () {
 
     let menu = {
         'id': 1,
