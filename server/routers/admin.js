@@ -58,7 +58,7 @@ router.get('/getDayOrdersStatistic', (req, res) => {//для итогового 
 });
 
 router.get('/isMakingOrder', (req, res) => {
-    orders.getDayOrders()
+    orders.isDayOrdersBlocked()
         .then(answer => {
             if (answer === true || answer === false) {
                 res.send(!answer)
