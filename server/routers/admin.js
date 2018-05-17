@@ -8,7 +8,7 @@ router.get('/getMenu', (req, res) => {
     menu.findMenu(req.query.number)
         .then(answer => {
             if (answer)
-                res.send(answer)
+                res.send(answer);
             else
                 return Promise.reject(new Error('Menu not found'));;
         })
@@ -57,7 +57,7 @@ router.get('/getDayOrdersStatistic', (req, res) => {//для итогового 
 });
 
 router.get('/isMakingOrder', (req, res) => {
-    orders.getDayOrders()
+    orders.isDayOrdersBlocked()
         .then(answer => {
             if (answer === true || answer === false) {
                 res.send(!answer)
