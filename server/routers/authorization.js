@@ -1,6 +1,6 @@
-let router = require('express').Router();
-let methods = require('../utils/QueryMethods');
-let users = require('../utils/UsersUtils');
+const router = require('express').Router();
+const methods = require('../utils/QueryMethods');
+const users = require('../utils/UsersUtils');
 
 router.post('/login', (req, res) => {
     methods.login(req.body.login, req.body.password)
