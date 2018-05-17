@@ -3,6 +3,7 @@ const Menu = require('../models/Menu');
 const moment = require('moment');
 module.exports = {
     findMenu,
+    findMenuByDate,
     addMenu
 };
 
@@ -17,6 +18,14 @@ function findMenu(weekNumber) {
 }
 
 
+function findMenuByDate(date) {
+    let resetedDate = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    return Menu.findOne({ fromDate: resetedDate })
+        .then((menu) => {
+            return menu;
+        });
+}
+
 function addMenu(file) {
     const menu = createMenu(file);
 
@@ -28,7 +37,7 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return findMenu(menuSchema.fromDate).then((menu) => {
+        return findMenuByDate(menuSchema.fromDate).then((menu) => {
             if (menu) {
                 return menu.remove()
                     .then(() => menuSchema.save())

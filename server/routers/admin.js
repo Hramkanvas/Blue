@@ -5,7 +5,6 @@ const orders = require('../utils/OrderUtils');
 const moment = require('moment');
 
 router.get('/getMenu', (req, res) => {
-    //переделать на 0 , 1 , 2
     menu.findMenu(req.query.number)
         .then(answer => {
             if (answer)
@@ -70,13 +69,10 @@ router.get('/isMakingOrder', (req, res) => {
 
 router.post('/uploadMenu', (req, res) => {
     const buffer = [];
-
     req.on('data', (chunk) => {
         buffer.push(chunk);
     }).on('end', () => {
-        console.log(buffer);
         const file = Buffer.concat(buffer);
-        console.log(file);
         menu.addMenu(file)
             .then(answer => {
                 res.send(answer)
@@ -86,9 +82,6 @@ router.post('/uploadMenu', (req, res) => {
 
 });
 
-//посчитать итого за день
-//списать с баланса price у каждого пользователя
-//isBlock = true
 router.get('/confirmDayOrders', (req, res) => {
     //нужно вызвать запрос  'getDayOrdersStatistic' перед этим,чтобы посчитать кол-во продуктов
     let date = moment();
