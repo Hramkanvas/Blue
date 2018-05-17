@@ -86,6 +86,7 @@ router.post('/uploadMenu', (req, res) => {
         console.log(file);
         menu.addMenu(file)
             .then(answer => {
+                console.log(answer);
                 res.send(answer)
             })
             .catch(err => console.log(err));

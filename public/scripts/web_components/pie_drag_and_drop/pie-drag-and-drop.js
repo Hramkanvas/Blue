@@ -1,4 +1,5 @@
 import { queries } from "../../queries.js";
+import {pieError} from "../pie_error/pie-error.js";
 
 export let pieDragAndDrop = (function () {
     let templateT = `
@@ -66,7 +67,11 @@ export let pieDragAndDrop = (function () {
         }
 
         clickUpload(event){
-            queries.uploadMenu(this.currentFile);
+            queries.uploadMenu(this.currentFile).then(res =>{
+                this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите файл сюда.'; 
+                this.btUpload.style.visibility = 'hidden';
+                pieError.showError(res.message);
+            });
         }
 
         dragOverEvent(event){

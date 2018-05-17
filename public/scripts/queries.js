@@ -41,10 +41,10 @@ export let queries = (function () {
             myInit.method = 'POST';
             myInit.headers = giveMeHeader('Content-Type', 'text/plain');
             myInit.body = file;
-            return fetch('/admin/uploadMenu', myInit).then(response => {
-                console.log(response.json());
-                return response.json();
-            });
+            return fetch('/admin/uploadMenu', myInit).then(res => res.json())
+                .then(response => {
+                    return response;
+                });
         },
 
         getDayOrders: function () {
