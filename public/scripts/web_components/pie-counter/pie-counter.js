@@ -1,9 +1,8 @@
-export let pieCounter = (function () {
+(function () {
 
     let template = `
     
-        <link rel="stylesheet" type="text/css" href="../styles/font-awesome.css">
-
+        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
         <style>
             .countProducts {
                 user-select: none;
@@ -30,12 +29,13 @@ export let pieCounter = (function () {
         constructor() {
             super();
             this.counter = 0;
-            this.attachShadow({ mode: 'open' }).innerHTML = template;
+            this.attachShadow({mode: 'open'}).innerHTML = template;
             this.calculate = this.calculate.bind(this);
             this.remove = this.shadowRoot.getElementById("remove");
             this.add = this.shadowRoot.getElementById("add");
             this.count = this.shadowRoot.getElementById("count");
             this.render = this.render.bind(this);
+            this.productPrice = 0;
         }
 
         connectedCallback() {
@@ -45,32 +45,53 @@ export let pieCounter = (function () {
 
         disconnectedCallback() {
             this.remove.addEventListener("click", this.calculate);
-            this.add.addEventListener("click", this.calculate);        
+            this.add.addEventListener("click", this.calculate);
         }
 
         calculate(e) {
-            
+            this.productPrice = this.parentElement.parentElement.children[1].children[0];
+            let prevCounter = this.counter;
+
             if (e.path[1].id === "remove") {
                 if (this.counter <= 0) {
                     this.counter = 0;
-                    this.render(this.counter);
+                    this.render(this.counter, prevCounter);
                 }
-                else{
+                else {
                     this.counter--;
-                    this.render(this.counter);
-                }                
+                    this.render(this.counter, prevCounter);
+                }
             }
             else if (e.path[1].id === "add") {
                 this.counter++;
-                this.render(this.counter);
+                this.render(this.counter, prevCounter);
             }
         }
 
-        render(counter) {
+        render(counter, prevCounter) {
+            let price = this.productPrice.innerText || 1;
+            console.log(prevCounter);
+
+            let priceChange = 0;
+            if (counter === 0 || prevCounter === 0) {
+                this.productPrice.innerHTML = price;
+                priceChange = counter === 0 && prevCounter === 0 ? 0 : (counter > prevCounter ? +this.productPrice.innerHTML : -this.productPrice.innerHTML);
+            }
+            else if (counter === 1 && prevCounter === 2) {
+                this.productPrice.innerHTML = (price / 2).toString();
+                priceChange = -this.productPrice.innerHTML;
+            }
+            else {
+                this.productPrice.innerHTML = (counter * (price / prevCounter)).toString();
+                priceChange = counter > prevCounter ? +this.productPrice.innerHTML / counter : -this.productPrice.innerHTML / counter;
+            }
             this.count.innerHTML = counter;
+
+            let counterEvent = new CustomEvent("counter", {detail: {priceChange: priceChange}, bubbles: true});
+            this.dispatchEvent(counterEvent);
         }
     }
 
-    customElements.define('count-product', CountProduct);
+    customElements.define('pie-counter', CountProduct);
 
 })();
