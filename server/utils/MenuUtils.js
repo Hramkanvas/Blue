@@ -3,7 +3,7 @@ const Menu = require('../models/Menu');
 const moment = require('moment');
 module.exports = {
     findMenu,
-    addMenu,
+    addMenu
 };
 
 function findMenu(weekNumber) {
