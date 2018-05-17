@@ -3,64 +3,87 @@ const Menu = require('../models/Menu');
 const moment = require('moment');
 module.exports = {
     findMenu,
-    addMenu,
+    findMenuByDate,
+    addMenu
 };
 
 function findMenu(weekNumber) {
 
-    let resetedDate = moment().day((weekNumber - 1) * 7 + 1).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = moment().day((weekNumber - 1) * 7 + 1).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
 
-    return Menu.findOne({ fromDate: resetedDate })
+    return Menu.findOne({fromDate: resetedDate})
         .then((menu) => {
             return menu;
         });
 }
 
 
+function findMenuByDate(date) {
+    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    return Menu.findOne({ fromDate: resetedDate })
+        .then((menu) => {
+            return menu;
+        });
+}
+
 function addMenu(file) {
     const menu = createMenu(file);
-    if (validateMenu(menu)) {
+
+    let answer = validateMenu(menu);
+
+    if (answer.body) {
         const menuSchema = new Menu({
             fromDate: menu.fromDate,
             menuInfo: menu.menuInfo
         });
 
-        return findMenu(menuSchema.fromDate).
-            then((menu) => {
-                if (menu) {
-                    return menu.remove()
-                        .then(() => menuSchema.save());
-                }
-                else {
-                    return Menu.find({})
-                        .then((arr) => {
+        return findMenuByDate(menuSchema.fromDate).then((menu) => {
+            if (menu) {
+                return menu.remove()
+                    .then(() => menuSchema.save())
+                    .then(() => {
+                        return {body: true, message: "Меню обновлено"}
+                    });
+            }
+            else {
+                return Menu.find({})
+                    .then((arr) => {
 
-                            arr.sort((a, b) => {
-                                return (+new Date(a.fromDate)) - (+new Date(b.fromDate));
-                            })
-
-                            if (arr.length === 3) {
-                                return Promise.all(arr[0].remove(), arr[1].remove())
-                                    .then(() => menuSchema.save());
-                            }
-
-                            else if (arr.length === 2) {
-                                return arr[0].remove()
-                                    .then(() => menuSchema.save());
-                            }
-
-                            else {
-                                return menuSchema.save();
-                            }
-
+                        arr.sort((a, b) => {
+                            return (+new Date(a.fromDate)) - (+new Date(b.fromDate));
                         })
-                }
-            })
+
+                        if (arr.length === 3) {
+                            return Promise.all(arr[0].remove(), arr[1].remove())
+                                .then(() => menuSchema.save())
+                                .then(() => {
+                                    return {body: true, message: "Меню добавлено"}
+                                });
+                        }
+
+                        else if (arr.length === 2) {
+                            return arr[0].remove()
+                                .then(() => menuSchema.save())
+                                .then(() => {
+                                    return {body: true, message: "Меню добавлено"}
+                                });
+                        }
+
+                        else {
+                            return menuSchema.save()
+                                .then(() => {
+                                    return {body: true, message: "Меню добавлено"}
+                                });
+                        }
+
+                    })
+            }
+        })
     }
 
     else {
         return new Promise((res, rej) => {
-            res(false);
+            res(answer);
         });
     }
 }
@@ -100,34 +123,37 @@ function createMenu(file) {
 
     delete menuInfo["Дата"];
 
-    return { fromDate, menuInfo };
+    return {fromDate, menuInfo};
 };
 
 
 function toNormalDateFrom(date) {
     const [day, month, year] = date.split('.');
-    return new Date(year, month - 1, day, 0, 0, 0, 0).toString();
+    return new Date(year, month - 1, day, 3, 0, 0, 0).toString();
 };
 
 function validateMenu(menu) {
 
 
-    let fromDate = moment(new Date(menu.fromDate)).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let fromDate = moment(new Date(menu.fromDate)).set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
 
-    let monday = moment().day(1).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
-    let severalDaysLater = moment().day(8).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let monday = moment().day(1).set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
+    let severalDaysLater = moment().day(8).set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
 
     if (!monday.isSame(fromDate) && !severalDaysLater.isSame(fromDate)) {
-        return false;
+        return {body: false, message: "Меню на дату, на которую нельзя"};
     }
 
     const menuInfo = menu.menuInfo;
 
     for (days in menuInfo) {
         for (dish in menuInfo[days]) {
-            if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return false;
+            if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return {
+                body: false,
+                message: `Ошибка цене или весе ${dish}`
+            };
         }
     }
 
-    return true;
+    return {body: true, message: "Успешно"};
 };

@@ -12,7 +12,8 @@ module.exports = {
     getBalance,
     getOrders,
     getFIO,
-    getUsers
+    getUsers,
+    getUser
 }
 
 function addOrderToHistory(username, receved_date) {
@@ -22,10 +23,6 @@ function addOrderToHistory(username, receved_date) {
                 return false;
             }
             let date = new Date(receved_date);
-            /*if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
-                return false;
-            }*/
-
             date.setHours(3, 0, 0, 0);
             switch (getWeekKey(date, user.history.previousMonday)) {
                 case 1:
@@ -57,9 +54,9 @@ function deleteOrderFromHistory(username, receved_date) {
                 return false;
             }
             let date = new Date(receved_date);
-           /* if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
-                return false;
-            }*/
+            /* if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
+                 return false;
+             }*/
 
             date.setHours(3, 0, 0, 0);
             switch (getWeekKey(date, user.history.previousMonday)) {
@@ -107,6 +104,10 @@ function getOrders(username, key = 1) {//ключ: 0 - предыдущая не
 
 function getUsers() {
     return Users.find({}, {username: 1, FIO: 1, balance: 1});
+};
+
+function getUser(username) {
+    return Users.findOne({username});
 }
 
 function getFIO(username) {
@@ -188,6 +189,7 @@ function withdrawFromBalance(username, amount) {
                 return false;
         });
 };
+
 function addUser(username, FIO) {
     let prMonday = new Date(moment().day(-6));
     prMonday.setHours(3, 0, 0, 0);
@@ -203,5 +205,5 @@ function addUser(username, FIO) {
         }
     });
 
-    return newUser.save();
+    return newUser.save().then(() => newUser);
 };

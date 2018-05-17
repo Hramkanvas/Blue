@@ -13,17 +13,33 @@ module.exports = {
     isDayOrdersBlocked
 };
 
+function createDayOrdersSchema(date) {
+    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+
+    return Order.findOne({Date: resetedDate}).then((OrderSchema) => {
+        if (!OrderSchema) {
+            OrderSchema = new Order({
+                Date: resetedDate,
+                Orders: {},
+                isBlocked: false
+            });
+            return OrderSchema.save();
+        }
+    })
+}
+
 function uploadOrder(date, username, uploadOrder) {
 
     if (validateTime(date)) {
-        let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+        let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
         uploadOrder.price = calculateOrderPrice(uploadOrder);
-        return Order.findOne({ Date: resetedDate })
+        return Order.findOne({Date: resetedDate})
             .then((OrderSchema) => {
                 if (OrderSchema) {
                     if (!OrderSchema.isBlocked) {
                         OrderSchema.Orders[username] = uploadOrder;
-                        return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                        const orders = OrderSchema.Orders;
+                        return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
                     }
                     else {
                         return false;
@@ -62,7 +78,7 @@ function ordersForWeek(dates, username) {
 }
 
 function validateTime(date) {
-    let now = moment().set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let now = moment().set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
     let severalDaysLater = moment(now).day(14);
 
     if (!moment(date).isSameOrAfter(now) || !moment(date).isBefore(severalDaysLater) || moment().day() === 0) {
@@ -74,9 +90,9 @@ function validateTime(date) {
 
 function deleteOrder(date, username) {
 
-    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
 
-    return Order.findOne({ Date: resetedDate })
+    return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
             if (OrderSchema) {
                 if (!OrderSchema.Orders[username]) {
@@ -94,7 +110,7 @@ function deleteOrder(date, username) {
                     }
 
                     const orders = OrderSchema.Orders;
-                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
+                    return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
                 }
 
                 return false;
@@ -104,9 +120,9 @@ function deleteOrder(date, username) {
 }
 
 function getDayOrders(date) {
-    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
 
-    return Order.findOne({ Date: resetedDate })
+    return Order.findOne({Date: resetedDate})
         .then(OrderSchema => {
             if (OrderSchema) {
                 return OrderSchema.Orders;
@@ -158,13 +174,14 @@ function getTotal(date) {
 }
 
 
-
 function confirmDayOrders(date) {
-    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
 
-    return Order.findOne({ Date: resetedDate })
+    return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
-            return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
+            if (!OrderSchema.isBlocked)
+                return Order.updateOne({'_id': OrderSchema._id}, {$set: {'isBlocked': true}});
+            return false;
         });
 }
 
@@ -172,7 +189,7 @@ function confirmDayOrders(date) {
 function isDayOrdersBlocked(){
     let resetedDate = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
 
-    return Order.findOne({ Date: resetedDate })
+    return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
             return OrderSchema.isBlocked;
         });
