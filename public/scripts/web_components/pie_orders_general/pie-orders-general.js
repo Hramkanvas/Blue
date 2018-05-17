@@ -1,4 +1,4 @@
-export let ordersGeneralComponent = (function () {
+export let pieOrdersGeneralComponent = (function () {
 
     let template = `
     <style>

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Hramkanvas/Blue#readme",
   "dependencies": {
-    "body-parser": "latest",
+    "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "moment": "^2.22.1",
     "mongoose": "^5.0.15",

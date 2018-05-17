@@ -1,71 +1,5 @@
-(function () {
-
-    let menu = {
-        'id': 1,
-        'fromDate': "20.02.2018",
-        'menuInfo': {
-            "пн": {
-
-                "хлеб": {
-                    weight: 2,
-                    count: 1
-                },
-                "суп": {
-                    weight: 22,
-                    count: 1
-                },
-                "бутерброд": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "вт": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                }
-            },
-            "Ср": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                }
-            },
-            "Чт": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                },
-                "soup": {
-                    weight: 22,
-                    count: 1
-                }
-            },
-            "пт": {
-
-                "soup": {
-                    weight: 22,
-                    count: 1
-                },
-                "egg": {
-                    weight: 12,
-                    count: 1
-                }
-            },
-            "сб": {
-                "bread": {
-                    weight: 2,
-                    count: 1
-                }
-            }
-        }
-    };
-
-
+import { menu } from '../pie_items/pie-items.js'
+export let pieMenuItem = (function () {
     let template = `
     
         <style>
@@ -75,17 +9,14 @@
                 text-align: left;
                 width: 100%;
             }
-
             th {
                 padding-bottom: 20px;
                 font-size: 18px;
                 padding-top: 10px;
             }
-
             tr {
                 width: 100%;
             }
-
             td {
                 font-size: 18px;
                 padding-right: 35px;
@@ -95,16 +26,13 @@
                 overflow: hidden;
                 white-space: nowrap;
             }
-
             b {
                 color: var(--grey-black);
             }
-
             i:hover {
                 cursor: pointer;
                 color: black;
             }
-
             button {
                 display: flex;
                 margin: 0 auto;
@@ -116,14 +44,12 @@
                 background: #3d8af7;
                 padding: 10px 20px;
             }
-
             .itemFunc {
                 display: flex;
                 padding-bottom: 15px;
                 justify-content: space-between;
                 align-items: center;
             }
-
             .itemFunc h5 {
                 text-transform: capitalize;
                 text-align: left;
@@ -131,7 +57,6 @@
                 font-weight: 600;
                 margin: 10px 20px;
             }
-
             .item {
                 position: relative;
                 top:0px;
@@ -153,16 +78,13 @@
             .item:hover {
                 top: -10px;
             }
-
             .itemFuncButtons i {
                 font-size: 27px;
                 margin: 0px 2px;
             }
-
             .countProducts, .remove, .add {
                 margin: 0px 5px;
             }
-
             .price {
                 color: var(--grey-black);
                 position: absolute;
@@ -174,13 +96,10 @@
                 right: 0;
                 bottom: 0;
             }
-
             .price.edit {
                 bottom: 70px;
                 padding: 10px 0px;
             }
-
-
             .orderButton {
                 padding: 10px 20px;
                 position: absolute;
@@ -188,48 +107,38 @@
                 bottom: 5%;
                 transform: translate(-50%);
             }
-
             .orderButton.edit {
                 padding: 5px 10px;
             }
-
             .pastMenu {
                 border-top: 3px solid black;
             }
-
             .editMenu {
                 box-shadow: 4px 5px 6px 1px #1464f685;
                 border-top: 3px solid #1464f6;
             }
-
             .editMenu td {
                 padding-right: 20px;
             }
-
             .countProducts {
                 display: flex;
             }
-
             .addMenu {
                 position: absolute;
                 top: 88%;
                 width: 100%;
                 left: 0;
             }
-
             button:hover {
                 background: #72bb53;
             }
-
             .futureMenu {
                 box-shadow: 4px 5px 6px 1px #72bb537a;
                 border-top: 3px solid #72bb53;
             }
-
             .item caption {
                 font-size: 15px;
             }
-
         </style>
         
         <div class="item">
@@ -321,7 +230,6 @@
                         <div class="itemFunc">
                             <h5>${this.dayMenu}</h5>
                         </div>
-
                         <div class="itemMenu">
                             <table>
                                 <caption>Оформленный заказ:</caption>
@@ -354,7 +262,6 @@
                                 </span>
                             </div>
                         </div>
-
                         <div class="itemMenu">
                             <table>
                                 <caption>Оформленный заказ:</caption>
@@ -384,7 +291,6 @@
                         <div class="itemFunc">
                             <h5>${this.dayMenu}</h5>
                         </div>
-
                         <div class="itemMenu">
                             <table>
                                 <caption>Меню на день:</caption>
@@ -418,7 +324,6 @@
                                 </span>
                             </div>
                         </div>
-
                         <div class="itemMenu">
                             <table>
                                 <caption>Меню на день:</caption>

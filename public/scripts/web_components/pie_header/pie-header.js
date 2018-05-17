@@ -1,13 +1,9 @@
-(function () {
+export let pieHeaderContent = (function () {
 
-    let userInfo = {
-        name: "Алексей",
-        balance: 90
-    }
+    let userInfo =  JSON.parse(localStorage.getItem("user"));
 
     let template = `
-        <style>
-     
+        <style> 
         a {
             text-decoration: none;
         }
@@ -67,15 +63,12 @@
                 <img src="img/logoExadel.png" alt="logoExadel">
             </div>
             <div class="userInfo">
-                <span class="userInfoBalans">
-                    Баланс:
-                    <b>${userInfo.balance}</b> руб.
-                </span>
+            <span class="userInfoBalans" id = "balance"> </span>
                 <span class="userInfoName">
-                    ${userInfo.name}
+                    ${userInfo.FIO}
                 </span>
                 <span class="userInfoButton">
-                    <a href="">Выход</a>
+                    <a>Выход</a>
                 </span>
             </div>
         </div>
@@ -88,6 +81,11 @@
             this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.exitButton = this.shadowRoot.querySelector("span.userInfoButton");
             this.out = this.out.bind(this);
+
+            if (userInfo.type !== "admin"){
+                let temp = `Баланс: <b>${userInfo.balance}</b> руб.`
+                this.shadowRoot.getElementById("balance").innerHTML = temp;
+            }
         }
 
         connectedCallback() {
@@ -95,16 +93,16 @@
         }
 
         out() {
-            document.location.href = '../index.html'
+            window.location.assign("./");
         }
 
         disconnectedCallback() {
             this.exitButton.removeEventListener("click", this.out);
         }
-
+        
     }
 
-    customElements.define('header-content', HeaderContent);
+    customElements.define('pie-header-content', HeaderContent);
 
 })();
 

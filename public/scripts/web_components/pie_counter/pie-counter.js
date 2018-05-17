@@ -1,4 +1,4 @@
-(function () {
+export let counter = (function () {
 
     let template = `
     

@@ -5,13 +5,15 @@ const weekMillisec = 1000 * 60 * 60 * 24 * 7;
 
 module.exports = {
     upBalance,
+    withdrawFromBalance,
     addUser,
     addOrderToHistory,
     deleteOrderFromHistory,
     getBalance,
     getOrders,
     getFIO,
-    getUsers
+    getUsers,
+    getUser
 }
 
 function addOrderToHistory(username, receved_date) {
@@ -21,10 +23,6 @@ function addOrderToHistory(username, receved_date) {
                 return false;
             }
             let date = new Date(receved_date);
-            if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
-                return false;
-            }
-
             date.setHours(3, 0, 0, 0);
             switch (getWeekKey(date, user.history.previousMonday)) {
                 case 1:
@@ -56,9 +54,9 @@ function deleteOrderFromHistory(username, receved_date) {
                 return false;
             }
             let date = new Date(receved_date);
-            if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
-                return false;
-            }
+            /* if (moment(date).set({'h': 10, 'm': 0, 's': 0, 'ms': 0}).isBefore(moment())) {
+                 return false;
+             }*/
 
             date.setHours(3, 0, 0, 0);
             switch (getWeekKey(date, user.history.previousMonday)) {
@@ -90,6 +88,7 @@ function getOrders(username, key = 1) {//ключ: 0 - предыдущая не
             if (!user) {
                 return false;
             }
+            console.log(key);
             switch (key) {
                 case 0:
                     return user.history.previous;
@@ -105,6 +104,10 @@ function getOrders(username, key = 1) {//ключ: 0 - предыдущая не
 
 function getUsers() {
     return Users.find({}, {username: 1, FIO: 1, balance: 1});
+};
+
+function getUser(username) {
+    return Users.findOne({username});
 }
 
 function getFIO(username) {
@@ -166,8 +169,20 @@ function getWeekKey(date, prMonday) {
 function upBalance(username, amount) {
     return Users.findOne({username})
         .then((user) => {
-            if (user) {
+            if (user && typeof (amount) == "number" && amount > 0) {
                 user.balance += +amount;
+                return user.save();
+            }
+            else
+                return false;
+        });
+};
+
+function withdrawFromBalance(username, amount) {
+    return Users.findOne({username})
+        .then((user) => {
+            if (user && typeof (amount) == "number" && amount > 0) {
+                user.balance -= +amount;
                 return user.save();
             }
             else
@@ -189,7 +204,5 @@ function addUser(username, FIO) {
             next: new Array()
         }
     });
-    newUser.save(function (err) {
-        if (err) throw err;
-    });
+    return newUser.save().then(() => newUser);
 };

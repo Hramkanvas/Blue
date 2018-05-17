@@ -102,7 +102,7 @@ export let pieAuthorization = (function () {
             <input name="login" type="text" id="username">
             <label for="password">ПАРОЛЬ:</label>
             <input name="password" type="password" id="password">
-            <button id="authorizeBt" type="button">Готово</button>
+            <button id="authorizeBt" type="button">Войти</button>
         </form>
     </div>
     `;
@@ -126,16 +126,19 @@ export let pieAuthorization = (function () {
         }
 
         authorize(event) {
-            let login = this.authorizeForm.elements.login.value;
-            let password = this.authorizeForm.elements.password.value;
-            queries.authorize(login, password).then(
-                function (user) {
-                   window.location.assign("./admin.html");
-                }.bind(this),
-                function (error) {
-                    this.authorizationBlock.className = "authorizationBlockError";
-                }.bind(this)
-            );
+            const login = this.authorizeForm.elements.login.value;
+            const password = this.authorizeForm.elements.password.value;
+            queries.authorize(login, password).then( user => {
+                    localStorage.setItem("user", JSON.stringify(user));
+                    if (user.type === "admin"){
+                        window.location.assign("./admin.html");
+                    } else {
+                        window.location.assign("./user.html");
+                    }
+                }
+            ).catch(error => {
+                this.authorizationBlock.className = "authorizationBlockError";
+            });
         }
     }
 
