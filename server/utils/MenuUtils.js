@@ -37,7 +37,7 @@ function addMenu(file) {
             menuInfo: menu.menuInfo
         });
 
-        return findMenu(menuSchema.fromDate).then((menu) => {
+        return findMenuByDate(menuSchema.fromDate).then((menu) => {
             if (menu) {
                 return menu.remove()
                     .then(() => menuSchema.save())
