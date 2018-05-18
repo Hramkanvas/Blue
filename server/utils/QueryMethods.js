@@ -15,8 +15,10 @@ const methods = (function () {
                         if (!ans) {
                             return us.addUser(user.username, user.FIO)
                         }
-                        else
+                        else{
                             return ans;
+                        }
+
                     });
 
             }
