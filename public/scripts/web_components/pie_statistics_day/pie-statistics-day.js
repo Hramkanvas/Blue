@@ -1,40 +1,6 @@
 import { queries } from "../../queries.js";
 
 export let pieStatisticsDayComponent = (function () {
-    let statisticsDay = {
-        personalStatistics: [ //example of how to organize json, which comes from the server on the getStatistics request
-            {
-                name: 'Someone1',
-                listOfOrders: 'ListOfSomeone1Orders'
-            },
-            {
-                name: 'Someone2',
-                listOfOrders: 'ListOfSomeone2Orders'
-            },
-            {
-                name: 'Someone3',
-                listOfOrders: 'ListOfSomeone3Orders'
-            }
-        ],
-        generalStatistics: [
-            {
-                foodName: 'Pies',
-                quantity: 45
-            },
-            {
-                foodName: 'Puddings',
-                quantity: 34
-            },
-            {
-                foodName: 'Cookies',
-                quantity: 57
-            },
-            {
-                foodName: 'Chocolates',
-                quantity: 12
-            },
-        ]
-    };
     let template = `
     <style>
     html {
@@ -137,7 +103,6 @@ export let pieStatisticsDayComponent = (function () {
 
         fillTable() {
             queries.getTodayOrdersStatistics().then(result => {
-                console.log(result);
                 let insideTemplate = `<tbody>`;
                 const keys = Object.keys(result);
                 keys.forEach(key => {

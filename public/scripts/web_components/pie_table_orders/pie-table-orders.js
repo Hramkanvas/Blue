@@ -1,44 +1,7 @@
 import { queries } from "../../queries.js";
-import {pieError} from "../pie_error/pie-error.js";
+import { pieError } from "../pie_error/pie-error.js";
 
 export let pieTableOrders = (function () {
-    let statisticsDay = {
-        personalStatistics: [ //example of how to organize json, which comes from the server on the getStatistics request
-            {
-                name: 'Someone1',
-                listOfOrders: 'ListOfSomeone1Orders',
-                smthElse: 'smth1'
-            },
-            {
-                name: 'Someone2',
-                listOfOrders: 'ListOfSomeone2Orders',
-                smthElse: 'smth2'
-            },
-            {
-                name: 'Someone3',
-                listOfOrders: 'ListOfSomeone3Orders',
-                smthElse: 'smth3'
-            }
-        ],
-        generalStatistics: [
-            {
-                foodName: 'Pies',
-                quantity: 45
-            },
-            {
-                foodName: 'Puddings',
-                quantity: 34
-            },
-            {
-                foodName: 'Cookies',
-                quantity: 57
-            },
-            {
-                foodName: 'Chocolates',
-                quantity: 12
-            },
-        ]
-    };
     let template = `
         <style>
         html {
@@ -171,43 +134,56 @@ export let pieTableOrders = (function () {
             this.ordersTable = this.shadowRoot.getElementById('ordersTable');
             this.loadOrders = this.loadOrders.bind(this);
             this.showAllUsers = this.showAllUsers.bind(this);
-            this.loadOrders();
+            this.loadNames = this.loadNames.bind(this);
         }
 
-        showAllUsers(){
-            this.ordersTable.innerHTML = "";
-            let template2 = ``;
-            statisticsDay.personalStatistics.forEach(function (item) {
-                template2 += `
-                <tr class="ordersTableHeader">
-                    <th>${item.name}</th>
-                    <th>${item.listOfOrders}</th>
-                    <th>${item.smthElse}</th>
-                </tr>
+        showAllUsers() {
+            let templ = ``;
+            const usernames = Object.keys(this.orders);
+            usernames.forEach(username => {
+                const products = this.orders[username].info;
+                let listOrders = "";
+                const productsNames = Object.keys(products);
+                productsNames.forEach(prod => {
+                    listOrders += prod + "  -  " + products[prod].count + '<br>';
+                });
+                templ += `
+                    <tr class="ordersTableHeader">
+                        <th>${this.orders[username].FIO}</th>
+                        <th>${listOrders}</th>
+                        <th>${this.orders[username].price}</th>
+                    </tr>
+                    `;
+            });
+            this.ordersTable.innerHTML = templ;
+        }
+
+        loadNames(){
+            let template1 = ``;
+            const usernames = Object.keys(this.orders);
+            usernames.forEach(username => {
+                template1 += `
+                    <option value="${this.orders[username].FIO}"></option>
                 `;
-            }.bind(this))
-            this.ordersTable.innerHTML = template2;
+            })
+            this.nameList.innerHTML = template1;
         }
 
         loadOrders() {
             queries.getDayOrders().then(orders => {
-                console.log(orders);
+                this.orders = orders;
+                this.showAllUsers();
+                this.loadNames();
             },
-            error => {
-                console.log(error);
-            });
+                error => {
+                    console.log(error);
+                });
         }
 
         connectedCallback() {
             this.inputZone.addEventListener('input', this.getPerson)
-            let template1 = ``;
-            statisticsDay.personalStatistics.forEach(function (item) {
-                template1 += `
-                    <option value=${item.name}></option>
-                `;
-            }.bind(this))
-            this.nameList.innerHTML = template1;
-            this.showAllUsers();
+            this.loadOrders();
+          
         }
 
         disconnectedCallback() {
@@ -215,10 +191,10 @@ export let pieTableOrders = (function () {
         }
         getPerson(event) {
             let iNeedThisPerson = statisticsDay.personalStatistics.filter(item => item.name.toLowerCase().match(new RegExp(`^${this.inputZone.value.toLowerCase()}.*`)));
-            if (iNeedThisPerson.length !== 0){
+            if (iNeedThisPerson.length !== 0) {
                 this.ordersTable.innerHTML = "";
                 let appendingRes = "";
-                iNeedThisPerson.forEach(function(item, i, arr) {
+                iNeedThisPerson.forEach(function (item, i, arr) {
                     let templateOrder = `
                 <tr class="ordersTableHeader">
                     <th>${item.name}</th>
@@ -226,7 +202,7 @@ export let pieTableOrders = (function () {
                     <th>${item.smthElse}</th>
                 </tr> `
                     appendingRes += templateOrder;
-                  }.bind(this));
+                }.bind(this));
                 this.ordersTable.innerHTML = appendingRes;
             } else {
                 pieError.showError("Такой пользователь не найден.");
