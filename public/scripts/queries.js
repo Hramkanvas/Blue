@@ -69,27 +69,11 @@ export let queries = (function () {
         },
 
         setUserDayOrder: function(currentDayObject) {
-            return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(currentDayObject)), '/user/makeOrder');
-        }
+            return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(currentDayObject), '/user/makeOrder');
+        },
 
         getTodayOrdersStatistics: function (date) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/admin/getTodayOrdersStatistics');
-                xhr.setRequestHeader('content-type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        let dayStatistics;
-                        try {
-                            dayStatistics = JSON.parse(xhr.response);
-                        } catch (err) {
-                            reject("you shall not take my statistics, cause smth gone wrong");
-                        }
-                        resolve(dayStatistics);
-                    }
-                };
-                xhr.send();
-            })
-        },
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrdersStatistic');
+        }
     }
 })();

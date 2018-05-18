@@ -1,3 +1,5 @@
+import { queries } from "../../queries.js";
+
 export let pieStatisticsDayComponent = (function () {
     let statisticsDay = {
         personalStatistics: [ //example of how to organize json, which comes from the server on the getStatistics request
@@ -116,9 +118,8 @@ export let pieStatisticsDayComponent = (function () {
     
     <div class="statistics">
         <h3>Итоговый заказ</h3>
-        <table id="generalStatisticsTable" class="ordersResult">
-        
-        </table>
+        <table id="generalStatisticsTable" class="ordersResult"> </table>
+        <h3 id = "total">Итого: </h3>
     </div>
     `;
 
@@ -135,17 +136,24 @@ export let pieStatisticsDayComponent = (function () {
         }
 
         fillTable() {
-            let insideTemplate = `<tbody>`;
-            statisticsDay.generalStatistics.forEach(function (item) {
-                insideTemplate += `
-                <tr class="ordersResult-row">
-                        <td>${item.foodName}</td>
-                        <td>${item.quantity}</td>
-                    </tr>
-                `
-            }.bind(this));
-            insideTemplate += `</tbody>`;
-            this.statisticsTable.innerHTML = insideTemplate;
+            queries.getTodayOrdersStatistics().then(result => {
+                console.log(result);
+                let insideTemplate = `<tbody>`;
+                const keys = Object.keys(result);
+                keys.forEach(key => {
+                    if (key !== 'price') {
+                        insideTemplate += `
+                        <tr class="ordersResult-row">
+                            <td>${key}</td>
+                            <td>${result[key]}</td>
+                        </tr>`
+                    } else {
+                        this.shadowRoot.getElementById('total').textContent += result[key] + " руб";
+                    }
+                });
+                insideTemplate += `</tbody>`;
+                this.statisticsTable.innerHTML = insideTemplate;
+            });
         }
     }
     customElements.define('pie-statistics-day', GeneralStatisticsClass);
