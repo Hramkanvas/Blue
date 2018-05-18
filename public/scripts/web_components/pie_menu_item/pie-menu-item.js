@@ -223,7 +223,7 @@ export let pieMenuItem = (function () {
                     let food = Object.keys(this.currentDayObject);
                     let price = this.currentDayObject[food[i]].weight;
                     this.totalForDay += this.currentDayObject[food[i]].count === 0 ? 0 : price;
-                    this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> руб.</td></tr>`
+                    this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> пїЅпїЅпїЅ.</td></tr>`
                 }
 
             }
@@ -241,17 +241,17 @@ export let pieMenuItem = (function () {
 
                             <div class="itemMenu">
                                 <table>
-                                    <caption>Оформленный заказ:</caption>
+                                    <caption>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ:</caption>
                                     <tbody>
                                         <tr>
-                                            <th>Продукт</th><th>Цена</th>
+                                            <th>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</th><th>пїЅпїЅпїЅпїЅ</th>
                                         </tr>
                                         ${this.table}
                                     </tbody>
                                 </table>
                             </div>
                             <div class="price">
-                                Итого: ${this.totalForDay} руб.
+                                пїЅпїЅпїЅпїЅпїЅ: ${this.totalForDay} пїЅпїЅпїЅ.
                             </div>`;
                         itemState.classList.add(attr);
                         break;
@@ -274,17 +274,17 @@ export let pieMenuItem = (function () {
 
                             <div class="itemMenu">
                                 <table>
-                                    <caption>Оформленный заказ:</caption>
+                                    <caption>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ:</caption>
                                     <tbody>
                                         <tr>
-                                            <th>Продукт</th><th>Цена</th>
+                                            <th>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</th><th>пїЅпїЅпїЅпїЅ</th>
                                         </tr>
                                         ${this.table}
                                     </tbody>
                                 </table>
                             </div>
                             <div class="price">
-                                Итого: ${this.totalForDay} руб.
+                                пїЅпїЅпїЅпїЅпїЅ: ${this.totalForDay} пїЅпїЅпїЅ.
                             </div>
                         `;
                         let editButton = this.shadowRoot.getElementById("editButton");
@@ -304,17 +304,17 @@ export let pieMenuItem = (function () {
 
                             <div class="itemMenu">
                                 <table>
-                                    <caption>Меню на день:</caption>
+                                    <caption>пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ:</caption>
                                     <tbody>
                                         <tr>
-                                            <th>Продукт</th><th>Цена</th>
+                                            <th>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</th><th>пїЅпїЅпїЅпїЅ</th>
                                         </tr>
                                         ${this.table}
                                     </tbody>
                                 </table>
                             </div>
                             <button class="orderButton" id="makeOrder">
-                                Сформировать заказ
+                                пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
                             </button>
                         `;
                         let makeOrder = this.shadowRoot.getElementById("makeOrder");
@@ -338,17 +338,17 @@ export let pieMenuItem = (function () {
 
                             <div class="itemMenu">
                                 <table>
-                                    <caption>Меню на день:</caption>
+                                    <caption>пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ:</caption>
                                     <tbody>
                                         <tr>
-                                            <th>Продукт</th><th>Цена</th><th>Кол-во</th>
+                                            <th>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</th><th>пїЅпїЅпїЅпїЅ</th><th>пїЅпїЅпїЅ-пїЅпїЅ</th>
                                         </tr>
                                         ${this.table}
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="    price edit">Итого: <b id="price">${this.totalForDay}</b> руб.</div>
-                            <button class="orderButton edit" id="sendOrder">Заказать</button>
+                            <div class="    price edit">пїЅпїЅпїЅпїЅпїЅ: <b id="price">${this.totalForDay}</b> пїЅпїЅпїЅ.</div>
+                            <button class="orderButton edit" id="sendOrder">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</button>
                         `;
 
                         var clearButton = this.shadowRoot.getElementById("clearButton");
@@ -378,10 +378,10 @@ export let pieMenuItem = (function () {
                             </div>
                             <div class="itemMenu">
                                 <table>
-                                    <caption>Меню на день:</caption>
+                                    <caption>пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ:</caption>
                                     <tbody>
                                         <tr>
-                                            <th>Продукт</th><th>Цена</th>
+                                            <th>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</th><th>пїЅпїЅпїЅпїЅ</th>
                                         </tr>
                                         ${this.table}
                                     </tbody>
@@ -391,7 +391,7 @@ export let pieMenuItem = (function () {
                         itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
 
                     default:
-                        alert('ошибка :(');
+                        alert('пїЅпїЅпїЅпїЅпїЅпїЅ :(');
                 }
             }
 
