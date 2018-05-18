@@ -225,7 +225,7 @@ export let pieMenuItem = (function () {
                     let food = Object.keys(this.currentDayObject);
                     let price = this.currentDayObject[food[i]].weight;
                     this.totalForDay += this.currentDayObject[food[i]].count === 0 ? 0 : price;
-                    this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> ���.</td></tr>`
+                    this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> руб.</td></tr>`
                 }
 
             }
