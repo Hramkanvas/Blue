@@ -4,7 +4,6 @@ export let pieMenuItem = (function () {
     let template = `
 
         <style>
-
             table {
                 padding: 0px 20px 30px 20px;
                 text-align: left;
@@ -372,6 +371,24 @@ export let pieMenuItem = (function () {
                         });
 
                         break;
+                        case "admin":
+                        this.item.innerHTML = `
+                            <div class="itemFunc">
+                                <h5>${this.dayName}</h5>
+                            </div>
+                            <div class="itemMenu">
+                                <table>
+                                    <caption>Меню на день:</caption>
+                                    <tbody>
+                                        <tr>
+                                            <th>Продукт</th><th>Цена</th>
+                                        </tr>
+                                        ${this.table}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                        itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
 
                     default:
                         alert('ошибка :(');
