@@ -1,9 +1,9 @@
 import { menu } from '../pie_items/pie-items.js'
 export let pieMenuItem = (function () {
     let template = `
-    
+
         <style>
-            
+
             table {
                 padding: 0px 20px 30px 20px;
                 text-align: left;
@@ -70,11 +70,11 @@ export let pieMenuItem = (function () {
                 box-shadow: 4px 6px 8px 0px #0000004a;
                 transition: top 0.4s;
             }
-            
+
             .item:active {
                 top: -10px;
             }
-            
+
             .item:hover {
                 top: -10px;
             }
@@ -140,260 +140,296 @@ export let pieMenuItem = (function () {
                 font-size: 15px;
             }
         </style>
-        
+
         <div class="item">
                 <div class="itemFunc">
                     <h5></h5>
                 </div>
-            
+
                 <div class="itemMenu">
                     <table>
                         <caption>–ú–µ–Ω—é –Ω–∞ –¥–µ–Ω—å:</caption>
                         <tbody>
-                            
+
                         </tbody>
                     </table>
                 </div>
             </div>
     `;
 
-    class MenuItem extends HTMLElement {
-        constructor() {
-            super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
-            this.renderTable = this.renderTable.bind(this);
-            this.itemState = this.itemState.bind(this);
-            this.day = this.shadowRoot.querySelector(".itemFunc");
-            this.place = this.shadowRoot.querySelector("tbody");
-            this.clearButtonFunction = this.clearButtonFunction.bind(this);
-            this.editButtonFunction = this.editButtonFunction.bind(this);
-            this.sendOrderFunction = this.sendOrderFunction.bind(this);
-            this.makeOrderFunction = this.makeOrderFunction.bind(this);
-            this.item = this.shadowRoot.querySelector(".item");
-            this.table = ``;
-            this.dayMenu = ``;
-            this.currentDayObject = {};
-        }
+        class MenuItem extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'}).innerHTML = template;
+                this.renderTable = this.renderTable.bind(this);
+                this.itemState = this.itemState.bind(this);
+                this.day = this.shadowRoot.querySelector(".itemFunc");
+                this.place = this.shadowRoot.querySelector("tbody");
+                this.clearButtonFunction = this.clearButtonFunction.bind(this);
+                this.rewriteCurrentDayObject = this.rewriteCurrentDayObject.bind(this);
+                this.editButtonFunction = this.editButtonFunction.bind(this);
+                this.sendOrderFunction = this.sendOrderFunction.bind(this);
+                this.makeOrderFunction = this.makeOrderFunction.bind(this);
+                this.item = this.shadowRoot.querySelector(".item");
+                this.rerenderTable = this.rerenderTable.bind(this);
+                this.table = ``;
+                this.dayName = ``;
+                this.totalForDay = 0;
 
-        connectedCallback() {
+                this.currentDayObject = {};
+            }
 
-            this.shadowRoot.querySelector(".item").addEventListener("counter", function (e) {
-                let priceChange = e.detail.priceChange;
-                let pastPrice = +this.shadowRoot.getElementById("price").innerText;
+            connectedCallback() {
 
-                let place = this.shadowRoot.getElementById("price");
-                place.innerHTML = `${pastPrice + priceChange}`
+                this.shadowRoot.querySelector(".item").addEventListener("counter", function (e) {
+                    let priceChange = e.detail.priceChange;
+                    let pastPrice = +this.shadowRoot.getElementById("price").innerText;
 
-            }.bind(this));
+                    let place = this.shadowRoot.getElementById("price");
+                    place.innerHTML = `${pastPrice + priceChange}`
 
-        }
-
-        static get observedAttributes() {
-            return ['data-day', 'data-state'];
-        }
-
-        attributeChangedCallback(attrName, oldVal, newVal) {
-            switch (attrName) {
-                case 'data-day':
-                    return this.renderTable(newVal);
-
-                case 'data-state':
-                    return this.itemState(newVal);
+                }.bind(this));
 
             }
-        }
 
-        renderTable(attr) {
-
-            this.dayMenu = attr;
-            this.day.innerHTML = `<h5>${attr}</h5>`;
-            this.currentDayObject = menu.menuInfo[attr];
-            let index = Object.keys(this.currentDayObject);
-            this.table = ``;
-
-            for (let i = 0; i < index.length; i++) {
-
-                let food = Object.keys(this.currentDayObject);
-                let price = this.currentDayObject[food[i]].weight;
-
-                this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> —Ä—É–±.</td></tr>`
+            static get observedAttributes() {
+                return ['data-day', 'data-state'];
             }
-        }
 
-        itemState(attr) {
+            attributeChangedCallback(attrName, oldVal, newVal) {
+                switch (attrName) {
+                    case 'data-day':
+                        return this.renderTable(newVal);
 
-            let itemState = this.shadowRoot.querySelector(".item");
+                    case 'data-state':
+                        return this.itemState(newVal);
 
-            switch (attr) {
-                case "pastMenu":
-                    this.item.innerHTML = `
-                        <div class="itemFunc">
-                            <h5>${this.dayMenu}</h5>
-                        </div>
-                        <div class="itemMenu">
-                            <table>
-                                <caption>–û—Ñ–æ—Ä–º–ª–µ–Ω–Ω—ã–π –∑–∞–∫–∞–∑:</caption>
-                                <tbody>
-                                    <tr>
-                                        <th>–ü—Ä–æ–¥—É–∫—Ç</th><th>–¶–µ–Ω–∞</th>
-                                    </tr>
-                                    ${this.table}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="price">
-                            –ò—Ç–æ–≥–æ: 56 —Ä—É–±.
-                        </div>`;
-                    itemState.classList.add(attr);
-                    break;
+                }
+            }
 
-                case "futureMenu":
-                    this.item.innerHTML = `
-                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-                        <div class="itemFunc">
-                            <h5>${this.dayMenu}</h5>
-                            <div class="itemFuncButtons">
-                                <span id="editButton">
-                                    <i class="fa fa-pencil"></i>                           
-                                </span>
-                            
-                                <span id="clearButton">
-                                    <i class="fa fa-trash"></i>                  
-                                </span>
+            renderTable(attr) {
+                this.dayName = attr;
+                this.day.innerHTML = `<h5>${attr}</h5>`;
+                this.currentDayObject = menu.menuInfo[attr];
+                let index = Object.keys(this.currentDayObject);
+                this.rerenderTable(this.dayName);
+            }
+
+            rerenderTable(day) {
+                let index = Object.keys(this.currentDayObject);
+                this.table = ``;
+                this.totalForDay = 0;
+                for (let i = 0; i < index.length; i++) {
+                    let food = Object.keys(this.currentDayObject);
+                    let price = this.currentDayObject[food[i]].weight;
+                    this.totalForDay += this.currentDayObject[food[i]].count === 0 ? 0 : price;
+                    this.table += `<tr><td>${food[i]}</td><td><b>${price}</b> Û·.</td></tr>`
+                }
+
+            }
+
+            itemState(attr) {
+
+                let itemState = this.shadowRoot.querySelector(".item");
+
+                switch (attr) {
+                    case "pastMenu":
+                        this.item.innerHTML = `
+                            <div class="itemFunc">
+                                <h5>${this.dayName}</h5>
                             </div>
-                        </div>
-                        <div class="itemMenu">
-                            <table>
-                                <caption>–û—Ñ–æ—Ä–º–ª–µ–Ω–Ω—ã–π –∑–∞–∫–∞–∑:</caption>
-                                <tbody>
-                                    <tr>
-                                        <th>–ü—Ä–æ–¥—É–∫—Ç</th><th>–¶–µ–Ω–∞</th>
-                                    </tr>
-                                    ${this.table}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="price">
-                            –ò—Ç–æ–≥–æ: 56 —Ä—É–±.
-                        </div>
-                    `;
-                    let editButton = this.shadowRoot.getElementById("editButton");
-                    editButton.addEventListener("click", this.editButtonFunction);
-                    var clearButton = this.shadowRoot.getElementById("clearButton");
-                    clearButton.addEventListener("click", this.clearButtonFunction);
-                    itemState.classList.add(attr);
-                    break;
 
-                case "clear":
-
-                    this.item.innerHTML = `
-                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-                        <div class="itemFunc">
-                            <h5>${this.dayMenu}</h5>
-                        </div>
-                        <div class="itemMenu">
-                            <table>
-                                <caption>–ú–µ–Ω—é –Ω–∞ –¥–µ–Ω—å:</caption>
-                                <tbody>
-                                    <tr>
-                                        <th>–ü—Ä–æ–¥—É–∫—Ç</th><th>–¶–µ–Ω–∞</th>
-                                    </tr>
-                                    ${this.table}
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="orderButton" id="makeOrder">
-                            –°—Ñ–æ—Ä–º–∏—Ä–æ–≤–∞—Ç—å –∑–∞–∫–∞–∑
-                        </button>
-                    `;
-                    let makeOrder = this.shadowRoot.getElementById("makeOrder");
-                    makeOrder.addEventListener("click", this.makeOrderFunction);
-                    itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
-
-                    break;
-
-                case "editMenu":
-
-                    this.item.innerHTML = `
-                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-                        <div class="itemFunc">
-                            <h5>${this.dayMenu}</h5>
-                            <div class="itemFuncButtons">                   
-                                <span  id="clearButton">
-                                    <i class="fa fa-trash"></i>                  
-                                </span>
+                            <div class="itemMenu">
+                                <table>
+                                    <caption>ŒÙÓÏÎÂÌÌ˚È Á‡Í‡Á:</caption>
+                                    <tbody>
+                                        <tr>
+                                            <th>œÓ‰ÛÍÚ</th><th>÷ÂÌ‡</th>
+                                        </tr>
+                                        ${this.table}
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                        <div class="itemMenu">
-                            <table>
-                                <caption>–ú–µ–Ω—é –Ω–∞ –¥–µ–Ω—å:</caption>
-                                <tbody>
-                                    <tr>
-                                        <th>–ü—Ä–æ–¥—É–∫—Ç</th><th>–¶–µ–Ω–∞</th><th>–ö–æ–ª-–≤–æ</th>
-                                    </tr>
-                                    ${this.table}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="    price edit">–ò—Ç–æ–≥–æ: <b id="price">0</b> —Ä—É–±.</div>
-                        <button class="orderButton edit" id="sendOrder">–ó–∞–∫–∞–∑–∞—Ç—å</button>
-                    `;
+                            <div class="price">
+                                »ÚÓ„Ó: ${this.totalForDay} Û·.
+                            </div>`;
+                        itemState.classList.add(attr);
+                        break;
 
-                    var clearButton = this.shadowRoot.getElementById("clearButton");
-                    clearButton.addEventListener("click", this.clearButtonFunction);
-                    let sendOrder = this.shadowRoot.getElementById("sendOrder");
-                    sendOrder.addEventListener("click", this.sendOrderFunction);
-                    itemState.classList.add(attr);
+                    case "futureMenu":
+                        this.item.innerHTML = `
+                        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                            <div class="itemFunc">
+                                <h5>${this.dayName}</h5>
+                                <div class="itemFuncButtons">
+                                    <span id="editButton">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
 
-                    let trs = this.shadowRoot.querySelectorAll("tr~tr");
-                    let index = 0;
-                    let foodList = Object.keys(this.currentDayObject);
-                    trs.forEach(item => {
-                        let td = document.createElement("td");
-                        let counter = document.createElement("pie-counter");
-                        // counter.setAttribute("count", (foodList[index].));
-                        td.appendChild(counter);
-                        item.appendChild(td);
+                                    <span id="clearButton">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="itemMenu">
+                                <table>
+                                    <caption>ŒÙÓÏÎÂÌÌ˚È Á‡Í‡Á:</caption>
+                                    <tbody>
+                                        <tr>
+                                            <th>œÓ‰ÛÍÚ</th><th>÷ÂÌ‡</th>
+                                        </tr>
+                                        ${this.table}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="price">
+                                »ÚÓ„Ó: ${this.totalForDay} Û·.
+                            </div>
+                        `;
+                        let editButton = this.shadowRoot.getElementById("editButton");
+                        editButton.addEventListener("click", this.editButtonFunction);
+                        var clearButton = this.shadowRoot.getElementById("clearButton");
+                        clearButton.addEventListener("click", this.clearButtonFunction);
+                        itemState.classList.add(attr);
+                        break;
+
+                    case "clear":
+
+                        this.item.innerHTML = `
+                        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                            <div class="itemFunc">
+                                <h5>${this.dayName}</h5>
+                            </div>
+
+                            <div class="itemMenu">
+                                <table>
+                                    <caption>ÃÂÌ˛ Ì‡ ‰ÂÌ¸:</caption>
+                                    <tbody>
+                                        <tr>
+                                            <th>œÓ‰ÛÍÚ</th><th>÷ÂÌ‡</th>
+                                        </tr>
+                                        ${this.table}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="orderButton" id="makeOrder">
+                                —ÙÓÏËÓ‚‡Ú¸ Á‡Í‡Á
+                            </button>
+                        `;
+                        let makeOrder = this.shadowRoot.getElementById("makeOrder");
+                        makeOrder.addEventListener("click", this.makeOrderFunction);
+                        itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
+
+                        break;
+
+                    case "editMenu":
+
+                        this.item.innerHTML = `
+                        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                            <div class="itemFunc">
+                                <h5>${this.dayName}</h5>
+                                <div class="itemFuncButtons">
+                                    <span  id="clearButton">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="itemMenu">
+                                <table>
+                                    <caption>ÃÂÌ˛ Ì‡ ‰ÂÌ¸:</caption>
+                                    <tbody>
+                                        <tr>
+                                            <th>œÓ‰ÛÍÚ</th><th>÷ÂÌ‡</th><th> ÓÎ-‚Ó</th>
+                                        </tr>
+                                        ${this.table}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="    price edit">»ÚÓ„Ó: <b id="price">${this.totalForDay}</b> Û·.</div>
+                            <button class="orderButton edit" id="sendOrder">«‡Í‡Á‡Ú¸</button>
+                        `;
+
+                        var clearButton = this.shadowRoot.getElementById("clearButton");
+                        clearButton.addEventListener("click", this.clearButtonFunction);
+                        let sendOrder = this.shadowRoot.getElementById("sendOrder");
+                        sendOrder.addEventListener("click", this.sendOrderFunction);
+                        itemState.classList.add(attr);
+                        let foodList = Object.keys(this.currentDayObject);
+                        let trs = this.shadowRoot.querySelectorAll("tr~tr");
+                        let index = 0;
+
+                        trs.forEach(item => {
+                            let td = document.createElement("td");
+                            let counter = document.createElement("pie-counter");
+                            const foodName = foodList[index];
+                            counter.setAttribute("count", this.currentDayObject[foodName].count);
+                            td.appendChild(counter);
+                            item.appendChild(td);
+                            index++;
+                        });
+
+                        break;
+
+                    default:
+                        alert('Ó¯Ë·Í‡ :(');
+                }
+            }
+
+            rewriteCurrentDayObject(mode) {
+                let foodList = this.shadowRoot.querySelectorAll("tr");
+                let index = 0;
+                if (mode === "clear") {
+                    const foodList = Object.keys(this.currentDayObject);
+                    foodList.forEach(function (item) {
+                        const prevCount = this.currentDayObject[item].count;
+                        const prevWeight = this.currentDayObject[item].weight;
+                        const safeCount = prevCount === 0 ? 1 : prevCount;
+                        const newWeight = prevWeight / safeCount;
+                        this.currentDayObject[item].count = 0;
+                        this.currentDayObject[item].weight = newWeight;
+                    }.bind(this))
+                }
+                else {
+                    foodList.forEach(function (item) {
+                        if (index !== 0) {
+                            let foodName = item.getElementsByTagName("td")[0].innerText;
+                            let count = item.getElementsByTagName("td")[2];
+                            let neCount = count.getElementsByTagName("pie-counter")[0];
+                            count = +neCount.getAttribute("count");
+                            let weight = item.getElementsByTagName("td")[1];
+                            weight = weight.getElementsByTagName("b")[0];
+                            weight = +weight.innerText;
+                            this.currentDayObject[foodName].count = count;
+                            this.currentDayObject[foodName].weight = weight;
+                        }
                         index++;
-                    });
-
-                    break;
-
-                default:
-                    alert('–æ—à–∏–±–∫–∞ :(');
-
+                    }.bind(this));
+                }
             }
 
+            clearButtonFunction() {
+                this.rewriteCurrentDayObject("clear");
+                this.renderTable(this.dayName);
+                this.setAttribute("data-state", "clear");
+            }
+
+            editButtonFunction() {
+                this.setAttribute("data-state", "editMenu");
+            }
+
+            sendOrderFunction() {
+                this.rewriteCurrentDayObject("other");
+                this.renderTable(this.dayName);
+                this.setAttribute("data-state", "futureMenu");
+            }
+
+            makeOrderFunction() {
+                this.setAttribute("data-state", "editMenu");
+            }
         }
 
-        rewriteCurrentDayObject() {
-            let foodList = this.shadowRoot.querySelector("tr");
-            foodList.shift();
-            foodList.forEach(function (item) {
-                let foodName = item.getElementsByTagName("td").innerText;
-                let count = 0;
+        customElements.define('pie-menu-item', MenuItem);
 
-            }.bind(this));
-        }
-
-        clearButtonFunction() {
-            this.setAttribute("data-state", "clear");
-
-        }
-
-        editButtonFunction() {
-            this.setAttribute("data-state", "editMenu");
-        }
-
-        sendOrderFunction() {
-            this.setAttribute("data-state", "futureMenu");
-        }
-
-        makeOrderFunction() {
-            this.setAttribute("data-state", "editMenu");
-        }
-    }
-
-    customElements.define('pie-menu-item', MenuItem);
-
-})();
+    })();

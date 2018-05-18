@@ -1,7 +1,7 @@
 export let counter = (function () {
 
     let template = `
-    
+
         <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
         <style>
             .countProducts {
@@ -11,14 +11,14 @@ export let counter = (function () {
                 cursor:pointer;
             }
         </style>
-        
-        <div class="countProducts">                       
+
+        <div class="countProducts">
             <span class="remove" id="remove">
                 <i class="fa fa-minus"></i>
             </span>
-            
+
             <span class="count" id="count">0</span>
-                
+
             <span class="add" id="add">
                 <i class="fa fa-plus"></i>
             </span>
@@ -48,6 +48,16 @@ export let counter = (function () {
             this.add.addEventListener("click", this.calculate);
         }
 
+        static get observedAttributes() {
+            return ['count'];
+        }
+
+        attributeChangedCallback(attrName, oldVal, newVal) {
+            if (oldVal === null)
+            this.counter = newVal;
+            this.count.innerText = this.counter;
+        }
+
         calculate(e) {
             this.productPrice = this.parentElement.parentElement.children[1].children[0];
             let prevCounter = this.counter;
@@ -55,6 +65,7 @@ export let counter = (function () {
             if (e.path[1].id === "remove") {
                 if (this.counter <= 0) {
                     this.counter = 0;
+
                     this.render(this.counter, prevCounter);
                 }
                 else {
@@ -66,9 +77,12 @@ export let counter = (function () {
                 this.counter++;
                 this.render(this.counter, prevCounter);
             }
+
+            this.setAttribute("count", this.counter);
         }
 
         render(counter, prevCounter) {
+            prevCounter = +prevCounter;
             let price = this.productPrice.innerText || 1;
             console.log(prevCounter);
 
