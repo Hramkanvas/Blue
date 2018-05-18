@@ -431,6 +431,7 @@ export let pieMenuItem = (function () {
                 this.rewriteCurrentDayObject("clear");
                 this.renderTable(this.dayName);
                 this.setAttribute("data-state", "clear");
+                queries.setUserDayOrder(this.currentDayObject);
             }
 
             editButtonFunction() {
