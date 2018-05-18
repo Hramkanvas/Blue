@@ -157,6 +157,8 @@ export let pieMenuItem = (function () {
             </div>
     `;
 
+
+
         class MenuItem extends HTMLElement {
             constructor() {
                 super();
@@ -233,123 +235,123 @@ export let pieMenuItem = (function () {
                 let itemState = this.shadowRoot.querySelector(".item");
 
                 switch (attr) {
-                    case "pastMenu":
-                        this.item.innerHTML = `
-                            <div class="itemFunc">
-                                <h5>${this.dayName}</h5>
+                case "pastMenu":
+                    this.item.innerHTML = `
+                        <div class="itemFunc">
+                            <h5>${this.dayName}</h5>
+                        </div>
+
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Оформленный заказ:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="price">
+                            Итого: ${this.totalForDay} руб.
+                        </div>`;
+                    itemState.classList.add(attr);
+                    break;
+
+                case "futureMenu":
+                    this.item.innerHTML = `
+                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                        <div class="itemFunc">
+                            <h5>${this.dayName}</h5>
+                            <div class="itemFuncButtons">
+                                <span id="editButton">
+                                    <i class="fa fa-pencil"></i>
+                                </span>
+
+                                <span id="clearButton">
+                                    <i class="fa fa-trash"></i>
+                                </span>
                             </div>
+                        </div>
 
-                            <div class="itemMenu">
-                                <table>
-                                    <caption>����������� �����:</caption>
-                                    <tbody>
-                                        <tr>
-                                            <th>�������</th><th>����</th>
-                                        </tr>
-                                        ${this.table}
-                                    </tbody>
-                                </table>
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Оформленный заказ:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="price">
+                            Итого: ${this.totalForDay} руб.
+                        </div>
+                    `;
+                    let editButton = this.shadowRoot.getElementById("editButton");
+                    editButton.addEventListener("click", this.editButtonFunction);
+                    var clearButton = this.shadowRoot.getElementById("clearButton");
+                    clearButton.addEventListener("click", this.clearButtonFunction);
+                    itemState.classList.add(attr);
+                    break;
+
+                case "clear":
+
+                    this.item.innerHTML = `
+                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                        <div class="itemFunc">
+                            <h5>${this.dayName}</h5>
+                        </div>
+
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Меню на день:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="orderButton" id="makeOrder">
+                            Сформировать заказ
+                        </button>
+                    `;
+                    let makeOrder = this.shadowRoot.getElementById("makeOrder");
+                    makeOrder.addEventListener("click", this.makeOrderFunction);
+                    itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
+
+                    break;
+
+                case "editMenu":
+
+                    this.item.innerHTML = `
+                    <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+                        <div class="itemFunc">
+                            <h5>${this.dayName}</h5>
+                            <div class="itemFuncButtons">
+                                <span  id="clearButton">
+                                    <i class="fa fa-trash"></i>
+                                </span>
                             </div>
-                            <div class="price">
-                                �����: ${this.totalForDay} ���.
-                            </div>`;
-                        itemState.classList.add(attr);
-                        break;
+                        </div>
 
-                    case "futureMenu":
-                        this.item.innerHTML = `
-                        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-                            <div class="itemFunc">
-                                <h5>${this.dayName}</h5>
-                                <div class="itemFuncButtons">
-                                    <span id="editButton">
-                                        <i class="fa fa-pencil"></i>
-                                    </span>
-
-                                    <span id="clearButton">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="itemMenu">
-                                <table>
-                                    <caption>����������� �����:</caption>
-                                    <tbody>
-                                        <tr>
-                                            <th>�������</th><th>����</th>
-                                        </tr>
-                                        ${this.table}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="price">
-                                �����: ${this.totalForDay} ���.
-                            </div>
-                        `;
-                        let editButton = this.shadowRoot.getElementById("editButton");
-                        editButton.addEventListener("click", this.editButtonFunction);
-                        var clearButton = this.shadowRoot.getElementById("clearButton");
-                        clearButton.addEventListener("click", this.clearButtonFunction);
-                        itemState.classList.add(attr);
-                        break;
-
-                    case "clear":
-
-                        this.item.innerHTML = `
-                        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-                            <div class="itemFunc">
-                                <h5>${this.dayName}</h5>
-                            </div>
-
-                            <div class="itemMenu">
-                                <table>
-                                    <caption>���� �� ����:</caption>
-                                    <tbody>
-                                        <tr>
-                                            <th>�������</th><th>����</th>
-                                        </tr>
-                                        ${this.table}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="orderButton" id="makeOrder">
-                                ������������ �����
-                            </button>
-                        `;
-                        let makeOrder = this.shadowRoot.getElementById("makeOrder");
-                        makeOrder.addEventListener("click", this.makeOrderFunction);
-                        itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
-
-                        break;
-
-                    case "editMenu":
-
-                        this.item.innerHTML = `
-                        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-                            <div class="itemFunc">
-                                <h5>${this.dayName}</h5>
-                                <div class="itemFuncButtons">
-                                    <span  id="clearButton">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="itemMenu">
-                                <table>
-                                    <caption>���� �� ����:</caption>
-                                    <tbody>
-                                        <tr>
-                                            <th>�������</th><th>����</th><th>���-��</th>
-                                        </tr>
-                                        ${this.table}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="    price edit">�����: <b id="price">${this.totalForDay}</b> ���.</div>
-                            <button class="orderButton edit" id="sendOrder">��������</button>
-                        `;
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Меню на день:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th><th>Кол-во</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="    price edit">Итого: <b id="price">${this.totalForDay}</b> руб.</div>
+                        <button class="orderButton edit" id="sendOrder">Заказать</button>
+                    `;
 
                         var clearButton = this.shadowRoot.getElementById("clearButton");
                         clearButton.addEventListener("click", this.clearButtonFunction);
@@ -378,10 +380,10 @@ export let pieMenuItem = (function () {
                             </div>
                             <div class="itemMenu">
                                 <table>
-                                    <caption>���� �� ����:</caption>
+                                    <caption>Меню на день:</caption>
                                     <tbody>
                                         <tr>
-                                            <th>�������</th><th>����</th>
+                                            <th>Продукт</th><th>Цена</th>
                                         </tr>
                                         ${this.table}
                                     </tbody>
@@ -391,7 +393,7 @@ export let pieMenuItem = (function () {
                         itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
 
                     default:
-                        alert('������ :(');
+                        alert('ошибка :(');
                 }
             }
 
