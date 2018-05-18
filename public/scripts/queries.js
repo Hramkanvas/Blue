@@ -1,6 +1,6 @@
 export let queries = (function () {
 
-   
+
     let myInit = {
         method: 'GET',
         body: undefined
@@ -29,7 +29,7 @@ export let queries = (function () {
 
         upBalance: function (username, sum) {
             const object = { username: username, amount: sum };
-            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(object), '/admin/upBalance'); 
+            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(object), '/admin/upBalance');
         },
 
         getUsers: function () {
@@ -49,7 +49,7 @@ export let queries = (function () {
 
         getDayOrders: function () {
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrders');
-        }, 
+        },
 
         getTotalPriceForWeek: function(username, week){
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/getTotalPriceForWeek?username=' + username
@@ -66,7 +66,11 @@ export let queries = (function () {
 
         getMenu: function (weekNumber) {
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getMenu?number=' + weekNumber);
-        },  
+        },
+
+        setUserDayOrder: function(currentDayObject) {
+            return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(currentDayObject)), '/user/makeOrder');
+        }
 
         getTodayOrdersStatistics: function (date) {
             return new Promise(function (resolve, reject) {
@@ -89,4 +93,3 @@ export let queries = (function () {
         },
     }
 })();
-
