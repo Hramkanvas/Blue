@@ -442,6 +442,7 @@ export let pieMenuItem = (function () {
                 this.rewriteCurrentDayObject("other");
                 this.renderTable(this.dayName);
                 this.setAttribute("data-state", "futureMenu");
+                queries.setUserDayOrder(this.currentDayObject);
             }
 
             makeOrderFunction() {
