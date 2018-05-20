@@ -38,7 +38,13 @@ export let queries = (function () {
 
         uploadMenu: function (file) {
             const object = file;
-            return ajax('POST', 'Content-Type', 'text/plain', file, '/admin/downloadMenu');
+            myInit.method = 'POST';
+            myInit.headers = giveMeHeader('Content-Type', 'text/plain');
+            myInit.body = file;
+            return fetch('/admin/uploadMenu', myInit).then(response => {
+                console.log(response.json());
+                return response.json();
+            });
         },
 
         getDayOrders: function () {
