@@ -17,7 +17,6 @@ function findMenu(fromDate) {
 
 
 function addMenu(file) {
-
     const menu = createMenu(file);
     if (validateMenu(menu)) {
         const menuSchema = new Menu({

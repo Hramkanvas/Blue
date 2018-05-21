@@ -5,6 +5,7 @@ const weekMillisec = 1000 * 60 * 60 * 24 * 7;
 
 module.exports = {
     upBalance,
+    withdrawFromBalance,
     addUser,
     addOrderToHistory,
     deleteOrderFromHistory,
@@ -166,7 +167,7 @@ function getWeekKey(date, prMonday) {
 function upBalance(username, amount) {
     return Users.findOne({username})
         .then((user) => {
-            if (user) {
+            if (user && typeof (amount) == "number" && amount > 0) {
                 user.balance += +amount;
                 return user.save();
             }
@@ -175,6 +176,17 @@ function upBalance(username, amount) {
         });
 };
 
+function withdrawFromBalance(username, amount) {
+    return Users.findOne({username})
+        .then((user) => {
+            if (user && typeof (amount) == "number" && amount > 0) {
+                user.balance -= +amount;
+                return user.save();
+            }
+            else
+                return false;
+        });
+};
 function addUser(username, FIO) {
     let prMonday = new Date(moment().day(-6));
     prMonday.setHours(3, 0, 0, 0);
