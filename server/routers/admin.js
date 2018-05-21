@@ -8,9 +8,9 @@ router.get('/getMenu', (req, res) => {
     menu.findMenu(req.query.number)
         .then(answer => {
             if (answer)
-                res.send(answer)
+                res.send(answer);
             else
-                return Promise.reject(new Error('Menu not found'));;
+                return Promise.reject(new Error('Menu not found'));
         })
         .catch(err => res.status(404).send('Menu not found'));
 });
@@ -26,8 +26,8 @@ router.get('/getUsers', (req, res) => {
         .catch(err => res.status(404).send(err));
 });
 
-router.get('/getDayOrders', (req, res) => {//для таблицы
-    let date = req.query.date || momemt();
+router.get('/getDayOrders', (req, res) => {
+    let date = req.query.date || moment();
     let prom = [];
     let p;
     orders.getDayOrders(date)
@@ -49,15 +49,15 @@ router.get('/getDayOrders', (req, res) => {//для таблицы
         .catch(err => res.status(404).send(err));
 });
 
-router.get('/getDayOrdersStatistic', (req, res) => {//для итогового заказа
-    let date = req.query.date || momemt();
+router.get('/getDayOrdersStatistic', (req, res) => {
+    let date = req.query.date || moment();
     orders.getTotal(date)
         .then(answer => res.send(answer))
         .catch(err => res.status(404).send(err));
 });
 
 router.get('/isMakingOrder', (req, res) => {
-    orders.getDayOrders()
+    orders.isDayOrdersBlocked()
         .then(answer => {
             if (answer === true || answer === false) {
                 res.send(!answer)

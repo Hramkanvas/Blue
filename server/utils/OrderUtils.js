@@ -22,6 +22,7 @@ module.exports = {
     getUserOrders,
     getOrderPrice,
     ordersForWeek,
+    getTotal,
     confirmDayOrders,
     isDayOrdersBlocked
 };
@@ -189,17 +190,17 @@ function calculateOrderPrice(order) {
 function getTotal(date) {
     return getDayOrders(date)
         .then((dayOrders) => {
-            let total = {};
-
-            for (order in dayOrders) {
-                for (dish in order.info) {
+            let total = {price: 0};
+            for (user in dayOrders) {
+                for (dish in dayOrders[user].info) {
                     if (total[dish]) {
-                        total[dish]++;
+                        total[dish] += +dayOrders[user].info[dish].count;
                     }
                     else {
-                        total[dish] = 0;
+                        total[dish] = +dayOrders[user].info[dish].count;
                     }
                 }
+                total.price += +dayOrders[user].price;
             }
 
             return total;

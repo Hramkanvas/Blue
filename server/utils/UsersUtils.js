@@ -108,7 +108,7 @@ function getUsers() {
 
 function getUser(username) {
     return Users.findOne({username});
-}
+};
 
 function getFIO(username) {
     return Users.findOne({username})
