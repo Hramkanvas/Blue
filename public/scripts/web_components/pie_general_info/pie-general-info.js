@@ -39,7 +39,7 @@ export let pieGeneralInfo = (function go() {
         updateInfo(){
             if (userInfo.type !== 'admin') {
                 queries.getTotalPriceForWeek(userInfo.username, this.week).then(balance => {
-                    const templateMoney = `<p>Итого за неделю: ${balance.totalPriceForWeek} руб.</p>`;
+                    const templateMoney = `<p>Сумма заказа на неделю: ${balance.totalPriceForWeek} руб.</p>`;
                     const templateWeek = `<p id = "week">Неделя ${balance.range}</p>`;
                     this.moneyForWeek.innerHTML = templateMoney;
                     this.choosenWeek.innerHTML = templateWeek;

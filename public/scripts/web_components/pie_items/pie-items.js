@@ -25,11 +25,18 @@ export let pieItems = (function () {
 
         connectedCallback() {
             this.menu = undefined;
-            queries.getMenu(1).then(res =>{
-                menu = res;
-                this.addItems(menu);
-            });
-            
+            if (userInfo.type === 'admin'){
+                queries.getMenu(1).then(res =>{
+                    menu = res;
+                    this.addItems(menu);
+                });
+            } else {
+                queries.getMainPageUser(userInfo.username, 1).then(res =>{
+                    menu = res[1];
+                    console.log(res);
+                    this.addItems(menu);
+                });
+            }
         }
 
         addItems(menu) {
@@ -38,9 +45,9 @@ export let pieItems = (function () {
                 item.setAttribute("data-day", day);
                 item.setAttribute("data-holder", "admin");
                 if (userInfo.type === 'admin'){
-                    item.setAttribute("data-state", "clear");
+                    item.setAttribute("data-state", "admin");
                 } else {
-                    item.setAttribute("data-state", "editMenu");
+                    item.setAttribute("data-state", "clear");
                 }
                 
                 this.place.appendChild(item);

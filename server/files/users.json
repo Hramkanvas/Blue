@@ -32,5 +32,12 @@
         "username": "kostya",
         "type": "user",
         "FIO": "hrom kanvas"
+    },
+    {
+        "login": "4",
+        "password": "4",
+        "username": "Лиза",
+        "type": "user",
+        "FIO": "Лиза Якимович"
     }
 ]

@@ -366,6 +366,7 @@ export let pieMenuItem = (function () {
                             let td = document.createElement("td");
                             let counter = document.createElement("pie-counter");
                             const foodName = foodList[index];
+                            this.currentDayObject[foodName].count = this.currentDayObject[foodName].count || 0;
                             counter.setAttribute("count", this.currentDayObject[foodName].count);
                             td.appendChild(counter);
                             item.appendChild(td);
@@ -373,25 +374,26 @@ export let pieMenuItem = (function () {
                         });
 
                         break;
-                        case "admin":
-                        this.item.innerHTML = `
-                            <div class="itemFunc">
-                                <h5>${this.dayName}</h5>
-                            </div>
-                            <div class="itemMenu">
-                                <table>
-                                    <caption>Меню на день:</caption>
-                                    <tbody>
-                                        <tr>
-                                            <th>Продукт</th><th>Цена</th>
-                                        </tr>
-                                        ${this.table}
-                                    </tbody>
-                                </table>
-                            </div>
-                        `;
-                        itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
 
+                    case "admin":
+                    this.item.innerHTML = `
+                        <div class="itemFunc">
+                            <h5>${this.dayName}</h5>
+                        </div>
+                        <div class="itemMenu">
+                            <table>
+                                <caption>Меню на день:</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>Продукт</th><th>Цена</th>
+                                    </tr>
+                                    ${this.table}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    itemState.classList.remove("editMenu", "futureMenu", "pastMenu");
+                    break;
                     default:
                         alert('ошибка :(');
                 }
@@ -433,7 +435,7 @@ export let pieMenuItem = (function () {
                 this.rewriteCurrentDayObject("clear");
                 this.renderTable(this.dayName);
                 this.setAttribute("data-state", "clear");
-                queries.setUserDayOrder(this.currentDayObject);
+                queries.setUserDayOrder({info: this.currentDayObject});
             }
 
             editButtonFunction() {
@@ -444,7 +446,7 @@ export let pieMenuItem = (function () {
                 this.rewriteCurrentDayObject("other");
                 this.renderTable(this.dayName);
                 this.setAttribute("data-state", "futureMenu");
-                queries.setUserDayOrder(this.currentDayObject);
+                queries.setUserDayOrder({info: this.currentDayObject});
             }
 
             makeOrderFunction() {
