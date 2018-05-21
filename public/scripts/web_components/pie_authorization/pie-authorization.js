@@ -1,4 +1,5 @@
 import {queries} from "../../queries.js";
+
 export let pieAuthorization = (function () {
 
     let template = `
@@ -115,10 +116,24 @@ export let pieAuthorization = (function () {
             this.authorize = this.authorize.bind(this);
             this.authorizationBlock = this.shadowRoot.getElementById('authorizationBlock');
             this.authorizeForm = this.shadowRoot.getElementById('authorizeForm');
+            this.passwordInput = this.shadowRoot.getElementById("password");
+            this.usernameInput = this.shadowRoot.getElementById("username");
         }
 
         connectedCallback() {
-            this.authBtn.addEventListener("click", this.authorize)
+            this.authBtn.addEventListener("click", this.authorize);
+            this.passwordInput.addEventListener("keyup", (event) => {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    this.authBtn.click();
+                }
+            });
+            this.usernameInput.addEventListener("keyup", (event) => {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    this.authBtn.click();
+                }
+            })
         }
 
         disconnectedCallback() {
@@ -128,9 +143,9 @@ export let pieAuthorization = (function () {
         authorize(event) {
             const login = this.authorizeForm.elements.login.value;
             const password = this.authorizeForm.elements.password.value;
-            queries.authorize(login, password).then( user => {
+            queries.authorize(login, password).then(user => {
                     localStorage.setItem("user", JSON.stringify(user));
-                    if (user.type === "admin"){
+                    if (user.type === "admin") {
                         window.location.assign("./admin.html");
                     } else {
                         window.location.assign("./user.html");
