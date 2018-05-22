@@ -1,23 +1,13 @@
+import {templates} from "../templates/templates.js";
+
 export let pieFooter = (function () {
 
-    let template = `
-        <style>
-            .bottom-content {
-                display: flex;
-                flex-basis: 100%;
-                justify-content: center;
-                background: #eaeaea;
-            }
-        </style>
-        <div class = "bottom-content">
-        <p>Exadel</p>
-        </div>
-    `;
+    let template = templates.pieFooterTemplate;
 
     class FooterContent extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({ mode: 'open' }).innerHTML = template;
+            this.attachShadow({mode: 'open'}).innerHTML = template;
         }
     }
 

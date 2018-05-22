@@ -18,4 +18,3 @@ app.use('/authorization', require('./server/routers/authorization'));
 app.listen(3000, () => {
     console.log(`Server is running...`);
 });
-

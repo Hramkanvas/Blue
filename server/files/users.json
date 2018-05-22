@@ -6,11 +6,32 @@
         "FIO": "Margarita Mihailovna"
     },
     {
-        "login": "2",
+        "login": "sasha",
         "password": "2",
         "username": "sasha",
         "type": "user",
         "FIO": "sasha dernovskaya"
+    },
+    {
+        "login": "max",
+        "password": "2",
+        "username": "max",
+        "type": "user",
+        "FIO": "Maximum Bykav"
+    },
+    {
+        "login": "kgrom",
+        "password": "2",
+        "username": "kgrom",
+        "type": "user",
+        "FIO": "Kostya Grom"
+    },
+    {
+        "login": "liza",
+        "password": "2",
+        "username": "liza",
+        "type": "user",
+        "FIO": "Liza Podliza"
     },
     {
         "login": "3",

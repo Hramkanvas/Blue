@@ -1,30 +1,13 @@
 import { queries } from "../../queries.js";
-
+import {templates} from "../templates/templates.js";
 export let pieGeneralInfo = (function go() {
     let userInfo = JSON.parse(localStorage.getItem("user"));
 
     let generalInfo = {
         week: "02.05.2018"
-    }
+    };
 
-    let template = `
-        <style>
-            .generalInfo {
-                margin: 20px 0px;
-                display: flex;
-                justify-content: space-between;
-            }
-
-            .generalInfo p {
-                font-size: 24px;
-                font-weight: bold;
-            }
-        </style>
-
-        <div class="generalInfo">
-                <div class="timeShedule" id = "week"> </div>
-                <div class="countMoney" id = "moneyForWeek"> </div>
-        </div>`;
+    let template = templates.pieGeneralInfoTemplate;
 
     class GeneralInfo extends HTMLElement {
         constructor() {

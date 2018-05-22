@@ -4,7 +4,7 @@ export let queries = (function () {
     let myInit = {
         method: 'GET',
         body: undefined
-    }
+    };
 
     function giveMeHeader(strType, strWhat){
         let myHeaders = new Headers();

@@ -1,42 +1,8 @@
 import { queries } from "../../queries.js";
-
+import {templates} from "../templates/templates.js";
 export let pieMakeOrder = (function () {
 
-    let template = `
-    <style>
-    button {
-        display: flex;
-        margin: 0 auto;
-        border: none;
-        color: white;
-        font-size: 16px;
-        outline: none;
-        cursor: pointer;
-        background: #3d8af7;
-        padding: 5px 10px;
-    }
-    button:hover {
-        background: #72bb53;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        margin-bottom:20px;
-        font-size: 25px;
-    }
-    
-    .btn:hover {
-        background: #4c94f8;  
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        cursor:pointer;
-    }
-    
-    .btn:active {
-        background: #3787f8;  
-    }
-    </style>
-    <button class="btn btn-submit-orders" id = "btMakeOrder"> Заказать! </button>
-    `;
+    let template = templates.pieMakeOrderTemplate;
 
     class MakeOrder extends HTMLElement {
         constructor() {

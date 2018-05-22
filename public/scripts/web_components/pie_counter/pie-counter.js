@@ -1,29 +1,8 @@
+import {templates} from "../templates/templates.js";
+
 export let counter = (function () {
 
-    let template = `
-
-        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
-        <style>
-            .countProducts {
-                user-select: none;
-            }
-            .remove, .add {
-                cursor:pointer;
-            }
-        </style>
-
-        <div class="countProducts">
-            <span class="remove" id="remove">
-                <i class="fa fa-minus"></i>
-            </span>
-
-            <span class="count" id="count">0</span>
-
-            <span class="add" id="add">
-                <i class="fa fa-plus"></i>
-            </span>
-        </div>
-    `;
+    let template = templates.pieCounterTemplate;
 
     class CountProduct extends HTMLElement {
         constructor() {

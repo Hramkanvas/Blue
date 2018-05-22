@@ -1,30 +1,8 @@
+import {templates} from "../templates/templates.js";
+
 export let pieMenuGeneralComponent = (function () {
 
-    let template = `
-    <style>
-    html {
-	height: 100%
-    }
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    .tabContent {
-        display: none;
-    }
-    .tabContent.active{
-        display: block;
-    }
-    </style>
-    
-    <div id="menu" class="tabContent">
-        <pie-drag-and-drop></pie-drag-and-drop>
-        <pie-general-info></pie-general-info>
-        <pie-items></pie-items>
-    </div>
-    `;
+    let template = templates.pieMenuGeneralTemplate;
 
     class MenuGeneralClass extends HTMLElement {
         constructor() {
