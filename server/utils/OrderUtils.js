@@ -1,18 +1,7 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');
 const moment = require('moment');
-const {
-    NotValidTimeErrorMessage,
-    SuccessfullyUpdatedOrderMessage,
-    SuccessfullyAddedOrderMessage,
-    SuccessfullyDeletedOrderMesssage,
-    NoUserOrderErrorMessage,
-    DayOrdersBlockedErrorMessage,
-    UnhandledErrorMessage,
-    SuccessfullyAddedDayOrdersMessage,
-    NoOrdersErrorMessage,
-    DayOrdersAreAlreadyBlockedErrorMessage
-} = require('../constants/orders');
+const ERROR_MESSAGES = require('../constants/orders');
 
 
 module.exports = {
@@ -29,7 +18,6 @@ module.exports = {
 
 
 
-
 function createDayOrdersSchema(date) {
     let resetedDate = resetDate(date);
 
@@ -40,10 +28,7 @@ function createDayOrdersSchema(date) {
                 Orders: {},
                 isBlocked: false
             });
-            return OrderSchema.save()
-                .then(() => {
-                    return { message: SuccessfullyAddedDayOrdersMessage }
-                });
+            return OrderSchema.save();
         }
     })
 }
@@ -61,13 +46,10 @@ function uploadOrder(date, username, uploadOrder) {
                     if (!OrderSchema.isBlocked) {
                         OrderSchema.Orders[username] = uploadOrder;
                         const orders = OrderSchema.Orders;
-                        return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } })
-                            .then(() => {
-                                return { message: SuccessfullyUpdatedOrderMessage }
-                            });
+                        return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
                     }
                     else {
-                        throw new Error(DayOrdersBlockedErrorMessage);
+                        throw new Error(ERROR_MESSAGES.DAY_ORDERS_BLOCKED);
                     }
 
                 }
@@ -80,17 +62,14 @@ function uploadOrder(date, username, uploadOrder) {
                         Orders,
                         isBlocked: false
                     });
-                    return OrderSchema.save()
-                        .then(() => {
-                            return { message: SuccessfullyAddedOrderMessage }
-                        });
+                    return OrderSchema.save();
                 }
             })
     }
 
     else {
         return new Promise((res, rej) => {
-            throw new Error(NotValidTimeErrorMessage);
+            throw new Error(ERROR_MESSAGES.NOT_VALID_TIME);
         })
     }
 }
@@ -124,32 +103,26 @@ function deleteOrder(date, username) {
         .then((OrderSchema) => {
             if (OrderSchema) {
                 if (!OrderSchema.Orders[username]) {
-                    return { message: NoUserOrderErrorMessage };
+                    throw new Error(ERROR_MESSAGES.NO_USER_ORDER);
                 }
 
                 if (!validateTime(date, OrderSchema.Orders[username])) {
-                    return { message: NotValidTimeErrorMessage };
+                    throw new Error(ERROR_MESSAGES.NOT_VALID_TIME);
                 }
 
                 if (!OrderSchema.isBlocked) {
                     delete OrderSchema.Orders[username];
                     if (Object.keys(OrderSchema.Orders).length === 0) {
-                        return OrderSchema.remove()
-                            .then(() => {
-                                return { message: SuccessfullyDeletedOrderMessage }
-                            });
+                        return OrderSchema.remove();
                     }
 
                     const orders = OrderSchema.Orders;
-                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } })
-                        .then(() => {
-                            return { message: SuccessfullyDeletedOrderMessage }
-                        });
+                    return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'Orders': orders } });
                 }
 
-                throw new Error(UnhandledErrorMessage);
+                throw new Error(ERROR_MESSAGES.UNHANDLED);
             }
-            throw new Error(NoOrdersErrorMessage);
+            throw new Error(ERROR_MESSAGES.NO_ORDERS);
         });
 }
 
@@ -161,7 +134,7 @@ function getDayOrders(date) {
             if (OrderSchema) {
                 return OrderSchema.Orders;
             }
-            throw new Error(NoOrdersErrorMessage);
+            throw new Error(ERROR_MESSAGES.NO_ORDERS);
         })
 }
 
@@ -190,7 +163,7 @@ function calculateOrderPrice(order) {
 function getTotal(date) {
     return getDayOrders(date)
         .then((dayOrders) => {
-            let total = {price: 0};
+            let total = { price: 0 };
             for (user in dayOrders) {
                 for (dish in dayOrders[user].info) {
                     if (total[dish]) {
@@ -217,7 +190,7 @@ function confirmDayOrders(date) {
                 return Order.updateOne({ '_id': OrderSchema._id }, { $set: { 'isBlocked': true } });
             }
 
-            throw new Error(DayOrdersAreAlreadyBlockedErrorMessage);
+            throw new Error(ERROR_MESSAGES.DAY_ORDERS_ARE_ALREADY_BLOCKED);
         });
 }
 

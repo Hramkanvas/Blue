@@ -1,23 +1,10 @@
-const NotValidTimeErrorMessage = "Not valid time";
-const SuccessfullyUpdatedOrderMessage = "Successfully update order";
-const SuccessfullyAddedOrderMessage = "Successfully added new order";
-const SuccessfullyDeletedOrderMesssage = "Successfully deleted order message";
-const NoUserOrderErrorMessage = "No order to delete ";
-const DayOrdersBlockedErrorMessage = "Possibility to order is not available";
-const UnhandledErrorMessage = "Smth bad";
-const SuccessfullyAddedDayOrdersMessage = "Successfully added new Day Order Schema";
-const NoOrdersErrorMessage = "No orders on this date"
-const DayOrdersAreAlreadyBlockedErrorMessage = "Orders for the day are already blocked";
-
-module.exports = {
-    NotValidTimeErrorMessage,
-    SuccessfullyUpdatedOrderMessage,
-    SuccessfullyAddedOrderMessage,
-    SuccessfullyDeletedOrderMesssage,
-    NoUserOrderErrorMessage,
-    DayOrdersBlockedErrorMessage,
-    UnhandledErrorMessage,
-    SuccessfullyAddedDayOrdersMessage,
-    NoOrdersErrorMessage,
-    DayOrdersAreAlreadyBlockedErrorMessage
+const ERROR_MESSAGES = {
+    NOT_VALID_TIME: "Not valid time",
+    NO_USER_ORDER: "No order to delete ",
+    DAY_ORDERS_BLOCKED: "Possibility to order is not available",
+    UNHANDLED = "Smth bad",
+    NO_ORDERS: "No orders on this date",
+    DAY_ORDERS_ARE_ALREADY_BLOCKED: "Orders for the day are already blocked"
 }
+
+module.exports = ERROR_MESSAGES;
