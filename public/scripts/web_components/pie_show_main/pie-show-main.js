@@ -1,14 +1,12 @@
+import {templates} from "../templates/templates.js";
+
 export let pieShowMainPart = (function () {
-    let template = `
-        <pie-general-info id = "info"></pie-general-info>
-        <pie-arrows id = "arrows"></pie-arrows>
-        <pie-items></pie-items>
-    `;
+    let template = templates.pieShowMainPartTemplate;
 
     class ShowMainPartClass extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({ mode: 'open' }).innerHTML = template;
+            this.attachShadow({mode: 'open'}).innerHTML = template;
 
             this.arrows = this.shadowRoot.getElementById("arrows");
             this.info = this.shadowRoot.getElementById("info");
@@ -23,5 +21,6 @@ export let pieShowMainPart = (function () {
             this.arrows.addEventListener('clickArrow', this.clickArrows);
         }
     }
+
     customElements.define('pie-main-part', ShowMainPartClass);
 }());

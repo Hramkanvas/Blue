@@ -1,33 +1,8 @@
+import {templates} from "../templates/templates.js";
+
 export let pieOrdersGeneralComponent = (function () {
 
-    let template = `
-    <style>
-    html {
-	height: 100%
-    }
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    .tabContent {
-        display: none;
-    }
-    
-    .tabContent.active{
-        display: block;
-    }
-    
-    </style>
-    
-    <div id="menu" class="tabContent">
-        <pie-table-orders></pie-table-orders>
-        <pie-statistics-day></pie-statistics-day>
-        <pie-make-order></pie-make-order>
-    </div>
-    `;
+    let template = templates.pieOrdersGeneralComponentTemplate;
 
     class OrdersGeneralClass extends HTMLElement {
         constructor() {

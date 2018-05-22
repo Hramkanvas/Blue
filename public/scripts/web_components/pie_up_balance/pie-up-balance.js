@@ -1,113 +1,8 @@
 import { queries } from "../../queries.js";
 import {pieError} from "../pie_error/pie-error.js";
+import {templates} from "../templates/templates.js";
 export let pieUpBalance = (function () {
-    let templateT = `
-        <style>
-        .upBalanceBlock {
-            display: flex;
-            flex-direction: column;
-            width: 550px;
-            padding: 30px 80px;
-            background-color: var(--white-grey);
-            margin: 0px auto;
-            border-radius: var(--border-radius-component);
-            border: var(--border-component);
-        }
-
-        button:hover {
-            background: #72bb53;
-        }
-
-        .upBalanceBlock > div {
-            padding-bottom: 30px;
-        }
-
-        .info p {
-            font-size: 20px;
-        }
-        
-        .worker {
-            float:left;
-        }
-        
-        .balance{
-            float:right;
-        }
-
-        .balance div, .worker div{
-            display: inline-block;
-        }
-        
-        .bottomStuff p {
-            margin: 0;
-            color: #444444;
-            font-size: 100%;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            display: block;
-            border: none;
-            outline: none;
-            padding: 10px;
-            margin-bottom: 20px;
-            background-color: white;
-        }
-
-        label {
-            color: var(--grey-dark);
-            font-size: 14px;
-        }
-
-        button {
-            display: flex;
-            margin: 0 auto;
-            border: none;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            cursor: pointer;
-            background: #3d8af7;
-            padding: 5px 10px;
-        }
-        </style>
-        <div id="upbalance" class="tabcontent">
-        
-        <div class="upBalanceBlock">
-            <div id = "info" class="info">
-                <div class="worker">
-                    <div>
-                        <p><b>Сотрудник: </b></p>
-                    </div>
-                    <div>
-                        <p id = "workerName"> Иванов </p>
-                    </div>  
-                </div>
-                <div class="balance">
-                    <div>
-                        <p><b>Баланс:</b></p>
-                    </div>
-                    <div>
-                        <p id = "balance">4455555</p>
-                    </div>
-                </div>
-            </div>
-            <form>
-                <label for="username">Сотрудник:
-                    <input type="text" id="username" list="character">
-                </label>
-                <datalist id="character">
-                   
-                </datalist>
-                <label for="balance" list="character"> Сумма:
-                    <input id = "balanceInput" type="number" min = "0"> </label>
-            </form>
-            <button id = "btUpBalance" >Пополнить</button>
-        </div>
-    </div>`;
-
-
+    let templateT = templates.pieUpBalanceTemplate;
     class UpBalanceClass extends HTMLElement {
         constructor() {
             super();
@@ -119,8 +14,7 @@ export let pieUpBalance = (function () {
             this.infoBlock = this.shadowRoot.getElementById('info');
             this.textWorkerName = this.shadowRoot.getElementById('workerName');
             this.textBalance = this.shadowRoot.getElementById('balance');
-            this.infoBlock.style.visibility = 'hidden';
-
+            this.infoBlock.style.display = 'none';
             this.clickUpBalanceEvent = this.clickUpBalanceEvent.bind(this);
             this.changeCurrentUserEvent = this.changeCurrentUserEvent.bind(this);
             this.updateUserInfo = this.updateUserInfo.bind(this);
@@ -146,13 +40,13 @@ export let pieUpBalance = (function () {
             const fio = event.target.value;
             this.currentUser = this.users.find(user => user.FIO === fio);
             if (this.currentUser !== undefined) {
-                if (this.infoBlock.style.visibility === 'hidden') {
-                    this.infoBlock.style.visibility = 'visible';
+                if (this.infoBlock.style.display === 'none') {
+                    this.infoBlock.style.display = 'block';
                 }
                 this.updateUserInfo(this.currentUser);
             } else {
-                if (this.infoBlock.style.visibility === 'visible') {
-                    this.infoBlock.style.visibility = 'hidden';
+                if (this.infoBlock.style.display === 'block') {
+                    this.infoBlock.style.display = 'none';
                 }
             }
         }

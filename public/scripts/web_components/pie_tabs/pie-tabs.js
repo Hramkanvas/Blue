@@ -1,59 +1,7 @@
-
+import {templates} from "../templates/templates.js";
 
 export let pieTabs = (function () {
-    let template = `
-		<style>
-p {
-    font-size: 16px;
-}
-
-h1, h2, h3, h4, h5, h6, th {
-    color: grey
-}
-
-a {
-color: var(--grey-dark);
-text-decoration: none;
-}
-
-.tabMenu {
-    font-size: 24px;
-    text-align: center;
-    background-color: #d6d6d6;
-    border-radius: var(--border-radius-component);
-    border: var(--border-component);
-    display: grid;
-    margin: 25px 0px;
-    padding: 25px 0px;
-    grid-template-columns: 33% 33% 33%
-}
-
-.tabMenuItem.active {
-    color: #3d8af7;
-}
-
-body {
-    display: flex;
-    width: 100%;
-    margin: 0 auto;
-    min-width: 320px;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    color: #7a7a7a;
-}
-
-</style>
-
-<div class="tabMenu">
-    <div><a href="#" id="menuRef"        class="tabMenuItem active">Меню</a> </div>
-    <div><a href="#" id="upBalanceRef"   class="tabMenuItem">Пополнить баланс</a> </div>
-    <div><a href="#" id="ordersRef"      class="tabMenuItem">Заказы</a> </div>
-</div>
-<pie-menu-general tabstate="activeTab" id="pieMenuGeneral"></pie-menu-general>
-<pie-upbalance-general tabstate="nonactiveTab" id="pieUpBalance"></pie-upbalance-general>
-<pie-orders-general tabstate="nonactiveTab" id="pieStatisticsDay"></pie-orders-general>
-`;
+    let template = templates.pieTabsTemplate;
 
 class TabsClass extends HTMLElement {
     constructor() {

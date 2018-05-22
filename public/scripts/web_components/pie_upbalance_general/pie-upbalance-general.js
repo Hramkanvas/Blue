@@ -1,31 +1,8 @@
+import {templates} from "../templates/templates.js";
+
 export let pieUpBalanceGeneralComponent = (function () {
 
-    let template = `
-    <style>
-    html {
-	height: 100%
-    }
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    .tabContent {
-        display: none;
-    }
-    
-    .tabContent.active{
-        display: block;
-    }
-    
-    </style>
-    
-    <div id="menu" class="tabContent">
-        <pie-up-balance></pie-up-balance>
-    </div>
-    `;
+    let template = templates.pieUpBalanceGeneralComponentTemplate;
 
     class UpBalanceGeneralClass extends HTMLElement {
         constructor() {
