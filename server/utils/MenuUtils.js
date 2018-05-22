@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Menu = require('../models/Menu');
 const moment = require('moment');
+const ERROR_MESSAGES = require('../constants/menu');
+
 module.exports = {
     findMenu,
     findMenuByDate,
@@ -9,9 +11,9 @@ module.exports = {
 
 function findMenu(weekNumber) {
 
-    let resetedDate = moment().day((weekNumber - 1) * 7 + 1).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let resetedDate = resetDate(moment().day((weekNumber - 1) * 7 + 1));
 
-    return Menu.findOne({fromDate: resetedDate})
+    return Menu.findOne({ fromDate: resetedDate })
         .then((menu) => {
             return menu;
         });
@@ -19,7 +21,7 @@ function findMenu(weekNumber) {
 
 
 function findMenuByDate(date) {
-    let resetedDate = moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+    let resetedDate = resetDate(date);
     return Menu.findOne({ fromDate: resetedDate })
         .then((menu) => {
             return menu;
@@ -29,9 +31,7 @@ function findMenuByDate(date) {
 function addMenu(file) {
     const menu = createMenu(file);
 
-    let answer = validateMenu(menu);
-
-    if (answer.body) {
+    if (validateMenu(menu)) {
         const menuSchema = new Menu({
             fromDate: menu.fromDate,
             menuInfo: menu.menuInfo
@@ -40,10 +40,7 @@ function addMenu(file) {
         return findMenuByDate(menuSchema.fromDate).then((menu) => {
             if (menu) {
                 return menu.remove()
-                    .then(() => menuSchema.save())
-                    .then(() => {
-                        return {body: true, message: "Меню обновлено"}
-                    });
+                    .then(() => menuSchema.save());
             }
             else {
                 return Menu.find({})
@@ -55,25 +52,16 @@ function addMenu(file) {
 
                         if (arr.length === 3) {
                             return Promise.all(arr[0].remove(), arr[1].remove())
-                                .then(() => menuSchema.save())
-                                .then(() => {
-                                    return {body: true, message: "Меню добавлено"}
-                                });
+                                .then(() => menuSchema.save());
                         }
 
                         else if (arr.length === 2) {
                             return arr[0].remove()
-                                .then(() => menuSchema.save())
-                                .then(() => {
-                                    return {body: true, message: "Меню добавлено"}
-                                });
+                                .then(() => menuSchema.save());
                         }
 
                         else {
-                            return menuSchema.save()
-                                .then(() => {
-                                    return {body: true, message: "Меню добавлено"}
-                                });
+                            return menuSchema.save();
                         }
 
                     })
@@ -83,7 +71,7 @@ function addMenu(file) {
 
     else {
         return new Promise((res, rej) => {
-            res(answer);
+            throw new Error(ERROR_MESSAGES.NOT_VALID_MENU);
         });
     }
 }
@@ -123,7 +111,7 @@ function createMenu(file) {
 
     delete menuInfo["Дата"];
 
-    return {fromDate, menuInfo};
+    return { fromDate, menuInfo };
 };
 
 
@@ -135,25 +123,27 @@ function toNormalDateFrom(date) {
 function validateMenu(menu) {
 
 
-    let fromDate = moment(new Date(menu.fromDate)).set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
+    let fromDate = moment(new Date(menu.fromDate)).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
 
-    let monday = moment().day(1).set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
-    let severalDaysLater = moment().day(8).set({'h': 0, 'm': 0, 's': 0, 'ms': 0});
+    let monday = moment().day(1).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
+    let severalDaysLater = moment().day(8).set({ 'h': 0, 'm': 0, 's': 0, 'ms': 0 });
 
     if (!monday.isSame(fromDate) && !severalDaysLater.isSame(fromDate)) {
-        return {body: false, message: "Меню на дату, на которую нельзя"};
+        return false;
     }
 
     const menuInfo = menu.menuInfo;
 
     for (days in menuInfo) {
         for (dish in menuInfo[days]) {
-            if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0)) return {
-                body: false,
-                message: `Ошибка цене или весе ${dish}`
-            };
+            if (isNaN(menuInfo[days][dish].price) || isNaN(menuInfo[days][dish].weight || 0))
+                return false;
         }
     }
 
-    return {body: true, message: "Успешно"};
+    return true;
 };
+
+function resetDate(date) {
+    return moment(date).set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+}
