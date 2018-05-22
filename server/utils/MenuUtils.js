@@ -6,7 +6,7 @@ const moment = require('moment');
 module.exports = {
     findMenu,
     findMenuByDate,
-    addMenu,
+    addMenu
 };
 
 function findMenu(weekNumber) {
