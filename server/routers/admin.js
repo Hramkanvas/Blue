@@ -10,9 +10,9 @@ router.get('/getMenu', (req, res) => {
             if (answer)
                 res.send(answer);
             else
-                return Promise.reject(new Error('Menu not found'));
+                throw new Error('Menu not found');
         })
-        .catch(err => res.status(404).send('Menu not found'));
+        .catch(err => res.status(404).send(err.message));
 });
 
 router.put('/upBalance', (req, res) => {
@@ -77,7 +77,7 @@ router.post('/uploadMenu', (req, res) => {
             .then(answer => {
                 res.send(answer)
             })
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send(err.message));
     });
 
 });
@@ -87,12 +87,7 @@ router.get('/confirmDayOrders', (req, res) => {
     let date = moment();
     let prom = [];
     orders.createDayOrdersSchema(date)
-        .then((ans) => {
-            if (ans)
-                return orders.confirmDayOrders(date)
-            else
-                return Promise.reject(new Error('On this date the order is confirmed'));
-        })
+        .then(() => orders.confirmDayOrders(date))
         .then(() => orders.getDayOrders(date))
         .then((userOrders) => {
             for (let user in userOrders) {

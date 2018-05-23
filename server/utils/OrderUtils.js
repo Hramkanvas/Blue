@@ -13,7 +13,8 @@ module.exports = {
     ordersForWeek,
     getTotal,
     confirmDayOrders,
-    isDayOrdersBlocked
+    isDayOrdersBlocked,
+    createDayOrdersSchema
 };
 
 
