@@ -359,7 +359,7 @@ export let templates = (function () {
             background: #3d8af7;
             color:white;
         }
-        
+
         .userInfoButton {
             position: absolute;
             right: 0;
@@ -723,13 +723,10 @@ export let templates = (function () {
     
     .statistics {
         margin: 40px 0px;
-        background: #e7e6e6;
         width: 100%;
         min-height: 70px;
         text-align: center;
         padding: 15px 0px;
-        border-radius: var(--border-radius-component);
-        border: var(--border-component);
     }
     
     .ordersResult {
