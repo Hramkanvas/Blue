@@ -69,7 +69,7 @@ export let queries = (function () {
         },
 
         setUserDayOrder: function(currentDayObject) {
-            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(currentDayObject), '/user/makeOrder');
+            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(currentDayObject), '/makeOrder');
         },
 
         getTodayOrdersStatistics: function (date) {
@@ -79,6 +79,10 @@ export let queries = (function () {
         getMainPageUser: function(username, weekNumber){
             const obj = {username: username, number: weekNumber};
             return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(obj), '/getMainPage');
+        }
+        ,
+        deleteOrder: function(userInformation){
+            return ajax('DELETE', 'Content-Type', 'application/json', JSON.stringify(userInformation), '/deleteOrder');
         }
     }
 })();
