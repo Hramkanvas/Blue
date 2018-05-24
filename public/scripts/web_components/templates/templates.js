@@ -209,18 +209,18 @@ export let templates = (function () {
             padding: 25px 0;
             margin: 0 auto;
             margin-bottom: 10px;
-            background: #eee;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
+            background: #f9f9f9;
+            border: dashed 2px #e6e6e6;
+            border-radius: 2.5px;
         }
 
         #drag {
-            margin-top: 60px;
+            margin-top: 30px;
         }
         
         #dropZone:hover {
-            background: #ddd;
-            border-color: #aaa;
+            background: #f2f2f2;
+            border-color: #d9d9d9;
         }
         </style>
         <div id = "drag">
@@ -323,18 +323,18 @@ export let templates = (function () {
             position: relative;
             top: 0px;
             display: flex;
-            background-color: var(--white-grey);
+            background-color: #f7f7f7;
             z-index: 2;
             align-items: center;
             justify-content: space-around;
             color: var(--grey-dark);
-            box-shadow: rgba(165, 164, 164, 0.45) 0px 4px 8px;
+            box-shadow: rgba(165, 164, 164, 0.45) 0px 2px 4px;
             padding: 10px 0px;
         }
 
         .logo {
             padding: 0px 5px;
-            width: 150px;
+            width: 110px;
             margin-right: auto;
             margin-left: 50px;
         }
@@ -355,18 +355,24 @@ export let templates = (function () {
             padding-right: 120px;
         }
 
+        .userInfoButton:hover{
+            background: #3d8af7;
+            color:white;
+        }
+        
         .userInfoButton {
             position: absolute;
             right: 0;
             top: 0;
             bottom: 0;    
             padding: 0px 15px;
-            background: #d6d6d6;
             display: flex;
             margin-right: 0px !important;
             cursor: pointer;
             align-items: center;
         }
+
+        
 
         </style>`,
         /*
@@ -892,13 +898,16 @@ text-decoration: none;
 .tabMenu {
     font-size: 24px;
     text-align: center;
-    background-color: #d6d6d6;
+    background-color: #f9f9f9; 
     border-radius: var(--border-radius-component);
     border: var(--border-component);
     display: grid;
     margin: 25px 0px;
-    padding: 25px 0px;
-    grid-template-columns: 33% 33% 33%
+    grid-template-columns: 33% 33% 34%
+}
+
+.tabMenu div {
+    padding: 10px 0px;
 }
 
 .tabMenuItem.active {
@@ -916,6 +925,10 @@ body {
     color: #7a7a7a;
 }
 
+.tabMenu div:hover, .tabMenu div:hover .tabMenuItem.active{
+    background: #3d8af7;
+    color:white;
+}
 </style>
 
 <div class="tabMenu">
