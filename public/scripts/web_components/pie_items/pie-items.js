@@ -14,6 +14,7 @@ export let pieItems = (function () {
             this.attachShadow({mode: 'open'}).innerHTML = template1;
             this.addItems = this.addItems.bind(this);
             this.place = this.shadowRoot.querySelector(".items");
+            this.waitComponent = this.shadowRoot.getElementById("waiting");
         }
 
         connectedCallback() {
@@ -33,6 +34,9 @@ export let pieItems = (function () {
         }
 
         addItems(menu) {
+            if (this.waitComponent) {
+                this.waitComponent.parentNode.removeChild(this.waitComponent);
+            }
             for (let day in menu.menuInfo) {
                 let item = document.createElement('pie-menu-item');
                 item.setAttribute("data-day", day);

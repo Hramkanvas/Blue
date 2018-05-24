@@ -1,4 +1,5 @@
 import {pieMenuItem} from "./web_components/pie_menu_item/pie-menu-item.js";
+import {pieWaiting} from "./web_components/pie_wait/pie-wait.js";
 import {pieGeneralInfo} from "./web_components/pie_general_info/pie-general-info.js";
 import {pieItems} from "./web_components/pie_items/pie-items.js";
 import {pieTabs} from "./web_components/pie_tabs/pie-tabs.js";
