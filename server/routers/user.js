@@ -68,7 +68,7 @@ router.put('/makeOrder', (req, res) => {//сделать заказ(обнови
 });
 
 router.delete('/deleteOrder', (req, res) => {
-    order.deleteOrder(new Date(req.body.date), req.body.username)
+    order.deleteOrder(moment(req.body.date), req.body.username)
         .then(answer => users.deleteOrderFromHistory(req.body.username, new Date(req.body.date)))
         .then(answer => {
             if (answer)
@@ -86,7 +86,7 @@ router.post('/getMainPage', (req,res) => {
     let currentArr = users.getOrders(username, number)
         .then(array => {
             if (array) {
-                return order.ordersForWeek(array, username);
+                return order.ordersForWeek(number,array, username);
             }
             throw new Error('User not found');
         })

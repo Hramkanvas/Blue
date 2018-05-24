@@ -32,17 +32,18 @@ router.get('/getDayOrders', (req, res) => {
     let p;
     orders.getDayOrders(date)
         .then(dayOrders => {
-            for (let user in dayOrders) {
+            let {Orders} = dayOrders;
+            for (let user in Orders) {
                 p = users.getFIO(user)
                     .then(ans => {
-                        dayOrders[user].FIO = ans;
+                        Orders[user].FIO = ans;
                     });
                 prom.push(p);
             }
             console.log(dayOrders);
             Promise.all(prom)
                 .then(ans => {
-                    res.send(dayOrders);
+                    res.send(Orders);
                 });
 
         })
@@ -90,8 +91,9 @@ router.get('/confirmDayOrders', (req, res) => {
         .then(() => orders.confirmDayOrders(date))
         .then(() => orders.getDayOrders(date))
         .then((userOrders) => {
-            for (let user in userOrders) {
-                prom.push(users.withdrawFromBalance(user, userOrders[user].price));
+            let {Orders} = userOrders;
+            for (let user in Orders) {
+                prom.push(users.withdrawFromBalance(user, Orders[user].price));
             }
 
             return Promise.all(prom);
