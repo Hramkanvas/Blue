@@ -678,6 +678,7 @@ export let templates = (function () {
     }
     
     * {
+        font-weight:normal;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -686,7 +687,6 @@ export let templates = (function () {
     h3 {
         display: block;
         font-size: 1.17em;
-        font-weight: bold;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
     
@@ -697,16 +697,19 @@ export let templates = (function () {
     }
     
     th {
+        font-weight:normal;
         padding-bottom: 20px;
         font-size: 18px;
         padding-top: 10px;
     }
     
     tr {
+        font-weight:100;
         width: 100%;
     }
     
     td {
+        font-weight:normal;
         font-size: 18px;
         padding-right: 35px;
         padding-bottom: 3px;
@@ -718,8 +721,6 @@ export let templates = (function () {
     h1, h2, h3, h4, h5, h6, th {
         color: grey
     }
-    
-
     
     .statistics {
         margin: 40px 0px;
@@ -742,15 +743,15 @@ export let templates = (function () {
     }
     
     .ordersResult tr:nth-child(odd) {
-        background: #afafaf59;
+        background: #F3F8FF;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        color: #7a7a7a;  
+        color: white;  
     }
     
     </style>
     
     <div class="statistics">
-        <h3>Итоговый заказ</h3>
+        <h3>Итоговый заказ: </h3>
         <table id="generalStatisticsTable" class="ordersResult"> </table>
         <h3 id = "total">Итого: </h3>
     </div>
@@ -769,11 +770,10 @@ export let templates = (function () {
         }
         
         a {
-            
             text-decoration: none;
         }
         
-        h1, h2, h3, h4, h5, h6, th {
+        h1, h2, h3, h4, h5, h6 {
             color: var(--grey-dark)
         }
         
@@ -784,12 +784,16 @@ export let templates = (function () {
         }
         
         th {
+            font-weight:normal;
+            text-align:center;
+            border: 0.5px solid #e0e0eb;
             padding-bottom: 20px;
             font-size: 18px;
             padding-top: 10px;
         }
         
         tr {
+            background-color:white;
             width: 100%;
         }
         
@@ -829,6 +833,7 @@ export let templates = (function () {
         }
         
         .searchBox {
+            margin:auto;
             width: 50%;
             height: 40px;
             font-size: 20px;
@@ -842,39 +847,52 @@ export let templates = (function () {
             border:none;
             user-select: none;
         }
-    .ordersTableHeader {
-        width: 100%;
-        background: #d6d6d6;
-    }
+
+    
     .ordersTable {
-        border: var(--border-component);
         padding: 0px;
-        width: 100%;
+        margin: auto;
+        width: 80%;
     }
 
     .ordersTableHeader > th, .ordersTable > td {
         padding-left: 15px;
     }
-
-
+    
     .ordersTable tbody tr:nth-child(odd) {
-        background: var(--white-grey);
+        background: #F3F8FF;
     }
+
 
     .ordersTable tbody tr{
         height: 40px;
+    }
+
+    .headerTable th{
+        background-color:#3d8af7;
+        color:white;
+        text-align:center;
+    }
+
+    .firstColumn{
+        width:25%;
     }
 
     </style>
         
     <div class="toolbar">
             <div class="searchBox">
-                <input placeholder="поиск пользователей" id="inputZone" list="name">
+                <input placeholder="Поиск пользователей" id="inputZone" list="name">
                 <datalist id="name">
                 </datalist>
             </div>
         </div>
         <table id="ordersTable" class="ordersTable">
+        <tr class="ordersTableHeader headerTable">
+            <th class = "firstColumn">Имя</th>
+            <th>Заказ</th>
+            <th>Сумма заказа</th>
+        </tr>
     </table>
     `,
         pieTabsTemplate: `

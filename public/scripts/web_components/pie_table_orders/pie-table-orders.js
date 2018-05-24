@@ -19,11 +19,7 @@ export let pieTableOrders = (function () {
         }
 
         showAllUsers() {
-            let templ = `<tr class="ordersTableHeader">
-                        <th>Имя</th>
-                        <th>Заказ</th>
-                        <th>Сумма заказа</th>
-                    </tr>`;
+            let templ = '';
             const usernames = Object.keys(this.orders);
             usernames.forEach(username => {
                 const products = this.orders[username].info;
@@ -40,7 +36,7 @@ export let pieTableOrders = (function () {
                     </tr>
                     `;
             });
-            this.ordersTable.innerHTML = templ;
+            this.ordersTable.innerHTML += templ;
         }
 
         loadNames() {
