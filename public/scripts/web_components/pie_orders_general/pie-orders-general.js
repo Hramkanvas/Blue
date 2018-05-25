@@ -1,10 +1,10 @@
 import {templates} from "../templates/templates.js";
 
-export let pieUpBalanceGeneralComponent = (function () {
+export let pieOrdersGeneralComponent = (function () {
 
-    let template = templates.pieUpBalanceGeneralComponentTemplate;
+    let template = templates.pieOrdersGeneralComponentTemplate;
 
-    class UpBalanceGeneralClass extends HTMLElement {
+    class OrdersGeneralClass extends HTMLElement {
         constructor() {
             super();
             this.attachShadow({mode: 'open'}).innerHTML = template;
@@ -24,8 +24,9 @@ export let pieUpBalanceGeneralComponent = (function () {
                     this.tabContent.classList.remove('active');
                 }
             }
+
         }
     }
 
-    customElements.define('pie-upbalance-general', UpBalanceGeneralClass);
+    customElements.define('pie-orders-general', OrdersGeneralClass);
 }());

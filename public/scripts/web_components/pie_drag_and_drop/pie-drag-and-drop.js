@@ -1,52 +1,9 @@
 import { queries } from "../../queries.js";
+import {pieError} from "../pie_error/pie-error.js";
+import {templates} from "../templates/templates.js";
 
 export let pieDragAndDrop = (function () {
-    let templateT = `
-        <style>
-        button:hover {
-            background: #72bb53;
-        }
-
-        button {
-            display: flex;
-            margin: 0 auto;
-            border: none;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            cursor: pointer;
-            background: #3d8af7;
-            padding: 5px 10px;
-        }
-
-        #dropZone {      
-            text-align: center;
-            width: 50%;
-            padding: 25px 0;
-            margin: 0 auto;
-            margin-bottom: 10px;
-            background: #eee;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
-        }
-
-        #drag {
-            margin-top: 60px;
-        }
-        
-        #dropZone:hover {
-            background: #ddd;
-            border-color: #aaa;
-        }
-        </style>
-        <div id = "drag">
-            <div id="dropZone">
-                Для загрузки меню, перетащите файл сюда.
-            </div>
-        </div>
-        <button id = "btUpload"> Загрузить файл </button>
-        `;
-
+    let templateT = templates.pieDragNDropTemplate;
     class DragAndDropClass extends HTMLElement {
         constructor() {
             super();
@@ -57,9 +14,6 @@ export let pieDragAndDrop = (function () {
             this.photoLoaded = undefined;
             this.currentFileName = undefined;
             this.currentFile = undefined;
-            this.fileReader =  new FileReader();
-
-            this.saveFile = this.saveFile.bind(this);
             this.clickUpload = this.clickUpload.bind(this);
             this.dragEnterEvent = this.dragEnterEvent.bind(this);
             this.dragLeaveEvent = this.dragLeaveEvent.bind(this);    
@@ -68,7 +22,11 @@ export let pieDragAndDrop = (function () {
         }
 
         clickUpload(event){
-            //queries.uploadMenu(this.currentFile);
+            queries.uploadMenu(this.currentFile).then(res =>{
+                this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите файл сюда.'; 
+                this.btUpload.style.visibility = 'hidden';
+                pieError.showError(res.message);
+            });
         }
 
         dragOverEvent(event){
@@ -97,10 +55,13 @@ export let pieDragAndDrop = (function () {
         }
 
         dropEvent(event) {
+            event.preventDefault();
             this.currentFileName = event.dataTransfer.files[0].name;
             this.dragNDropeZone.textContent = 'Вы загрузили файл "' + this.currentFileName + '". Для загрузки другого меню, перетащите файл сюда.';
-            this.fileReader.onload = this.saveFile;
-            this.fileReader.readAsBinaryString(event.dataTransfer.files[0]);
+            this.currentFile =  event.dataTransfer.files[0];
+            if (this.btUpload.style.visibility === 'hidden'){
+                this.btUpload.style.visibility = 'visible';
+            }
         }
 
         connectedCallback() {
@@ -112,11 +73,11 @@ export let pieDragAndDrop = (function () {
         }
 
         disconnectedCallback() {
-            this.btUpload.removeEventListener('click');
-            this.dragNDropeZone.removeEventListener('dragenter');
-            this.dragNDropeZone.removeEventListener('dragleave');
-            this.dragNDropeZone.removeEventListener('drop');
-            this.dragNDropeZone.removeEventListener('dragover');
+            this.btUpload.removeEventListener('click', this.clickUpload);
+            this.dragNDropeZone.removeEventListener('dragenter', this.dragEnterEvent);
+            this.dragNDropeZone.removeEventListener('dragleave', this.dragLeaveEvent);
+            this.dragNDropeZone.removeEventListener('drop', this.dropEvent);
+            this.dragNDropeZone.removeEventListener('dragover', this.dragOverEvent);
         }
     }
     customElements.define('pie-drag-and-drop', DragAndDropClass);

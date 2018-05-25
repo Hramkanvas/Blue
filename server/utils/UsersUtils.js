@@ -204,6 +204,5 @@ function addUser(username, FIO) {
             next: new Array()
         }
     });
-
     return newUser.save().then(() => newUser);
 };

@@ -228,6 +228,7 @@ function confirmDayOrders(date) {
 }
 
 
+
 function isDayOrdersBlocked(date) {
     let resetedDate = resetDate(date);
 

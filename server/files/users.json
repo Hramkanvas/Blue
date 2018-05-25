@@ -1,37 +1,64 @@
 [
-{
-"login":"admin",
-"password":"admin",
-"type":"admin",
-"FIO":"Margarita Mihailovna"
-},
-{
-"login":"2",
-"password":"2",
-"username":"sasha",
-"type":"user",
-"FIO":"sasha dernovskaya"
-},
-{
-"login":"3",
-"password":"3",
-"username":"dima",
-"type":"user",
-"FIO":"dima gavrushko"
-},
-{
-"login":"12345678",
-"password":"12345678",
-"username":"Алексей",
-"type":"user",
-"FIO":"alex malyavko"
-},
-{
-"login":"123",
-"password":"123",
-"username":"kostya",
-"type":"user",
-"FIO":"hrom kanvas"
-}
+    {
+        "login": "admin",
+        "password": "admin",
+        "type": "admin",
+        "FIO": "Margarita Mihailovna"
+    },
+    {
+        "login": "sasha",
+        "password": "2",
+        "username": "sasha",
+        "type": "user",
+        "FIO": "sasha dernovskaya"
+    },
+    {
+        "login": "max",
+        "password": "2",
+        "username": "max",
+        "type": "user",
+        "FIO": "Maximum Bykav"
+    },
+    {
+        "login": "kgrom",
+        "password": "2",
+        "username": "kgrom",
+        "type": "user",
+        "FIO": "Kostya Grom"
+    },
+    {
+        "login": "liza",
+        "password": "2",
+        "username": "liza",
+        "type": "user",
+        "FIO": "Liza Podliza"
+    },
+    {
+        "login": "3",
+        "password": "3",
+        "username": "dima",
+        "type": "user",
+        "FIO": "dima gavrushko"
+    },
+    {
+        "login": "12345678",
+        "password": "12345678",
+        "username": "Алексей",
+        "type": "user",
+        "FIO": "alex malyavko"
+    },
+    {
+        "login": "123",
+        "password": "123",
+        "username": "kostya",
+        "type": "user",
+        "FIO": "hrom kanvas"
+    },
+    {
+        "login": "4",
+        "password": "4",
+        "username": "Лиза",
+        "type": "user",
+        "FIO": "Лиза Якимович"
+    }
 ]
-

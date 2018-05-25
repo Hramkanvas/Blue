@@ -1,117 +1,88 @@
 export let queries = (function () {
+
+
+    let myInit = {
+        method: 'GET',
+        body: undefined
+    };
+
+    function giveMeHeader(strType, strWhat){
+        let myHeaders = new Headers();
+        myHeaders.append(strType, strWhat);
+        return myHeaders;
+    }
+
+    function ajax(method, strHeaderType, strHeaderContent, body, query){
+        myInit.method = method;
+        myInit.headers = giveMeHeader(strHeaderType, strHeaderContent);
+        myInit.body = body;
+        return fetch(query, myInit).then(response => {
+            return response.json();
+        });
+    }
+
     return {
         authorize: function (login, password) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/login');
-                xhr.setRequestHeader('content-type', 'application/json');
-                var value = { login: login, password: password };
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var user;
-                        try {
-                            user = JSON.parse(xhr.response);
-                        } catch (err) {
-                            user = undefined;
-                        }
-                        resolve(user);
-                    }
-                }
-                xhr.send(JSON.stringify(value));
-            });
+            const object = { login: login, password: password };
+            return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(object), '/authorization/login');
         },
 
-        getMenu: function () {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/getMenu');
-                xhr.setRequestHeader('content-type', 'application/json');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var menu;
-                        try {
-                            menu = JSON.parse(xhr.response);
-                        } catch (err) {
-                            menu = undefined;
-                        }
-                        resolve(menu);
-                    }
-                }
-                xhr.send();
-            });
+        upBalance: function (username, sum) {
+            const object = { username: username, amount: sum };
+            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(object), '/admin/upBalance');
         },
 
-        upBalance: function (id, sum) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('PUT', '/upBalance');
-                xhr.setRequestHeader('content-type', 'application/json');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var user;
-                        try {
-                            user = JSON.parse(xhr.response);
-                        } catch (err) {
-                            //инфо об ошибке
-                        }
-                        resolve(user);
-                    }
-                }
-                xhr.send(JSON.stringify({ id: id, sum: sum }));
-            });
-        },
-
-        getTotalBalance: function (id) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/getTotalBalance');
-                xhr.setRequestHeader('content-type', 'application/json');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var balance;
-                        try {
-                            balance = JSON.parse(xhr.response);
-                        } catch (err) {
-                            //инфо об ошибке
-                        }
-                        resolve(balance);
-                    }
-                }
-                xhr.send(JSON.stringify({ id: id }));
-            });
+        getUsers: function () {
+            return ajax( 'GET', 'Content-Type', 'application/json', undefined, '/admin/getUsers');
         },
 
         uploadMenu: function (file) {
-            return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/downloadMenu');
-                xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-                //xhr.setRequestHeader("Content-Length", 741);  
- 
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState !== 4) {
-                        return;
-                    }
-                    if (xhr.status !== 200) {
-                        console.log(xhr.status + ': ' + xhr.statusText);
-                    }
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        console.log("DONE");
-                        try {
-                            //balance = JSON.parse(xhr.response);
-                        } catch (err) {
-                            
-                        }
-                        //resolve(balance);
-                    }
-                }
-                //var blob = new Blob([file], {type: 'text/plain'}); 
-                xhr.send(file);
-            });
+            const object = file;
+            myInit.method = 'POST';
+            myInit.headers = giveMeHeader('Content-Type', 'text/plain');
+            myInit.body = file;
+            return fetch('/admin/uploadMenu', myInit).then(res => res.json())
+                .then(response => {
+                    return response;
+                });
+        },
+
+        getDayOrders: function () {
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrders');
+        },
+
+        getTotalPriceForWeek: function(username, week){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/getTotalPriceForWeek?username=' + username
+                    + '&week=' + week);
+        },
+
+        isMakingOrdersForToday(){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/isMakingOrder');
+        },
+
+        confirmDayOrder(){
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/confirmDayOrders');
+        },
+
+        getMenu: function (weekNumber) {
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getMenu?number=' + weekNumber);
+        },
+
+        setUserDayOrder: function(currentDayObject) {
+            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(currentDayObject), '/makeOrder');
+        },
+
+        getTodayOrdersStatistics: function (date) {
+            return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrdersStatistic');
+        },
+
+        getMainPageUser: function(username, weekNumber){
+            const obj = {username: username, number: weekNumber};
+            return ajax('POST', 'Content-Type', 'application/json', JSON.stringify(obj), '/getMainPage');
+        }
+        ,
+        deleteOrder: function(userInformation){
+            return ajax('DELETE', 'Content-Type', 'application/json', JSON.stringify(userInformation), '/deleteOrder');
+        }
     }
-    }
-}) ();
+})();

@@ -68,6 +68,14 @@ router.get('/isMakingOrder', (req, res) => {
         .catch(err => res.status(404).send(err));
 });
 
+router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового заказа
+    let date = req.query.date || new Date;
+
+    orders.getTotal(date)
+        .then(answer => res.send(answer))
+        .catch(err => console.log(err));
+});
+
 router.post('/uploadMenu', (req, res) => {
     const buffer = [];
     req.on('data', (chunk) => {
@@ -76,6 +84,7 @@ router.post('/uploadMenu', (req, res) => {
         const file = Buffer.concat(buffer);
         menu.addMenu(file)
             .then(answer => {
+                console.log(answer);
                 res.send(answer)
             })
             .catch(err => res.status(404).send(err.message));
