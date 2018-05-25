@@ -7,13 +7,10 @@ export let pieArrows = (function () {
 
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.week = 1;
             this.leftArrow = this.shadowRoot.getElementById('leftArrow');
             this.rightArrow = this.shadowRoot.getElementById('rightArrow');
-            this.clickLeft = this.clickLeft.bind(this);
-            this.clickRight = this.clickRight.bind(this);
-            this.changeWeek = this.changeWeek.bind(this);
         }
 
         changeWeek() {
@@ -48,8 +45,8 @@ export let pieArrows = (function () {
         }
 
         connectedCallback() {
-            this.leftArrow.addEventListener('click', this.clickLeft);
-            this.rightArrow.addEventListener('click', this.clickRight);
+            this.leftArrow.addEventListener('click', (e) => { this.clickLeft(e) });
+            this.rightArrow.addEventListener('click', (e) => { this.clickRight(e) });
         }
     }
 

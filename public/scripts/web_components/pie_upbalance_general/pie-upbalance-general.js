@@ -7,7 +7,7 @@ export let pieUpBalanceGeneralComponent = (function () {
     class UpBalanceGeneralClass extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.tabContent = this.shadowRoot.getElementById('menu');
         }
 

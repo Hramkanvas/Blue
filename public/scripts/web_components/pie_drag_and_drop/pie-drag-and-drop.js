@@ -14,62 +14,57 @@ export let pieDragAndDrop = (function () {
             this.photoLoaded = undefined;
             this.currentFileName = undefined;
             this.currentFile = undefined;
-            this.clickUpload = this.clickUpload.bind(this);
-            this.dragEnterEvent = this.dragEnterEvent.bind(this);
-            this.dragLeaveEvent = this.dragLeaveEvent.bind(this);    
-            this.dragOverEvent = this.dragOverEvent.bind(this);
-            this.dropEvent = this.dropEvent.bind(this);  
         }
 
-        clickUpload(event){
-            queries.uploadMenu(this.currentFile).then(res =>{
-                this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите файл сюда.'; 
+        clickUpload(e) {
+            queries.uploadMenu(this.currentFile).then(res => {
+                this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите сюда файл.';
                 this.btUpload.style.visibility = 'hidden';
                 pieError.showError(res.message);
             });
         }
 
-        dragOverEvent(event){
-            event.preventDefault();
+        dragOverEvent(e) {
+            e.preventDefault();
         }
 
-        dragEnterEvent(event) {
-            this.dragNDropeZone.textContent = 'Для загрузки меню, отпустите мышку.'; 
+        dragEnterEvent(e) {
+            this.dragNDropeZone.textContent = 'Отпустите мышку.';
         }
 
-        dragLeaveEvent(event) {
-            if(this.currentFileName !== undefined){
-                this.dragNDropeZone.textContent = 'Вы загрузили файл "' + this.currentFileName + '". Для загрузки другого меню, перетащите файл сюда.';
+        dragLeaveEvent(e) {
+            if (this.currentFileName !== undefined) {
+                this.dragNDropeZone.textContent = `Вы загрузили файл ${this.currentFileName} Для загрузки другого меню, перетащите файл сюда.`;
             }
             else {
-                this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите файл сюда.'; 
+                this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите файл сюда.';
             }
-                                   
+
         }
 
-        saveFile(){
+        saveFile() {
             this.currentFile = this.fileReader.result;
-            if (this.btUpload.style.visibility === 'hidden'){
+            if (this.btUpload.style.visibility === 'hidden') {
                 this.btUpload.style.visibility = 'visible';
             }
         }
 
-        dropEvent(event) {
-            event.preventDefault();
-            this.currentFileName = event.dataTransfer.files[0].name;
-            this.dragNDropeZone.textContent = 'Вы загрузили файл "' + this.currentFileName + '". Для загрузки другого меню, перетащите файл сюда.';
-            this.currentFile =  event.dataTransfer.files[0];
-            if (this.btUpload.style.visibility === 'hidden'){
+        dropEvent(e) {
+            e.preventDefault();
+            this.currentFileName = e.dataTransfer.files[0].name;
+            this.dragNDropeZone.textContent = `Вы загрузили файл ${this.currentFileName} Для загрузки другого меню, перетащите файл сюда.`;
+            this.currentFile = e.dataTransfer.files[0];
+            if (this.btUpload.style.visibility === 'hidden') {
                 this.btUpload.style.visibility = 'visible';
             }
         }
 
         connectedCallback() {
-            this.btUpload.addEventListener('click', this.clickUpload);
-            this.dragNDropeZone.addEventListener('dragenter', this.dragEnterEvent);
-            this.dragNDropeZone.addEventListener('dragleave', this.dragLeaveEvent);
-            this.dragNDropeZone.addEventListener('drop', this.dropEvent);
-            this.dragNDropeZone.addEventListener('dragover', this.dragOverEvent);
+            this.btUpload.addEventListener('click', (e) => { this.clickUpload(e) });
+            this.dragNDropeZone.addEventListener('dragenter', (e) => { this.dragEnterEvent(e) });
+            this.dragNDropeZone.addEventListener('dragleave', (e) => { this.dragLeaveEvent(e) });
+            this.dragNDropeZone.addEventListener('drop', (e) => { this.dropEvent(e) });
+            this.dragNDropeZone.addEventListener('dragover', (e) => { this.dragOverEvent(e) });
         }
 
         disconnectedCallback() {

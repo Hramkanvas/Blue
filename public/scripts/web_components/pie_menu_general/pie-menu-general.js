@@ -17,12 +17,7 @@ export let pieMenuGeneralComponent = (function () {
 
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === 'tabstate') {
-                if (newValue === 'activeTab') {
-                    this.tabContent.classList.add('active');
-                }
-                else {
-                    this.tabContent.classList.remove('active');
-                }
+                this.tabContent.classList.toggle('active');
             }
         }
     }

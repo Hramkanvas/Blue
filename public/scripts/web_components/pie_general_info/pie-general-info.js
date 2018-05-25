@@ -16,18 +16,18 @@ export let pieGeneralInfo = (function go() {
             this.choosenWeek = this.shadowRoot.getElementById('week');
             this.moneyForWeek = this.shadowRoot.getElementById('moneyForWeek');
             this.week = 1;
-            this.updateInfo = this.updateInfo.bind(this);
         }
 
-        updateInfo(){
+        updateInfo() {
             if (userInfo.type !== 'admin') {
                 queries.getTotalPriceForWeek(userInfo.username, this.week).then(balance => {
                     const templateMoney = `<p>Сумма заказа на неделю: ${balance.totalPriceForWeek} руб.</p>`;
-                    const templateWeek = `<p id = "week">Неделя ${balance.range}</p>`;
+                    const templateWeek = `<p id="week">Неделя ${balance.range}</p>`;
                     this.moneyForWeek.innerHTML = templateMoney;
                     this.choosenWeek.innerHTML = templateWeek;
-                }).catch(error => {
-                    
+                })
+                .catch(error => {
+                    console.log(error)
                 });
             }
         }
@@ -37,14 +37,15 @@ export let pieGeneralInfo = (function go() {
         }
 
         static get observedAttributes() {
-            return ['week']; 
+            return ['week'];
         }
-        
+
         attributeChangedCallback(name, oldValue, newValue) {
             this.week = newValue;
             this.updateInfo();
-        }   
+        }
     }
+
 
     customElements.define('pie-general-info', GeneralInfo);
 })();

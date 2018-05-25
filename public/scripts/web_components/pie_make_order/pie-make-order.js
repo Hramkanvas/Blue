@@ -7,21 +7,24 @@ export let pieMakeOrder = (function () {
     class MakeOrder extends HTMLElement {
         constructor() {
             super();
-            queries.isMakingOrdersForToday().then(orderIsMaking=> {
-                 if (orderIsMaking === true){
-                    this.attachShadow({mode: 'open'}).innerHTML = template;
+            queries.isMakingOrdersForToday().then(orderIsMaking => {
+                if (orderIsMaking === true) {
+                    this.attachShadow({ mode: 'open' }).innerHTML = template;
                     this.btMakeOrder = this.shadowRoot.getElementById("btMakeOrder");
-                    this.makeOrderClick = this.makeOrderClick.bind(this);
-                    this.btMakeOrder.addEventListener("click", this.makeOrderClick);
+                    this.btMakeOrder.addEventListener("click", (e) => { this.makeOrderClick() });
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
+                console.log(error)
             });
         }
 
-        makeOrderClick(){
-            queries.confirmDayOrder().then(ok =>{
+        makeOrderClick() {
+            queries.confirmDayOrder().then(ok => {
                 console.log("OK");
-            }).catch(error => {
+            })
+            .catch(error => {
+                console.log(error)
             });
         }
 

@@ -9,8 +9,6 @@ export let pieError = (function () {
             this.attachShadow({ mode: 'open' }).innerHTML = templateT;
             this.messageText = this.shadowRoot.getElementById('messageText');
             this.btCloseMessage = this.shadowRoot.getElementById('closeMessage');
-
-            this.closeMessageEvent = this.closeMessageEvent.bind(this);
             this.messageText.textContent = "there is will be message";
         }
 
@@ -18,24 +16,25 @@ export let pieError = (function () {
             this.messageText.textContent = newValue;
         }
 
-        closeMessageEvent(event){
+        closeMessageEvent(e) {
             this.parentNode.removeChild(this);
         }
 
         connectedCallback() {
-            this.btCloseMessage.addEventListener('click', this.closeMessageEvent);
+            this.btCloseMessage.addEventListener('click', (e) => { this.closeMessageEvent(e) });
         }
 
         disconnectedCallback() {
-            this.btCloseMessage.removeEventListener('click', this.closeMessageEvent);
+            this.btCloseMessage.removeEventListener('click', (e) => { this.closeMessageEvent(e) });
         }
     }
+
     customElements.define('pie-error', ErrorClass);
 
     return {
-        showError: function(message){
+        showError: function (message) {
             let node = document.createElement("pie-error");
-            node.message =  message;
+            node.message = message;
             document.body.appendChild(node);
         }
     }

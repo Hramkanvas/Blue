@@ -6,11 +6,9 @@ export let pieShowMainPart = (function () {
     class ShowMainPartClass extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
-
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.arrows = this.shadowRoot.getElementById("arrows");
             this.info = this.shadowRoot.getElementById("info");
-            this.clickArrows = this.clickArrows.bind(this);
         }
 
         clickArrows(e) {
@@ -18,7 +16,7 @@ export let pieShowMainPart = (function () {
         }
 
         connectedCallback() {
-            this.arrows.addEventListener('clickArrow', this.clickArrows);
+            this.arrows.addEventListener('clickArrow', (e) => { this.clickArrows(e) });
         }
     }
 

@@ -13,7 +13,6 @@ export let pieItems = (function () {
         constructor() {
             super();
             this.attachShadow({mode: 'open'}).innerHTML = template1;
-            this.addItems = this.addItems.bind(this);
             this.place = this.shadowRoot.querySelector(".items");
             this.waitComponent = this.shadowRoot.getElementById("waiting");
         }
@@ -33,7 +32,6 @@ export let pieItems = (function () {
                 });
             }
         }
-
 
         dayNameToNum(dayName) {
             switch (dayName) {
@@ -55,7 +53,6 @@ export let pieItems = (function () {
                     return -1;
             }
         }
-
 
         addItems(menu, orders) {
             if (this.waitComponent){

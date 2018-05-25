@@ -8,23 +8,21 @@ export let counter = (function () {
         constructor() {
             super();
             this.counter = 0;
-            this.attachShadow({mode: 'open'}).innerHTML = template;
-            this.calculate = this.calculate.bind(this);
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.remove = this.shadowRoot.getElementById("remove");
             this.add = this.shadowRoot.getElementById("add");
             this.count = this.shadowRoot.getElementById("count");
-            this.render = this.render.bind(this);
             this.productPrice = 0;
         }
 
         connectedCallback() {
-            this.remove.addEventListener("click", this.calculate);
-            this.add.addEventListener("click", this.calculate);
+            this.remove.addEventListener("click", (e) => { this.calculate(e) });
+            this.add.addEventListener("click", (e) => { this.calculate(e) });
         }
 
         disconnectedCallback() {
-            this.remove.addEventListener("click", this.calculate);
-            this.add.addEventListener("click", this.calculate);
+            this.remove.addEventListener("click", (e) => { this.calculate(e) });
+            this.add.addEventListener("click", (e) => { this.calculate(e) });
         }
 
         static get observedAttributes() {
@@ -33,7 +31,7 @@ export let counter = (function () {
 
         attributeChangedCallback(attrName, oldVal, newVal) {
             if (oldVal === null)
-            this.counter = newVal;
+                this.counter = newVal;
             this.count.innerText = this.counter;
         }
 
@@ -44,7 +42,6 @@ export let counter = (function () {
             if (e.path[1].id === "remove") {
                 if (this.counter <= 0) {
                     this.counter = 0;
-
                     this.render(this.counter, prevCounter);
                 }
                 else {
@@ -63,9 +60,8 @@ export let counter = (function () {
         render(counter, prevCounter) {
             prevCounter = +prevCounter;
             let price = this.productPrice.innerText || 1;
-            console.log(prevCounter);
-
             let priceChange = 0;
+
             if (counter === 0 || prevCounter === 0) {
                 this.productPrice.innerHTML = price;
                 priceChange = counter === 0 && prevCounter === 0 ? 0 : (counter > prevCounter ? +this.productPrice.innerHTML : -this.productPrice.innerHTML);
@@ -80,7 +76,7 @@ export let counter = (function () {
             }
             this.count.innerHTML = counter;
 
-            let counterEvent = new CustomEvent("counter", {detail: {priceChange: priceChange}, bubbles: true});
+            let counterEvent = new CustomEvent("counter", { detail: { priceChange: priceChange }, bubbles: true });
             this.dispatchEvent(counterEvent);
         }
     }

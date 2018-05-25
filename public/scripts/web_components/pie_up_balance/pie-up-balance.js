@@ -8,24 +8,20 @@ export let pieUpBalance = (function () {
             super();
             this.attachShadow({ mode: 'open' }).innerHTML = templateT;
             this.dataList = this.shadowRoot.getElementById('character');
-            this.buttonUpBalance = this.shadowRoot.getElementById('btUpBalance');
+            this.form = this.shadowRoot.getElementById('upBalance');
             this.userInput = this.shadowRoot.getElementById('username');
             this.balanceInput = this.shadowRoot.getElementById('balanceInput');
             this.infoBlock = this.shadowRoot.getElementById('info');
             this.textWorkerName = this.shadowRoot.getElementById('workerName');
             this.textBalance = this.shadowRoot.getElementById('balance');
-            this.clickUpBalanceEvent = this.clickUpBalanceEvent.bind(this);
-            this.changeCurrentUserEvent = this.changeCurrentUserEvent.bind(this);
-            this.updateUserInfo = this.updateUserInfo.bind(this);
+            this.infoBlock.style.visibility = 'hidden';
             this.saveUsers = this.saveUsers.bind(this);
-
-            this.currentUser = {}; 
-
-            queries.getUsers().then(this.saveUsers, function(reason) {
+            this.currentUser = {};
+            queries.getUsers().then(this.saveUsers, function (reason) {
             });
         }
 
-        saveUsers(users){
+        saveUsers(users) {
             this.users = users;
             this.loadUsers();
         }
@@ -35,27 +31,32 @@ export let pieUpBalance = (function () {
             this.textWorkerName.textContent = this.currentUser.FIO;
         }
 
-        changeCurrentUserEvent(event) {
-            const fio = event.target.value;
+        changeCurrentUserEvent(e) {
+            const fio = e.target.value;
             this.currentUser = this.users.find(user => user.FIO === fio);
             if (this.currentUser !== undefined) {
+                if (this.infoBlock.style.visibility === 'hidden') {
+                    this.infoBlock.style.visibility = 'visible';
+                }
                 this.updateUserInfo(this.currentUser);
             } else {
-                this.textBalance.textContent = '';
-                this.textWorkerName.textContent = '';
+                if (this.infoBlock.style.visibility === 'visible') {
+                    this.infoBlock.style.visibility = 'hidden';
+                }
             }
         }
 
-        clickUpBalanceEvent(event) {
+        clickUpBalanceEvent(e) {
+            e.preventDefault();
             if (this.currentUser !== undefined) {
                 if (this.balanceInput.value.match(/^([0-9]+\.?[0-9]*)$/)) {
                     let inputBalance = Number(this.balanceInput.value);
-                    queries.upBalance(this.currentUser.username, inputBalance).then((value)=>{
+                    queries.upBalance(this.currentUser.username, inputBalance).then((value) => {
                         this.currentUser = value;
                         this.updateUserInfo();
                         let index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
                         this.users[index] = value;
-                        this.balanceInput.value = '';
+                        pieError.showError("Баланс пополнен");
                     }, (reason) => {
                         pieError.showError(reason);
                     });
@@ -76,12 +77,12 @@ export let pieUpBalance = (function () {
         }
 
         connectedCallback() {
-            this.buttonUpBalance.addEventListener('click', this.clickUpBalanceEvent);
-            this.userInput.addEventListener('input', this.changeCurrentUserEvent);
+            this.form.addEventListener('submit', (e) => { this.clickUpBalanceEvent(e) });
+            this.userInput.addEventListener('input', (e) => { this.changeCurrentUserEvent(e) });
         }
 
         disconnectedCallback() {
-            this.buttonUpBalance.removeEventListener('click', this.clickUpBalanceEvent);
+            this.form.addEventListener('submit', this.clickUpBalanceEvent);
             this.userInput.removeEventListener('input', this.changeCurrentUserEvent);
         }
     }

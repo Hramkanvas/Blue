@@ -24,18 +24,17 @@ export let pieHeaderContent = (function () {
 
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.exitButton = this.shadowRoot.querySelector("span.userInfoButton");
-            this.out = this.out.bind(this);
 
             if (userInfo.type !== "admin") {
-                let temp = `Баланс: <b>${userInfo.balance}</b> руб.`;
+                let temp = `Баланс: <b>${userInfo.balance}</b> руб.`
                 this.shadowRoot.getElementById("balance").innerHTML = temp;
             }
         }
 
         connectedCallback() {
-            this.exitButton.addEventListener("click", this.out);
+            this.exitButton.addEventListener("click", (e) => { this.out()});
         }
 
         out() {

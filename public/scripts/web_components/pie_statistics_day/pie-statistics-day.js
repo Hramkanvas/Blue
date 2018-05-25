@@ -6,9 +6,8 @@ export let pieStatisticsDayComponent = (function () {
     class GeneralStatisticsClass extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.statisticsTable = this.shadowRoot.getElementById("generalStatisticsTable");
-            this.fillTable = this.fillTable.bind(this);
         }
 
         connectedCallback() {
