@@ -787,7 +787,7 @@ export let templates = (function () {
             font-weight:normal;
             text-align:center;
             border: 0.5px solid #e0e0eb;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
             font-size: 18px;
             padding-top: 10px;
         }
@@ -965,10 +965,10 @@ body {
             flex-direction: column;
             width: 550px;
             padding: 30px 80px;
-            background-color: var(--white-grey);
+            background-color: #f9f9f9;
             margin: 0px auto;
             border-radius: var(--border-radius-component);
-            border: var(--border-component);
+            border: 1px solid #d9d9d9;
         }
 
         button:hover {
@@ -979,7 +979,6 @@ body {
             padding-bottom: 30px;
         }
         .info{
-            display: none;
             transition: 0.5s;
         }
         .info p {
@@ -1041,7 +1040,7 @@ body {
                         <p><b>Сотрудник: </b></p>
                     </div>
                     <div>
-                        <p id = "workerName"> Иванов </p>
+                        <p id = "workerName"> </p>
                     </div>  
                 </div>
                 <div class="balance">
@@ -1049,7 +1048,7 @@ body {
                         <p><b>Баланс:</b></p>
                     </div>
                     <div>
-                        <p id = "balance">4455555</p>
+                        <p id = "balance"></p>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,6 @@ export let pieUpBalance = (function () {
             this.infoBlock = this.shadowRoot.getElementById('info');
             this.textWorkerName = this.shadowRoot.getElementById('workerName');
             this.textBalance = this.shadowRoot.getElementById('balance');
-            this.infoBlock.style.display = 'none';
             this.clickUpBalanceEvent = this.clickUpBalanceEvent.bind(this);
             this.changeCurrentUserEvent = this.changeCurrentUserEvent.bind(this);
             this.updateUserInfo = this.updateUserInfo.bind(this);
@@ -40,14 +39,10 @@ export let pieUpBalance = (function () {
             const fio = event.target.value;
             this.currentUser = this.users.find(user => user.FIO === fio);
             if (this.currentUser !== undefined) {
-                if (this.infoBlock.style.display === 'none') {
-                    this.infoBlock.style.display = 'block';
-                }
                 this.updateUserInfo(this.currentUser);
             } else {
-                if (this.infoBlock.style.display === 'block') {
-                    this.infoBlock.style.display = 'none';
-                }
+                this.textBalance.textContent = '';
+                this.textWorkerName.textContent = '';
             }
         }
 
@@ -60,6 +55,7 @@ export let pieUpBalance = (function () {
                         this.updateUserInfo();
                         let index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
                         this.users[index] = value;
+                        this.balanceInput.value = '';
                     }, (reason) => {
                         pieError.showError(reason);
                     });
