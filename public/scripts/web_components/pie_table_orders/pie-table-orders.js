@@ -16,9 +16,20 @@ export let pieTableOrders = (function () {
             this.loadOrders = this.loadOrders.bind(this);
             this.showAllUsers = this.showAllUsers.bind(this);
             this.loadNames = this.loadNames.bind(this);
+            this.clearTable = this.clearTable.bind(this);
+        }
+
+        clearTable() {
+            let templHeaderTable =  `<tr class="ordersTableHeader headerTable" id = "header">
+                    <th class = "firstColumn">Имя</th>
+                    <th>Заказ</th>
+                    <th>Сумма заказа</th>
+                </tr>`
+            this.ordersTable.innerHTML = templHeaderTable;
         }
 
         showAllUsers() {
+            this.clearTable();
             let templ = '';
             const usernames = Object.keys(this.orders);
             usernames.forEach(username => {
@@ -74,12 +85,8 @@ export let pieTableOrders = (function () {
             const usernames = Object.keys(this.orders);
             let iNeedThisPerson = usernames.filter(item => this.orders[item].FIO.toLowerCase().match(new RegExp(`^${this.inputZone.value.toLowerCase()}.*`)));
             if (iNeedThisPerson.length !== 0) {
-                this.ordersTable.innerHTML = ``;
-                let appendingRes = `<tr class="ordersTableHeader">
-                        <th>Имя</th>
-                        <th>Заказ</th>
-                        <th>Сумма заказа</th>
-                    </tr>`;
+                this.clearTable();
+                let appendingRes = ``;
                 iNeedThisPerson.forEach(username => {
                     const products = this.orders[username].info;
                     let listOrders = "";
@@ -95,9 +102,10 @@ export let pieTableOrders = (function () {
                     </tr>
                     `;
                 });
-                this.ordersTable.innerHTML = appendingRes;
+                this.ordersTable.innerHTML += appendingRes;
             } else {
                 pieError.showError("Такой пользователь не найден.");
+                document.activeElement.blur();
                 this.inputZone.value = "";
                 this.showAllUsers();
             }

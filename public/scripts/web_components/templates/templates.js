@@ -887,12 +887,14 @@ export let templates = (function () {
                 </datalist>
             </div>
         </div>
-        <table id="ordersTable" class="ordersTable">
-        <tr class="ordersTableHeader headerTable">
+        <table  class="ordersTable">
+        <tbody id="ordersTable">
+        <tr class="ordersTableHeader headerTable" id = "header">
             <th class = "firstColumn">Имя</th>
             <th>Заказ</th>
             <th>Сумма заказа</th>
         </tr>
+        </tbody>
     </table>
     `,
         pieTabsTemplate: `
