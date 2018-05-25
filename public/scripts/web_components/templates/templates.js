@@ -59,7 +59,7 @@ export let templates = (function () {
         pieAuthorizationTemplate: `
     <style>
     
-    p {
+     p {
         font-size: 16px;
     }
       
@@ -84,7 +84,7 @@ export let templates = (function () {
         border-radius: 3px;
         border: 1px solid #7a7a7a1a;
         padding: 30px;
-        width: 500px;
+        width: 460px;
         height: max-content;
         margin: 10% auto;
     }
@@ -93,6 +93,7 @@ export let templates = (function () {
         font-size: 25px;
         text-align: center;
         margin-bottom: 25px;
+        margin-top: 0px;
     }
     
     .bottomStuff p {
@@ -115,16 +116,15 @@ export let templates = (function () {
         outline: none;
         cursor: pointer;
         background: #3d8af7;
-        padding: 5px 10px;
+        padding: 10px 20px;
     }
     
     input {
         width: 100%;
         display: block;
         border: none;
-        
         outline: none;
-        padding: 10px;
+        padding: 10px 0px;
         margin-bottom: 20px;
         background-color: white;
     }
@@ -134,16 +134,9 @@ export let templates = (function () {
         font-size: 14px;
     }
 
-    .authorizationBlockError{
+    .Error{
         box-shadow: 0px 0px 15px darkred;
-        transition: all 0.7s;
-        background: #ebebeb;
-        border-radius: 3px;
-        border: 1px solid #7a7a7a1a;
-        padding: 30px;
-        width: 500px;
-        height: max-content;
-        margin: 10% auto;
+        transition: all 0.7s;        
     }
     
     </style>
@@ -153,11 +146,11 @@ export let templates = (function () {
             <h3>Авторизация</h3>
         </div>
         <form name="authorize" id="authorizeForm">
-            <label for="username">ИМЯ:</label>
-            <input name="login" type="text" id="username">
-            <label for="password">ПАРОЛЬ:</label>
-            <input name="password" type="password" id="password">
-            <button id="authorizeBt" type="button">Войти</button>
+            <label for="username" >Имя:</label>
+            <input name="login" type="text" id="username" required>
+            <label for="password">Пароль:</label>
+            <input name="password" type="password" id="password" required>
+            <button type="submit">Войти</button>
         </form>
     </div>
     `,
@@ -232,32 +225,35 @@ export let templates = (function () {
         `,
         pieErrorTemplate: `
         <style>
-        #error{
+         #error {
             width:100%;
             height:100%;
             position: absolute;
             top: 0;
             left: 0;
             z-index:9999;
-            background-color: rgba(0,0,0,0.1);
-        }
-        #errorBlock{
-            padding-top:5px;
-            padding-bottom:10px;
-            margin-top:30vh;
-            margin-left:30vw;
-            width:40vw;
-            background-color:white;
+            background-color: rgba(0, 0, 0, 0.46);
         }
 
-        #messageText{
-            padding-left:10px;
-            padding-right:10px;
+        #errorBlock {
+            padding: 35px 15px;
+            margin-left: 0 auto;
+            width: 400px;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            border-radius: var(--border-radius-component);
+            border: var(--border-component);
+        }
+
+        #messageText {
             margin-bottom:10px;
             text-align:center;
         }
 
-        button{
+        button {
             display: flex;
             margin: 0 auto;
             border: none;
@@ -267,7 +263,9 @@ export let templates = (function () {
             cursor: pointer;
             background: #3d8af7;
             padding: 5px 10px;
+            margin-top: 15px;
         }
+
         button:hover {
             background: #72bb53;
         }
@@ -275,7 +273,7 @@ export let templates = (function () {
         <div id = "error">
            <div id = "errorBlock">
                 <div id = "messageText">
-                    Это текст для сообщения. АЛОАРВОАыватывло длыравлофа лд ыфраорфдл лодфырлыралы
+                    Это текст для сообщения.
                 </div>
                 <button id = "closeMessage" > OK </button>
            </div>    
@@ -525,7 +523,7 @@ export let templates = (function () {
                 position: relative;
                 top:0px;
                 max-width: 450px;
-                min-height: 400px;
+                min-height: 450px;
                 text-align: center;
                 background: #f7f6f6;
                 border-radius: var(--border-radius-component);
@@ -908,6 +906,7 @@ h1, h2, h3, h4, h5, h6, th {
 }
 
 a {
+    padding: 0px 40px; 
 color: var(--grey-dark);
 text-decoration: none;
 }
@@ -1052,7 +1051,7 @@ body {
                     </div>
                 </div>
             </div>
-            <form>
+            <form id="upBalance">
                 <label for="username">Сотрудник:
                     <input type="text" id="username" list="character">
                 </label>
@@ -1060,9 +1059,10 @@ body {
                    
                 </datalist>
                 <label for="balance" list="character"> Сумма:
-                    <input id = "balanceInput" type="number" min = "0"> </label>
+                    <input id = "balanceInput" type="number" min = "0"> 
+                </label>
+                    <button type="submit" id = "btUpBalance">Пополнить</button>
             </form>
-            <button id = "btUpBalance" >Пополнить</button>
         </div>
     </div>`,
         pieUpBalanceGeneralComponentTemplate: `
