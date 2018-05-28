@@ -28,8 +28,11 @@ router.get('/getTotalPriceForWeek', (req,res) => {
             return order.ordersForWeek(weekNumber,array, username);
         })
         .then(orders => {
+            console.log(orders);
             orders.forEach(function (order) {
-                answer.totalPriceForWeek += order.price;
+                if(order.price)
+                    answer.totalPriceForWeek += order.price;
+                
             });
             if(!answer.totalPriceForWeek)
                 answer.totalPriceForWeek = 0;
