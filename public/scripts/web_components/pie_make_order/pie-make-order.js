@@ -19,12 +19,11 @@ export let pieMakeOrder = (function () {
             });
         }
 
-        makeOrderClick() {
-            queries.confirmDayOrder().then(ok => {
-                console.log("OK");
-            })
-            .catch(error => {
-                console.log(error)
+        makeOrderClick(){
+            queries.confirmDayOrder().then(ok =>{
+                this.shadowRoot.parentNode.removeChild(this.shadowRoot);
+            }).catch(error => {
+                
             });
         }
 

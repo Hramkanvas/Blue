@@ -1,8 +1,8 @@
-import {queries} from "../../queries.js";
+import { queries } from "../../queries.js";
 
 export var menu = undefined;
 export var orders = undefined;
-import {templates} from "../templates/templates.js";
+import { templates } from "../templates/templates.js";
 
 export let pieItems = (function () {
 
@@ -12,20 +12,40 @@ export let pieItems = (function () {
     class Items extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template1;
+
+            this.attachShadow({ mode: 'open' }).innerHTML = template1;
+            this.addItems = this.addItems.bind(this);
             this.place = this.shadowRoot.querySelector(".items");
             this.waitComponent = this.shadowRoot.getElementById("waiting");
+            this.loadOrders = this.loadOrders.bind(this);
         }
 
-        connectedCallback() {
+        static get observedAttributes() {
+            return ['week'];
+        }
+
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            this.week = newValue;
+            this.place.innerHTML = "";
+            this.loadOrders();
+        }
+
+        loadOrders() {
             this.menu = undefined;
             if (userInfo.type === 'admin') {
-                queries.getMenu(1).then(res => {
+                queries.getMenu(this.week).then(res => {
+                    if (this.waitComponent !== null) {
+                        this.waitComponent.remove();
+                    }
                     menu = res;
                     this.addItems(menu);
                 });
             } else {
-                queries.getMainPageUser(userInfo.username, 1).then(res => {
+                queries.getMainPageUser(userInfo.username, this.week).then(res => {
+                    if (this.waitComponent !== null) {
+                        this.waitComponent.remove();
+                    }
                     menu = res[1];
                     orders = res[0];
                     this.addItems(menu, orders);
@@ -55,63 +75,63 @@ export let pieItems = (function () {
         }
 
         addItems(menu, orders) {
-            if (this.waitComponent){
-                this.waitComponent.parentNode.removeChild(this.waitComponent);
-            }
             if (orders) {
                 const dayNamesList = Object.keys(menu.menuInfo);
                 let index = 0;
                 dayNamesList.forEach((dayName) => {
-                    const dayNameInt = this.dayNameToNum(dayName);
-                    const order = orders.find((element) => {
-                        return (new Date(element.date)).getDay() === dayNameInt
-                    });
-                    let item = document.createElement('pie-menu-item');
-                    item.setAttribute("data-holder", "user");
-                    if (order) {
-                        item.setAttribute("data-day", dayName);
-                        if (order.isBlocked) {
-                            item.setAttribute("data-state", "pastMenu");
+                    if (dayName !== "особое") {
+                        const dayNameInt = this.dayNameToNum(dayName);
+                        const order = orders.find((element) => {
+                            return (new Date(element.date)).getDay() === dayNameInt
+                        });
+                        let item = document.createElement('pie-menu-item');
+                        item.setAttribute("data-holder", "user");
+                        order.info = order.info || undefined;
+                        if (order.info) {
+                            item.setAttribute("data-day", dayName);
+                            if (order.isBlocked) {
+                                item.setAttribute("data-state", "pastMenu");
+                            }
+                            else {
+                                item.setAttribute("data-state", "futureMenu");
+                            }
+                            index++;
                         }
                         else {
-                            item.setAttribute("data-state", "futureMenu");
-                        }
-                        index++;
-                    }
-                    else {
-                        let newOrderObject = {
-                            price: 0
-                        };
-                        newOrderObject.info = {};
-                        let foodList = Object.keys(menu.menuInfo[dayName]);
-                        foodList.forEach(foodName=>{
-                            newOrderObject.info[foodName] = {
-                                cost: menu.menuInfo[dayName][foodName].price,
-                                count: 0
+                            order.price = 0
+                            order.info = {};
+                            let foodList = Object.keys(menu.menuInfo[dayName]);
+                            foodList.forEach(foodName => {
+                                order.info[foodName] = {
+                                    cost: menu.menuInfo[dayName][foodName].price,
+                                    count: 0
+                                }
+                            });
+                            item.setAttribute("data-day", dayName);
+                            if (order.isBlocked) {
+                                item.setAttribute("data-state", "pastMenu");
                             }
-                        });
-                        let newDate = new Date(menu.fromDate.toString());
-                        newDate.setDate(newDate.getDate() + index);
-                        newOrderObject.date = newDate.toDateString();
-                        orders.splice(index, 0, newOrderObject);
-                        index++;
-                        item.setAttribute("data-day", dayName);
-                        item.setAttribute("data-state", "clear");
+                            else {
+                                item.setAttribute("data-state", "clear");
+                            }
+                        }
+                        this.place.appendChild(item);
                     }
-                    this.place.appendChild(item);
                 });
             } else {
                 for (let day in menu.menuInfo) {
-                    let item = document.createElement('pie-menu-item');
-                    item.setAttribute("data-holder", "admin");
-                    item.setAttribute("data-day", day);
-                    if (userInfo.type === 'admin') {
-                        item.setAttribute("data-state", "admin");
-                    } else {
-                        item.setAttribute("data-state", "clear");
-                    }
+                    if(day !== "особое"){
+                        let item = document.createElement('pie-menu-item');
+                        item.setAttribute("data-holder", "admin");
+                        item.setAttribute("data-day", day);
+                        if (userInfo.type === 'admin') {
+                            item.setAttribute("data-state", "admin");
+                        } else {
+                            item.setAttribute("data-state", "clear");
+                        }
 
-                    this.place.appendChild(item);
+                        this.place.appendChild(item);
+                    }
                 }
             }
         }

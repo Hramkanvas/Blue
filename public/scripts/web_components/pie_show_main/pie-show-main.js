@@ -9,10 +9,13 @@ export let pieShowMainPart = (function () {
             this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.arrows = this.shadowRoot.getElementById("arrows");
             this.info = this.shadowRoot.getElementById("info");
+            this.clickArrows = this.clickArrows.bind(this);
+            this.items = this.shadowRoot.getElementById("items");
         }
 
         clickArrows(e) {
             this.info.setAttribute('week', e.detail.week);
+            this.items.setAttribute('week', e.detail.week);
         }
 
         connectedCallback() {
