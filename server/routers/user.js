@@ -32,7 +32,7 @@ router.get('/getTotalPriceForWeek', (req,res) => {
             orders.forEach(function (order) {
                 if(order.price)
                     answer.totalPriceForWeek += order.price;
-                
+
             });
             if(!answer.totalPriceForWeek)
                 answer.totalPriceForWeek = 0;
@@ -69,7 +69,6 @@ router.put('/makeOrder', (req, res) => {//сделать заказ(обнови
             }
         })
         .catch(err => res.status(404).send(err.message));
-    //здесь надо сразу отнимать баланс у user'а
 });
 
 router.delete('/deleteOrder', (req, res) => {
