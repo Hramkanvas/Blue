@@ -51,10 +51,6 @@ export let pieItems = (function () {
             }
         }
 
-        connectedCallback() {
-            this.loadOrders();
-        }
-
         dayNameToNum(dayName) {
             switch (dayName) {
                 case "пн":
