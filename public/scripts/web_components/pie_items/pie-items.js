@@ -120,16 +120,18 @@ export let pieItems = (function () {
                 });
             } else {
                 for (let day in menu.menuInfo) {
-                    let item = document.createElement('pie-menu-item');
-                    item.setAttribute("data-holder", "admin");
-                    item.setAttribute("data-day", day);
-                    if (userInfo.type === 'admin') {
-                        item.setAttribute("data-state", "admin");
-                    } else {
-                        item.setAttribute("data-state", "clear");
-                    }
+                    if(day !== "особое"){
+                        let item = document.createElement('pie-menu-item');
+                        item.setAttribute("data-holder", "admin");
+                        item.setAttribute("data-day", day);
+                        if (userInfo.type === 'admin') {
+                            item.setAttribute("data-state", "admin");
+                        } else {
+                            item.setAttribute("data-state", "clear");
+                        }
 
-                    this.place.appendChild(item);
+                        this.place.appendChild(item);
+                    }
                 }
             }
         }
