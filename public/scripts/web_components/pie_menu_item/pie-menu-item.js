@@ -246,7 +246,7 @@ export let pieMenuItem = (function () {
                     sendOrder.addEventListener("click", this.sendOrderFunction);
                     itemState.classList.add(attr);
                     let foodList = Object.keys(this.currentDayObject.info);
-                    let trs = this.shadowRoot.querySelectorAll("tr~tr");
+                    let trs = this.shadowRoot.querySelectorAll("tbody>tr");
                     let index = 0;
 
                     trs.forEach(item => {

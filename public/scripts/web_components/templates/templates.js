@@ -120,6 +120,7 @@ export let templates = (function () {
     }
     
     input {
+        padding-left:5px!important;
         width: 100%;
         display: block;
         border: none;
