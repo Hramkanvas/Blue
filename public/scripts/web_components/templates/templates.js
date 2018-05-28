@@ -467,34 +467,92 @@ export let templates = (function () {
 
         <style>
             table {
-                padding: 0px 20px 30px 20px;
+                padding: 0px 10px 90px 10px;
                 text-align: left;
                 width: 100%;
             }
+
             th {
                 padding-bottom: 20px;
                 font-size: 18px;
                 padding-top: 10px;
             }
+
             tr {
+                display:flex;
                 width: 100%;
             }
+
+            tbody>tr {
+                border-radius: 10px;
+            }
+
+            tbody>tr>td:first-child {
+                cursor:pointer;
+            }
+
             td {
                 font-size: 18px;
-                padding-right: 35px;
+                padding-right: 20%;
+                flex:1;                
                 padding-bottom: 3px;
                 max-width: 95px;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
             }
+
+            thead {
+                display: block;
+            }
+
+            thead th {
+                flex:1;
+                padding-right: 25px;
+                color: var(--grey-black);
+            }
+            
+            tbody {
+                // box-shadow: inset 1px 1px 1px 1px #cacaca;
+                display: block;
+                overflow: auto;
+                width: 100%;
+                height: 195px;
+            }
+
+            tbody::-webkit-scrollbar {
+                padding-left:10px;
+                width: 10px;
+            }
+            
+            tbody::-webkit-scrollbar-track {
+                border-radius: 9px;
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            }
+
+            tbody::-webkit-scrollbar-thumb {
+                background-color: #3d8af7;
+                border-radius: 9px;
+                outline: 1px solid slategrey;
+            }
+
+            tbody::-webkit-scrollbar-thumb:hover {
+                background-color: #68a3f7;
+            }
+
+            tbody > tr:hover {
+                background:#cbe0fd;
+            }
+
             b {
                 color: var(--grey-black);
             }
+
             i:hover {
                 cursor: pointer;
                 color: black;
             }
+
             button {
                 display: flex;
                 margin: 0 auto;
@@ -505,20 +563,26 @@ export let templates = (function () {
                 cursor: pointer;
                 background: #3d8af7;
                 padding: 10px 20px;
+                border-radius:3px;
+                width: max-content;
             }
+
             .itemFunc {
                 display: flex;
                 padding-bottom: 15px;
                 justify-content: space-between;
                 align-items: center;
             }
+
             .itemFunc h5 {
+                color: var(--grey-black);
                 text-transform: capitalize;
                 text-align: left;
                 font-size: 30px;
                 font-weight: 600;
                 margin: 10px 20px;
             }
+
             .item {
                 position: relative;
                 top:0px;
@@ -532,21 +596,24 @@ export let templates = (function () {
                 box-shadow: 4px 6px 8px 0px #0000004a;
                 transition: top 0.4s;
             }
-
+            
             .item:active {
                 top: -10px;
             }
-
+            
             .item:hover {
                 top: -10px;
             }
+
             .itemFuncButtons i {
                 font-size: 27px;
                 margin: 0px 2px;
             }
+
             .countProducts, .remove, .add {
                 margin: 0px 5px;
             }
+
             .price {
                 color: var(--grey-black);
                 position: absolute;
@@ -558,10 +625,13 @@ export let templates = (function () {
                 right: 0;
                 bottom: 0;
             }
+
             .price.edit {
-                bottom: 70px;
+                bottom: 65px;
                 padding: 10px 0px;
             }
+
+
             .orderButton {
                 padding: 10px 20px;
                 position: absolute;
@@ -569,35 +639,45 @@ export let templates = (function () {
                 bottom: 5%;
                 transform: translate(-50%);
             }
+
             .orderButton.edit {
-                padding: 5px 10px;
+                padding: 7px 14px;
+                border-radius: 5px;
             }
+
             .pastMenu {
                 border-top: 3px solid black;
             }
+
             .editMenu {
                 box-shadow: 4px 5px 6px 1px #1464f685;
                 border-top: 3px solid #1464f6;
             }
+
             .editMenu td {
                 padding-right: 20px;
             }
+
             .countProducts {
                 display: flex;
             }
+
             .addMenu {
                 position: absolute;
                 top: 88%;
                 width: 100%;
                 left: 0;
             }
+
             button:hover {
                 background: #72bb53;
             }
+
             .futureMenu {
                 box-shadow: 4px 5px 6px 1px #72bb537a;
                 border-top: 3px solid #72bb53;
             }
+
             .item caption {
                 font-size: 15px;
             }
@@ -611,6 +691,8 @@ export let templates = (function () {
                 <div class="itemMenu">
                     <table>
                         <caption>Меню на день:</caption>
+                        <thead>
+                        </thead>
                         <tbody>
 
                         </tbody>
