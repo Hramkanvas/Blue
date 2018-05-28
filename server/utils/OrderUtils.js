@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');
 const moment = require('moment');
+const ERROR_MESSAGES = require('../constants/orders');
+
 
 module.exports = {
     uploadOrder,
@@ -11,11 +13,13 @@ module.exports = {
     ordersForWeek,
     getTotal,
     confirmDayOrders,
-    isDayOrdersBlocked
+    isDayOrdersBlocked,
+    createDayOrdersSchema
 };
 
+
 function createDayOrdersSchema(date) {
-    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let resetedDate = resetDate(date);
 
     return Order.findOne({Date: resetedDate}).then((OrderSchema) => {
         if (!OrderSchema) {
@@ -32,8 +36,10 @@ function createDayOrdersSchema(date) {
 function uploadOrder(date, username, uploadOrder) {
 
     if (validateTime(date)) {
-        let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+        let resetedDate = resetDate(date);
+
         uploadOrder.price = calculateOrderPrice(uploadOrder);
+
         return Order.findOne({Date: resetedDate})
             .then((OrderSchema) => {
                 if (OrderSchema) {
@@ -43,7 +49,7 @@ function uploadOrder(date, username, uploadOrder) {
                         return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
                     }
                     else {
-                        return false;
+                        throw new Error(ERROR_MESSAGES.DAY_ORDERS_BLOCKED);
                     }
 
                 }
@@ -63,16 +69,46 @@ function uploadOrder(date, username, uploadOrder) {
 
     else {
         return new Promise((res, rej) => {
-            res(false);
+            throw new Error(ERROR_MESSAGES.NOT_VALID_TIME);
         })
     }
 }
 
-function ordersForWeek(dates, username) {
+function ordersForWeek(weekNumber, dates, username) {
     let getOrders = [];
 
-    for (let date of dates) {
-        getOrders.push(getUserOrders(date, username));
+    for (let i = 1; i < 7; i++) {
+        let date = resetDate(moment().day((weekNumber - 1) * 7 + 1).day(i));
+        //let date = resetedDate.day(i);
+        let is = dates.some((item) => {
+            return resetDate(item).isSame(date)
+        });
+        if (is) {
+            getOrders.push(getUserOrders(date, username));
+        }
+        else {
+            // getOrders.push(new Promise((res, rej) => {
+            //     if (validateTime(date)) {
+            //         res({isBlocked: false});
+            //     }
+            //     else {
+            //         res({isBlocked: true});
+            //     }
+            // }))
+            getOrders.push(isDayOrdersBlocked(date)
+                .then((isBlocked) => {
+                    if (isBlocked) {
+                        return {isBlocked};
+                    }
+                    if (validateTime(date)) {
+                        return {isBlocked: false, date}
+                    }
+                    else {
+                        return {isBlocked: true, date};
+                    }
+                }))
+
+        }
     }
 
     return Promise.all(getOrders);
@@ -91,17 +127,17 @@ function validateTime(date) {
 
 function deleteOrder(date, username) {
 
-    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let resetedDate = resetDate(date);
 
     return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
             if (OrderSchema) {
                 if (!OrderSchema.Orders[username]) {
-                    return false;
+                    throw new Error(ERROR_MESSAGES.NO_USER_ORDER);
                 }
 
                 if (!validateTime(date, OrderSchema.Orders[username])) {
-                    return false;
+                    throw new Error(ERROR_MESSAGES.NOT_VALID_TIME);
                 }
 
                 if (!OrderSchema.isBlocked) {
@@ -114,29 +150,31 @@ function deleteOrder(date, username) {
                     return Order.updateOne({'_id': OrderSchema._id}, {$set: {'Orders': orders}});
                 }
 
-                return false;
+                throw new Error(ERROR_MESSAGES.UNHANDLED);
             }
-            return false;
+            throw new Error(ERROR_MESSAGES.NO_ORDERS);
         });
 }
 
 function getDayOrders(date) {
-    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let resetedDate = resetDate(date);
 
     return Order.findOne({Date: resetedDate})
         .then(OrderSchema => {
             if (OrderSchema) {
-                return OrderSchema.Orders;
+                return OrderSchema;
             }
-            return false;
+            throw new Error(ERROR_MESSAGES.NO_ORDERS);
         })
 }
 
 function getUserOrders(date, username) {
     return getDayOrders(date)
         .then(dayOrders => {
-            dayOrders[username].date = date;
-            return dayOrders[username];
+            let {Orders} = dayOrders;
+            Orders[username].date = date;
+            Orders[username].isBlocked = dayOrders.isBlocked;
+            return Orders[username];
         });
 }
 
@@ -157,17 +195,18 @@ function calculateOrderPrice(order) {
 function getTotal(date) {
     return getDayOrders(date)
         .then((dayOrders) => {
+            let {Orders} = dayOrders;
             let total = {price: 0};
-            for (user in dayOrders) {
-                for (dish in dayOrders[user].info) {
+            for (user in Orders) {
+                for (dish in Orders[user].info) {
                     if (total[dish]) {
-                        total[dish] += +dayOrders[user].info[dish].count;
+                        total[dish] += +Orders[user].info[dish].count;
                     }
                     else {
-                        total[dish] = +dayOrders[user].info[dish].count;
+                        total[dish] = +Orders[user].info[dish].count;
                     }
                 }
-                total.price += +dayOrders[user].price;
+                total.price += +Orders[user].price;
             }
 
             return total;
@@ -176,21 +215,32 @@ function getTotal(date) {
 
 
 function confirmDayOrders(date) {
-    let resetedDate = moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
+    let resetedDate = resetDate(date);
 
     return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
-            if (!OrderSchema.isBlocked)
+            if (!OrderSchema.isBlocked) {
                 return Order.updateOne({'_id': OrderSchema._id}, {$set: {'isBlocked': true}});
-            return false;
+            }
+
+            throw new Error(ERROR_MESSAGES.DAY_ORDERS_ARE_ALREADY_BLOCKED);
         });
 }
 
 
-function isDayOrdersBlocked(){
-    let resetedDate = moment().set({ 'h': 3, 'm': 0, 's': 0, 'ms': 0 });
+
+function isDayOrdersBlocked(date) {
+    let resetedDate = resetDate(date);
+
     return Order.findOne({Date: resetedDate})
         .then((OrderSchema) => {
-            return OrderSchema.isBlocked;
+            if (OrderSchema) {
+                return OrderSchema.isBlocked;
+            }
+            return;
         });
+}
+
+function resetDate(date) {
+    return moment(date).set({'h': 3, 'm': 0, 's': 0, 'ms': 0});
 }
