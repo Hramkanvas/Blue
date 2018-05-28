@@ -83,7 +83,7 @@ router.post('/uploadMenu', (req, res) => {
         const file = Buffer.concat(buffer);
         menu.addMenu(file)
             .then(answer => {;
-                res.send(answer)
+                res.send('Меню загружено')
             })
             .catch(err => res.status(404).send(err.message));
     });
@@ -92,7 +92,7 @@ router.post('/uploadMenu', (req, res) => {
 
 router.get('/confirmDayOrders', (req, res) => {
     //нужно вызвать запрос  'getDayOrdersStatistic' перед этим,чтобы посчитать кол-во продуктов
-    let date = moment();
+    let date = moment().date(30);
     let prom = [];
     orders.createDayOrdersSchema(date)
         .then(() => orders.confirmDayOrders(date))
