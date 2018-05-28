@@ -34,7 +34,6 @@ export let pieItems = (function () {
             }
         }
 
-
         dayNameToNum(dayName) {
             switch (dayName) {
                 case "пн":
@@ -56,7 +55,6 @@ export let pieItems = (function () {
             }
         }
 
-
         addItems(menu, orders) {
             if (this.waitComponent){
                 this.waitComponent.parentNode.removeChild(this.waitComponent);
@@ -71,7 +69,7 @@ export let pieItems = (function () {
                     });
                     let item = document.createElement('pie-menu-item');
                     item.setAttribute("data-holder", "user");
-                    if (order) {
+                    if (order.info) {
                         item.setAttribute("data-day", dayName);
                         if (order.isBlocked) {
                             item.setAttribute("data-state", "pastMenu");
@@ -82,24 +80,22 @@ export let pieItems = (function () {
                         index++;
                     }
                     else {
-                        let newOrderObject = {
-                            price: 0
-                        };
-                        newOrderObject.info = {};
+                        order.price = 0
+                        order.info = {};
                         let foodList = Object.keys(menu.menuInfo[dayName]);
                         foodList.forEach(foodName=>{
-                            newOrderObject.info[foodName] = {
+                            order.info[foodName] = {
                                 cost: menu.menuInfo[dayName][foodName].price,
                                 count: 0
                             }
                         });
-                        let newDate = new Date(menu.fromDate.toString());
-                        newDate.setDate(newDate.getDate() + index);
-                        newOrderObject.date = newDate.toDateString();
-                        orders.splice(index, 0, newOrderObject);
-                        index++;
                         item.setAttribute("data-day", dayName);
-                        item.setAttribute("data-state", "clear");
+                        if (order.isBlocked) {
+                            item.setAttribute("data-state", "pastMenu");
+                        }
+                        else {
+                            item.setAttribute("data-state", "clear");
+                        }
                     }
                     this.place.appendChild(item);
                 });
