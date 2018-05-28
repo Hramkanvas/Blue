@@ -88,7 +88,6 @@ function getOrders(username, key = 1) {//ключ: 0 - предыдущая не
             if (!user) {
                 return false;
             }
-            console.log(key);
             switch (key) {
                 case 0:
                     return user.history.previous;
@@ -134,7 +133,6 @@ function swapWeekAtDB(username) {
             if (!user) {
                 return false;
             }
-            //console.log(getWeekKey(prMonday, user.history.previousMonday));
             switch (getWeekKey(prMonday, user.history.previousMonday)) {
                 case 0:
                     return user;

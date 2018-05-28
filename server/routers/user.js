@@ -23,9 +23,9 @@ router.get('/getTotalPriceForWeek', (req,res) => {
     users.getOrders(username, weekNumber)
         .then(array =>{
             if (!array){
-                return Promise.reject(new Error("Parametrs isn't correct!"))
+                throw new Error("Parametrs isn't correct!")
             }
-            return order.ordersForWeek(array, username);
+            return order.ordersForWeek(weekNumber,array, username);
         })
         .then(orders => {
             orders.forEach(function (order) {
