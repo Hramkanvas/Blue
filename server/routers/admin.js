@@ -40,7 +40,6 @@ router.get('/getDayOrders', (req, res) => {
                     });
                 prom.push(p);
             }
-            console.log(dayOrders);
             Promise.all(prom)
                 .then(ans => {
                     res.send(Orders);
@@ -73,7 +72,7 @@ router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового за
 
     orders.getTotal(date)
         .then(answer => res.send(answer))
-        .catch(err => console.log(err));
+        .catch(err => res.send(err.message));
 });
 
 router.post('/uploadMenu', (req, res) => {
@@ -83,8 +82,7 @@ router.post('/uploadMenu', (req, res) => {
     }).on('end', () => {
         const file = Buffer.concat(buffer);
         menu.addMenu(file)
-            .then(answer => {
-                console.log(answer);
+            .then(answer => {;
                 res.send(answer)
             })
             .catch(err => res.status(404).send(err.message));
