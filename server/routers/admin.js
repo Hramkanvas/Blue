@@ -83,7 +83,7 @@ router.post('/uploadMenu', (req, res) => {
         const file = Buffer.concat(buffer);
         menu.addMenu(file)
             .then(answer => {;
-                res.send('Меню загружено')
+                res.send(JSON.stringify('Меню загружено'))
             })
             .catch(err => res.status(404).send(err.message));
     });

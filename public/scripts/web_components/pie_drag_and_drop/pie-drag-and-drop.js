@@ -25,7 +25,7 @@ export let pieDragAndDrop = (function () {
             queries.uploadMenu(this.currentFile).then(res =>{
                 this.dragNDropeZone.textContent = 'Для загрузки меню, перетащите файл сюда.'; 
                 this.btUpload.style.visibility = 'hidden';
-                pieError.showError(res.message);
+                pieError.showError(res);
             });
         }
 

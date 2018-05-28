@@ -25,7 +25,6 @@ export let pieItems = (function () {
 
 
         attributeChangedCallback(name, oldValue, newValue) {
-            console.log("CHANGE");
             this.week = newValue;
             this.place.innerHTML = "";
             this.loadOrders();
