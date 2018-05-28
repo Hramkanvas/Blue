@@ -79,22 +79,14 @@ function ordersForWeek(weekNumber, dates, username) {
 
     for (let i = 1; i < 7; i++) {
         let date = resetDate(moment().day((weekNumber - 1) * 7 + 1).day(i));
-        //let date = resetedDate.day(i);
         let is = dates.some((item) => {
             return resetDate(item).isSame(date)
         });
         if (is) {
+
             getOrders.push(getUserOrders(date, username));
         }
         else {
-            // getOrders.push(new Promise((res, rej) => {
-            //     if (validateTime(date)) {
-            //         res({isBlocked: false});
-            //     }
-            //     else {
-            //         res({isBlocked: true});
-            //     }
-            // }))
             getOrders.push(isDayOrdersBlocked(date)
                 .then((isBlocked) => {
                     if (isBlocked) {

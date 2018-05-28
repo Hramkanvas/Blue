@@ -15,9 +15,7 @@ function findMenu(weekNumber) {
     let resetedDate = resetDate(moment().day((weekNumber - 1) * 7 + 1));
 
     return Menu.findOne({ fromDate: resetedDate })
-
         .then((menu) => {
-            console.log(menu);
             return menu;
         });
 }
