@@ -98,7 +98,7 @@ function ordersForWeek(weekNumber, dates, username) {
             getOrders.push(isDayOrdersBlocked(date)
                 .then((isBlocked) => {
                     if (isBlocked) {
-                        return {isBlocked};
+                        return {isBlocked, date};
                     }
                     if (validateTime(date)) {
                         return {isBlocked: false, date}

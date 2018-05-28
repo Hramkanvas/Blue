@@ -668,7 +668,7 @@ export let templates = (function () {
         pieShowMainPartTemplate: `
         <pie-general-info id = "info"></pie-general-info>
         <pie-arrows id = "arrows"></pie-arrows>
-        <pie-items></pie-items>
+        <pie-items id = "items" week = "1"></pie-items>
     `,
         pieStatisticsDayComponentTemplate:
             `
