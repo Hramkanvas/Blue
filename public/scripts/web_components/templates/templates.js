@@ -462,7 +462,7 @@ export let templates = (function () {
     <div id="menu" class="tabContent">
         <pie-drag-and-drop></pie-drag-and-drop>
         <pie-general-info></pie-general-info>
-        <pie-items></pie-items>
+        <pie-items week = "1"></pie-items>
     </div>
     `,
         pieMenuItemTemplate: `
