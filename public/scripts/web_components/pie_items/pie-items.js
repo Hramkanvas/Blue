@@ -25,6 +25,7 @@ export let pieItems = (function () {
 
         attributeChangedCallback(name, oldValue, newValue) {
             this.week = newValue;
+            this.place.innerHTML = "";
             this.loadOrders();
         }
 
@@ -32,11 +33,17 @@ export let pieItems = (function () {
             this.menu = undefined;
             if (userInfo.type === 'admin') {
                 queries.getMenu(this.week).then(res => {
+                    if (this.waitComponent !== null) {
+                        this.waitComponent.remove();
+                    }
                     menu = res;
                     this.addItems(menu);
                 });
             } else {
                 queries.getMainPageUser(userInfo.username, this.week).then(res => {
+                    if (this.waitComponent !== null) {
+                        this.waitComponent.remove();
+                    }
                     menu = res[1];
                     orders = res[0];
                     this.addItems(menu, orders);
@@ -70,9 +77,6 @@ export let pieItems = (function () {
         }
 
         addItems(menu, orders) {
-            if (this.waitComponent) {
-                this.waitComponent.parentNode.removeChild(this.waitComponent);
-            }
             if (orders) {
                 const dayNamesList = Object.keys(menu.menuInfo);
                 let index = 0;
