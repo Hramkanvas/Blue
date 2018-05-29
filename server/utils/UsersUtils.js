@@ -164,7 +164,7 @@ function getWeekKey(date, prMonday) {
 function upBalance(username, amount) {
     return Users.findOne({username})
         .then((user) => {
-            if (user && typeof (amount) == "number" && amount > 0) {
+            if (user  && amount > 0) {
                 user.balance += +amount;
                 return user.save();
             }
@@ -176,7 +176,7 @@ function upBalance(username, amount) {
 function withdrawFromBalance(username, amount) {
     return Users.findOne({username})
         .then((user) => {
-            if (user && typeof (amount) == "number" && amount > 0) {
+            if (user && amount > 0) {
                 user.balance -= +amount;
                 return user.save();
             }
