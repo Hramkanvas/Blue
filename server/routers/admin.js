@@ -50,7 +50,7 @@ router.get('/getDayOrders', (req, res) => {
 });
 
 router.get('/getDayOrdersStatistic', (req, res) => {
-    let date = req.query.date || moment();
+    let date =  moment();//||req.query.date
     orders.getTotal(date)
         .then(answer => res.send(answer))
         .catch(err => res.status(404).send(err));
@@ -67,13 +67,13 @@ router.get('/isMakingOrder', (req, res) => {
         .catch(err => res.status(404).send(err));
 });
 
-router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового заказа
-    let date = req.query.date || new Date;
+// router.get('/getDayOrdersStatistic',(req,res)=>{//для итогового заказа
+//     let date = req.query.date || new Date;
 
-    orders.getTotal(date)
-        .then(answer => res.send(answer))
-        .catch(err => res.send(err.message));
-});
+//     orders.getTotal(date)
+//         .then(answer => res.send(answer))
+//         .catch(err => res.send(err.message));
+// });
 
 router.post('/uploadMenu', (req, res) => {
     const buffer = [];

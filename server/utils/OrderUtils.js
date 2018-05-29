@@ -201,9 +201,9 @@ function getTotal(date) {
                     }
                 }
                 total.price += +Orders[user].price;
-                total.price = total.price.toFixed(2);
+      
             }
-
+        total.price = total.price.toFixed(2);
             return total;
         })
 }
