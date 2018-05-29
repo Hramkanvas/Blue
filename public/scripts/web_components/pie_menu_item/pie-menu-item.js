@@ -349,7 +349,6 @@ export let pieMenuItem = (function () {
                     info: this.currentDayObject.info
                 }
             };
-            console.log(sendObject);
             queries.setUserDayOrder(sendObject);
             const event = new CustomEvent('makeOrderEvent', { 'bubbles': true});
             this.dispatchEvent(event);

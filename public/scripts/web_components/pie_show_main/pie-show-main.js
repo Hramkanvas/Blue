@@ -11,20 +11,24 @@ export let pieShowMainPart = (function () {
             this.info = this.shadowRoot.getElementById("info");
             this.clickArrows = this.clickArrows.bind(this);
             this.items = this.shadowRoot.getElementById("items");
+            this.makeOrder = this.makeOrder.bind(this);
+            this.week = 1;
         }
 
         makeOrder(e) {
-            console.log(e.bubbles);
+            console.log(this.week);
+            this.info.setAttribute('week', this.week);
         }
 
         clickArrows(e) {
+            this.week = e.detail.week;
             this.info.setAttribute('week', e.detail.week);
             this.items.setAttribute('week', e.detail.week);
         }
 
         connectedCallback() {
             this.arrows.addEventListener('clickArrow', (e) => { this.clickArrows(e) });
-            this.items.addEventListener('makeOrderEvent', (e) => { (e) => { this.makeOrder(e) }} );
+            this.items.addEventListener('makeOrder', this.makeOrder);
         }
     }
 

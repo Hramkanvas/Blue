@@ -18,6 +18,12 @@ export let pieItems = (function () {
             this.place = this.shadowRoot.querySelector(".items");
             this.waitComponent = this.shadowRoot.getElementById("waiting");
             this.loadOrders = this.loadOrders.bind(this);
+            this.makeOrder = this.makeOrder.bind(this);
+        }
+
+        makeOrder(e){
+            const event = new CustomEvent('makeOrder', { 'bubbles': true});
+            this.dispatchEvent(event);
         }
 
         static get observedAttributes() {
@@ -114,7 +120,7 @@ export let pieItems = (function () {
                                 item.setAttribute("data-state", "clear");
                             }
                         }
-                        //item.addEventListener('makeOrderEvent', this.s);
+                        item.addEventListener('makeOrderEvent', this.makeOrder);
                         this.place.appendChild(item);
                     }
                 });
@@ -129,7 +135,7 @@ export let pieItems = (function () {
                         } else {
                             item.setAttribute("data-state", "clear");
                         }
-
+                        
                         this.place.appendChild(item);
                     }
                 }
