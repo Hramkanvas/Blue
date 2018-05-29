@@ -172,7 +172,7 @@ function getUserOrders(date, username) {
 
 function getOrderPrice(date, username) {
     return getUserOrders(date, username).then((order) => {
-        return order.price;
+        return order.price.toFixed(2);
     })
 }
 
@@ -181,7 +181,7 @@ function calculateOrderPrice(order) {
     for (dish in order.info) {
         price += order.info[dish].cost * order.info[dish].count;
     }
-    return price;
+    return price.toFixed(2);
 }
 
 function getTotal(date) {
@@ -199,6 +199,7 @@ function getTotal(date) {
                     }
                 }
                 total.price += +Orders[user].price;
+                total.price = total.price.toFixed(2);
             }
 
             return total;
