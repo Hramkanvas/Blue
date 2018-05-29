@@ -20,12 +20,15 @@ export let pieTableOrders = (function () {
         }
 
         clearTable() {
-            let templHeaderTable =  `<tr class="ordersTableHeader headerTable" id = "header">
-                    <th class = "firstColumn">Имя</th>
-                    <th>Заказ</th>
-                    <th>Сумма заказа</th>
-                </tr>`
-            this.ordersTable.innerHTML = templHeaderTable;
+            // let templHeaderTable =  `
+            // <thead>
+            //     <tr class="ordersTableHeader headerTable" id = "header">
+            //         <th class = "firstColumn">Имя</th>
+            //         <th>Заказ</th>
+            //         <th>Сумма заказа</th>
+            //     </tr>
+            // </thead>`
+            // this.ordersTable.innerHTML = templHeaderTable;
         }
 
         showAllUsers() {
@@ -37,15 +40,20 @@ export let pieTableOrders = (function () {
                 let listOrders = "";
                 const productsNames = Object.keys(products);
                 productsNames.forEach(prod => {
-                    listOrders += prod + "  -  " + products[prod].count + '<br>';
+                    if(products[prod].count>0){
+                        listOrders += prod + "  -  " + products[prod].count + '<br>';
+                    }
                 });
-                templ += `
+                if(listOrders !==""){
+                    templ += `
                     <tr class="ordersTableHeader">
                         <th>${this.orders[username].FIO}</th>
                         <th>${listOrders}</th>
-                        <th>${this.orders[username].price}</th>
+                        <th>${this.orders[username].price} руб.</th>
                     </tr>
                     `;
+                }
+                
             });
             this.ordersTable.innerHTML += templ;
         }
@@ -92,15 +100,20 @@ export let pieTableOrders = (function () {
                     let listOrders = "";
                     const productsNames = Object.keys(products);
                     productsNames.forEach(prod => {
-                        listOrders += prod + "  -  " + products[prod].count + '<br>';
+                        if(products[prod].count>0){
+                            listOrders += prod + "  -  " + products[prod].count + '<br>';
+                        }
                     });
+                    if(appendingRes !==""){
+
                     appendingRes += `
                     <tr class="ordersTableHeader">
                         <th>${this.orders[username].FIO}</th>
                         <th>${listOrders}</th>
-                        <th>${this.orders[username].price}</th>
+                        <th>${this.orders[username].price} руб.</th>
                     </tr>
                     `;
+                    }
                 });
                 this.ordersTable.innerHTML += appendingRes;
             } else {

@@ -56,6 +56,7 @@ export let pieUpBalance = (function () {
                         let index = this.users.findIndex(x => x.FIO === this.currentUser.FIO);
                         this.users[index] = value;
                         this.balanceInput.value = '';
+                        pieError.showError("Баланс пополнен");
                     }, (reason) => {
                         pieError.showError(reason);
                     });

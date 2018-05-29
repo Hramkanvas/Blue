@@ -97,13 +97,13 @@ export let pieMenuItem = (function () {
                 foodList = Object.keys(menu.menuInfo[day]);
                 this.table = ``;
                 foodList.forEach(food => {
-                    this.table += `<tr><td title=${food}>${food}</td><td><b>${menu.menuInfo[day][food].price}</b> руб.</td></tr>`
+                    this.table += `<tr><td title="${food}">${food}</td><td><b>${menu.menuInfo[day][food].price}</b> руб.</td></tr>`
                 });
             } else {
                 foodList = Object.keys(this.currentDayObject.info);
                 this.table = ``;
                 foodList.forEach(food => {
-                    this.table += `<tr><td title=${food}>${food}</td><td><b>${this.currentDayObject.info[food].cost}</b> руб.</td></tr>`
+                    this.table += `<tr><td title="${food}">${food}</td><td><b>${this.currentDayObject.info[food].cost}</b> руб.</td></tr>`
                 });
                 this.totalForDay = this.currentDayObject.price;
             }
@@ -351,6 +351,8 @@ export let pieMenuItem = (function () {
             };
             console.log(sendObject);
             queries.setUserDayOrder(sendObject);
+            const event = new CustomEvent('makeOrderEvent', { 'bubbles': true});
+            this.dispatchEvent(event);
         }
 
         makeOrderFunction() {

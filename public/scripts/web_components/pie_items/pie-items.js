@@ -18,12 +18,17 @@ export let pieItems = (function () {
             this.place = this.shadowRoot.querySelector(".items");
             this.waitComponent = this.shadowRoot.getElementById("waiting");
             this.loadOrders = this.loadOrders.bind(this);
+
+            this.s = this.s.bind(this);
         }
 
         static get observedAttributes() {
             return ['week'];
         }
 
+        s(e) {
+            console.log(e.bubbles);
+        }
 
         attributeChangedCallback(name, oldValue, newValue) {
             this.week = newValue;
@@ -115,6 +120,7 @@ export let pieItems = (function () {
                                 item.setAttribute("data-state", "clear");
                             }
                         }
+                        //item.addEventListener('makeOrderEvent', this.s);
                         this.place.appendChild(item);
                     }
                 });
