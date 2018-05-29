@@ -97,7 +97,7 @@ export let pieMenuItem = (function () {
                 foodList = Object.keys(menu.menuInfo[day]);
                 this.table = ``;
                 foodList.forEach(food => {
-                    this.table += `<tr><td title=${food}>${food}</td><td><b>${menu.menuInfo[day][food].weight}</b> руб.</td></tr>`
+                    this.table += `<tr><td title=${food}>${food}</td><td><b>${menu.menuInfo[day][food].price}</b> руб.</td></tr>`
                 });
             } else {
                 foodList = Object.keys(this.currentDayObject.info);
