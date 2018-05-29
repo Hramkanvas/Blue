@@ -21,7 +21,7 @@ export let pieMakeOrder = (function () {
 
         makeOrderClick(){
             queries.confirmDayOrder().then(ok =>{
-                this.shadowRoot.parentNode.removeChild(this.shadowRoot);
+                this.shadowRoot.host.parentNode.removeChild(this.shadowRoot.host);
             }).catch(error => {
                 
             });
