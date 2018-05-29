@@ -11,6 +11,11 @@ export let pieShowMainPart = (function () {
             this.info = this.shadowRoot.getElementById("info");
             this.clickArrows = this.clickArrows.bind(this);
             this.items = this.shadowRoot.getElementById("items");
+            this.makeOrder = this.makeOrder.bind(this);
+        }
+
+        makeOrder(e) {
+            console.log(e.bubbles);
         }
 
         clickArrows(e) {
@@ -20,6 +25,7 @@ export let pieShowMainPart = (function () {
 
         connectedCallback() {
             this.arrows.addEventListener('clickArrow', (e) => { this.clickArrows(e) });
+            this.shadowRoot.addEventListener('makeOrderEvent', (e) => { (e) => { this.makeOrder(e) }} );
         }
     }
 

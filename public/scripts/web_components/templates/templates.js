@@ -865,16 +865,19 @@ export let templates = (function () {
         }
         
         th {
-            font-weight:normal;
-            text-align:center;
-            border: 0.5px solid #e0e0eb;
+            flex: 1;
+            height: max-content;
+            font-weight: normal;
+            text-align: center;
+            /* border: 0.5px solid #e0e0eb; */
             padding-bottom: 10px;
             font-size: 18px;
             padding-top: 10px;
         }
         
         tr {
-            background-color:white;
+            display: flex;
+            background-color: white;
             width: 100%;
         }
         
@@ -930,34 +933,74 @@ export let templates = (function () {
         }
 
     
-    .ordersTable {
-        padding: 0px;
-        margin: auto;
-        width: 80%;
-    }
+        .ordersTable {
+            padding: 0px;
+            margin: auto;
+            width: 80%;
+        }
 
-    .ordersTableHeader > th, .ordersTable > td {
-        padding-left: 15px;
-    }
-    
-    .ordersTable tbody tr:nth-child(odd) {
-        background: #F3F8FF;
-    }
+        thead {
+            display:block;
+        }
+
+        tbody {
+            display: block;
+            width: 100%;
+            height: 250px;
+            overflow: auto;
+        }
+
+        tbody::-webkit-scrollbar {
+            padding-left:10px;
+            width: 10px;
+        }
+        
+        tbody::-webkit-scrollbar-track {
+            padding-top: 5px;
+            border-radius: 9px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
+
+        tbody::-webkit-scrollbar-thumb {
+            background-color: #3d8af7;
+            border-radius: 9px;
+            outline: 1px solid slategrey;
+        }
+
+        tbody::-webkit-scrollbar-thumb:hover {
+            background-color: #68a3f7;
+        }
+
+        .ordersTableHeader > th, .ordersTable > td {
+            padding-left: 15px;
+        }
+        
+        .ordersTable tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
 
 
-    .ordersTable tbody tr{
-        height: 40px;
-    }
+        .ordersTable tbody tr{
+            border: 1px solid #0000ff47;
+            border-radius: 5px;
+            margin-bottom: 3px;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: max-content;
+            align-items: center;
+        }
 
-    .headerTable th{
-        background-color:#3d8af7;
-        color:white;
-        text-align:center;
-    }
+        .headerTable th{
+            flex: 1;
+            background-color: #3d8af7;
+            color: white;
+            text-align: center;
+            height:50px;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
 
-    .firstColumn{
-        width:25%;
-    }
 
     </style>
         
@@ -969,75 +1012,89 @@ export let templates = (function () {
             </div>
         </div>
         <table  class="ordersTable">
+        <thead>
+            <tr class="ordersTableHeader headerTable" id = "header">
+                <th class = "firstColumn">Имя</th>
+                <th>Заказ</th>
+                <th>Сумма заказа</th>
+            </tr>
+        </thead>
         <tbody id="ordersTable">
-        <tr class="ordersTableHeader headerTable" id = "header">
-            <th class = "firstColumn">Имя</th>
-            <th>Заказ</th>
-            <th>Сумма заказа</th>
-        </tr>
+            
         </tbody>
     </table>
     `,
         pieTabsTemplate: `
 		<style>
-p {
-    font-size: 16px;
-}
+            p {
+                font-size: 16px;
+            }
 
-h1, h2, h3, h4, h5, h6, th {
-    color: grey
-}
+            h1, h2, h3, h4, h5, h6, th {
+                color: grey
+            }
 
-a {
-    padding: 0px 40px; 
-color: var(--grey-dark);
-text-decoration: none;
-}
+            a {
+                color: var(--grey-dark);
+                text-decoration: none;
+            }
 
-.tabMenu {
-    font-size: 24px;
-    text-align: center;
-    background-color: #f9f9f9; 
-    border-radius: var(--border-radius-component);
-    border: var(--border-component);
-    display: grid;
-    margin: 25px 0px;
-    grid-template-columns: 33% 33% 34%
-}
+            .tabMenu {
+                font-size: 24px;
+                text-align: center;
+                background-color: #f9f9f9; 
+                border-radius: var(--border-radius-component);
+                border: var(--border-component);
+                display: grid;
+                margin: 25px 0px;
+                grid-template-columns: 33% 33% 34%
+            }
 
-.tabMenu div {
-    padding: 10px 0px;
-}
+            .tabMenu div {
+                position: relative;
+                width: 100%;
+                display: flex;
+                height: 50px;
+            }
 
-.tabMenuItem.active {
-    color: #3d8af7;
-}
+            .tabMenu div > a{
+                display: flex;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+            }
 
-body {
-    display: flex;
-    width: 100%;
-    margin: 0 auto;
-    min-width: 320px;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    color: #7a7a7a;
-}
+            .tabMenuItem.active {
+                color: #3d8af7;
+            }
 
-.tabMenu div:hover, .tabMenu div:hover .tabMenuItem.active{
-    background: #3d8af7;
-    color:white;
-}
-</style>
+            body {
+                display: flex;
+                width: 100%;
+                margin: 0 auto;
+                min-width: 320px;
+                flex-direction: column;
+                min-height: 100vh;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                color: #7a7a7a;
+            }
 
-<div class="tabMenu">
-    <div><a href="#" id="menuRef"        class="tabMenuItem active">Меню</a> </div>
-    <div><a href="#" id="upBalanceRef"   class="tabMenuItem">Пополнить баланс</a> </div>
-    <div><a href="#" id="ordersRef"      class="tabMenuItem">Заказы</a> </div>
-</div>
-<pie-menu-general tabstate="activeTab" id="pieMenuGeneral"></pie-menu-general>
-<pie-upbalance-general tabstate="nonactiveTab" id="pieUpBalance"></pie-upbalance-general>
-<pie-orders-general tabstate="nonactiveTab" id="pieStatisticsDay"></pie-orders-general>
+            .tabMenu div:hover, .tabMenu div:hover .tabMenuItem.active{
+                background: #3d8af7;
+                color:white;
+            }
+            </style>
+
+            <div class="tabMenu">
+                <div><a href="#" id="menuRef"        class="tabMenuItem active">Меню</a> </div>
+                <div><a href="#" id="upBalanceRef"   class="tabMenuItem">Пополнить баланс</a> </div>
+                <div><a href="#" id="ordersRef"      class="tabMenuItem">Заказы</a> </div>
+            </div>
+            <pie-menu-general tabstate="activeTab" id="pieMenuGeneral"></pie-menu-general>
+            <pie-upbalance-general tabstate="nonactiveTab" id="pieUpBalance"></pie-upbalance-general>
+            <pie-orders-general tabstate="nonactiveTab" id="pieStatisticsDay"></pie-orders-general>
 `,
         pieUpBalanceTemplate:
             `
