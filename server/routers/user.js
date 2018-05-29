@@ -5,11 +5,11 @@ const users = require('../utils/UsersUtils');
 const menu = require('../utils/MenuUtils');
 const moment = require('moment');
 
-router.get('/getTotalPriceForWeek', (req,res) => {
+router.get('/getTotalPriceForWeek', (req, res) => {
     let username = req.query.username;
     let weekNumber = +req.query.week;
     let answer = {totalPriceForWeek: 0};
-    switch (weekNumber){
+    switch (weekNumber) {
         case 0:
             answer.range = " с " + moment().day(-6).format('l') + " по " + moment().day(0).format('l');
             break;
@@ -21,21 +21,22 @@ router.get('/getTotalPriceForWeek', (req,res) => {
             break;
     }
     users.getOrders(username, weekNumber)
-        .then(array =>{
-            if (!array){
+        .then(array => {
+            if (!array) {
                 throw new Error("Parametrs isn't correct!")
             }
-            return order.ordersForWeek(weekNumber,array, username);
+            return order.ordersForWeek(weekNumber, array, username);
         })
         .then(orders => {
             console.log(orders);
             orders.forEach(function (order) {
-                if(order.price)
+                if (order.price)
                     answer.totalPriceForWeek += order.price;
 
             });
-            if(!answer.totalPriceForWeek)
+            if (!answer.totalPriceForWeek)
                 answer.totalPriceForWeek = 0;
+            answer.totalPriceForWeek = answer.totalPriceForWeek.toFixed(2);
             res.send(answer);
         })
         .catch(err => res.status(404).send(err.message));
@@ -54,10 +55,10 @@ router.put('/makeOrder', (req, res) => {//сделать заказ(обнови
     }*/
     users.getUser(req.body.username)
         .then((user) => {
-            if(user && user.balance > -20){
+            if (user && user.balance > -20) {
                 return order.uploadOrder(new Date(req.body.date), req.body.username, req.body.uploadOrder);
             }
-                throw new Error('Not enough money');
+            throw new Error('Not enough money');
         })
         .then(answer => users.addOrderToHistory(req.body.username, new Date(req.body.date)))
         .then(answer => {
@@ -83,14 +84,14 @@ router.delete('/deleteOrder', (req, res) => {
         .catch(err => res.status(404).send(err.message));
 });
 
-router.post('/getMainPage', (req,res) => {
+router.post('/getMainPage', (req, res) => {
     let currentOrders;
     let username = req.body.username;
     let number = +req.body.number;
     let currentArr = users.getOrders(username, number)
         .then(array => {
             if (array) {
-                return order.ordersForWeek(number,array, username);
+                return order.ordersForWeek(number, array, username);
             }
             throw new Error('User not found');
         })
@@ -101,10 +102,10 @@ router.post('/getMainPage', (req,res) => {
         .then(ans => {
             let answer = [];
             //if (ans) {
-                answer.push(currentOrders);
-                answer.push(ans);
-                res.send(answer);
-           // }
+            answer.push(currentOrders);
+            answer.push(ans);
+            res.send(answer);
+            // }
             //throw new Error('Menu not found');
 
         })
