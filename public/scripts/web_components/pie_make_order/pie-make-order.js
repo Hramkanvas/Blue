@@ -15,7 +15,7 @@ export let pieMakeOrder = (function () {
                 }
             })
             .catch(error => {
-                console.log(error)
+                
             });
         }
 

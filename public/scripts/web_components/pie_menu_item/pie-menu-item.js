@@ -331,6 +331,9 @@ export let pieMenuItem = (function () {
             queries.deleteOrder({
                 username: userInfo.username,
                 date: this.currentDayObject.date
+            }).then(res =>{
+                const event = new CustomEvent('makeOrderEvent', { 'bubbles': true});
+                this.dispatchEvent(event);
             });
         }
 
@@ -349,9 +352,10 @@ export let pieMenuItem = (function () {
                     info: this.currentDayObject.info
                 }
             };
-            queries.setUserDayOrder(sendObject);
-            const event = new CustomEvent('makeOrderEvent', { 'bubbles': true});
-            this.dispatchEvent(event);
+            queries.setUserDayOrder(sendObject).then(response => {
+                const event = new CustomEvent('makeOrderEvent', { 'bubbles': true});
+                this.dispatchEvent(event);
+            });
         }
 
         makeOrderFunction() {

@@ -21,6 +21,15 @@ export let queries = (function () {
         });
     }
 
+    function ajaxWithoutJson(method, strHeaderType, strHeaderContent, body, query){
+        myInit.method = method;
+        myInit.headers = giveMeHeader(strHeaderType, strHeaderContent);
+        myInit.body = body;
+        return fetch(query, myInit).then(response => {
+            return response;
+        });
+    }
+
     return {
         authorize: function (login, password) {
             const object = { login: login, password: password };
@@ -51,7 +60,7 @@ export let queries = (function () {
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/admin/getDayOrders');
         },
 
-        getTotalPriceForWeek: function(username, week){
+        getTotalPriceForWeek: function(username, week) {
             return ajax('GET', 'Content-Type', 'application/json', undefined, '/getTotalPriceForWeek?username=' + username
                     + '&week=' + week);
         },
@@ -69,7 +78,12 @@ export let queries = (function () {
         },
 
         setUserDayOrder: function(currentDayObject) {
-            return ajax('PUT', 'Content-Type', 'application/json', JSON.stringify(currentDayObject), '/makeOrder');
+            myInit.method = 'PUT';
+            myInit.headers = giveMeHeader('Content-Type', 'application/json');
+            myInit.body = JSON.stringify(currentDayObject);
+            return fetch('/makeOrder', myInit).then(response => {
+                return response;
+            });
         },
 
         getTodayOrdersStatistics: function (date) {
@@ -82,7 +96,7 @@ export let queries = (function () {
         }
         ,
         deleteOrder: function(userInformation){
-            return ajax('DELETE', 'Content-Type', 'application/json', JSON.stringify(userInformation), '/deleteOrder');
+            return ajaxWithoutJson('DELETE', 'Content-Type', 'application/json', JSON.stringify(userInformation),  '/deleteOrder');
         }
     }
 })();
