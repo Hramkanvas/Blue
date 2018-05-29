@@ -137,6 +137,8 @@ export let pieItems = (function () {
                         }
                         
                         this.place.appendChild(item);
+                        item.addEventListener('makeOrderEvent', this.makeOrder);
+                        this.place.appendChild(item);
                     }
                 }
             }

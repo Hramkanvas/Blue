@@ -18,7 +18,7 @@ export let pieGeneralInfo = (function go() {
             this.week = 1;
         }
 
-        updateInfo() {
+        updateInfo() {     
             if (userInfo.type !== 'admin') {
                 queries.getTotalPriceForWeek(userInfo.username, this.week).then(balance => {
                     const templateMoney = `<p>Сумма заказа на неделю: ${balance.totalPriceForWeek} руб.</p>`;
@@ -27,7 +27,6 @@ export let pieGeneralInfo = (function go() {
                     this.choosenWeek.innerHTML = templateWeek;
                 })
                 .catch(error => {
-                    console.log(error)
                 });
             }
         }
