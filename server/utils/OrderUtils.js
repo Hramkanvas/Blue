@@ -179,7 +179,9 @@ function getOrderPrice(date, username) {
 function calculateOrderPrice(order) {
     let price = 0;
     for (dish in order.info) {
-        price += order.info[dish].cost * order.info[dish].count;
+        if(order.info[dish].count!==0) {
+            price += order.info[dish].cost;
+        }
     }
     return price.toFixed(2);
 }

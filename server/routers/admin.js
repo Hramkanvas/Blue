@@ -92,7 +92,7 @@ router.post('/uploadMenu', (req, res) => {
 
 router.get('/confirmDayOrders', (req, res) => {
     //нужно вызвать запрос  'getDayOrdersStatistic' перед этим,чтобы посчитать кол-во продуктов
-    let date = moment().date(30);
+    let date = moment();
     let prom = [];
     orders.createDayOrdersSchema(date)
         .then(() => orders.confirmDayOrders(date))
