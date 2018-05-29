@@ -56,28 +56,35 @@ export let counter = (function () {
 
             this.setAttribute("count", this.counter);
         }
-
+        cutStuff(item){
+            return +Number.parseFloat(item).toFixed(2);
+        }
         render(counter, prevCounter) {
             prevCounter = +prevCounter;
-            let price = this.productPrice.innerText || 1;
+            let price = +this.productPrice.innerText || 1;
             let priceChange = 0;
 
             if (counter === 0 || prevCounter === 0) {
-                this.productPrice.innerHTML = price;
+                this.productPrice.innerHTML = this.cutStuff(price);
                 priceChange = counter === 0 && prevCounter === 0 ? 0 : (counter > prevCounter ? +this.productPrice.innerHTML : -this.productPrice.innerHTML);
             }
+
             else if (counter === 1 && prevCounter === 2) {
-                this.productPrice.innerHTML = (price / 2).toString();
+                this.productPrice.innerHTML = (this.cutStuff(price / 2)).toString();
                 priceChange = -this.productPrice.innerHTML;
             }
+
             else {
-                this.productPrice.innerHTML = (counter * (price / prevCounter)).toString();
+                this.productPrice.innerHTML = (this.cutStuff(counter * (price / prevCounter))).toString();
                 priceChange = counter > prevCounter ? +this.productPrice.innerHTML / counter : -this.productPrice.innerHTML / counter;
             }
+
             this.count.innerHTML = counter;
 
+            priceChange = this.cutStuff(priceChange);
             let counterEvent = new CustomEvent("counter", { detail: { priceChange: priceChange }, bubbles: true });
             this.dispatchEvent(counterEvent);
+
         }
     }
 
