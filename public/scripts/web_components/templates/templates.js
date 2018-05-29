@@ -1206,7 +1206,7 @@ export let templates = (function () {
                    
                 </datalist>
                 <label for="balance" list="character"> Сумма:
-                    <input id = "balanceInput" type="number" min = "0"> 
+                    <input id = "balanceInput" min = "0"> 
                 </label>
                     <button type="submit" id = "btUpBalance">Пополнить</button>
             </form>

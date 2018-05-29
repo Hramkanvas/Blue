@@ -48,7 +48,7 @@ export let pieUpBalance = (function () {
 
         clickUpBalanceEvent(event) {
             if (this.currentUser !== undefined) {
-                if (this.balanceInput.value.match(/^([0-9]+\.?[0-9]*)$/)) {
+                if (this.balanceInput.value.match(/^([0-9]+\.?[0-9]{0,2})$/)) {
                     let inputBalance = Number(this.balanceInput.value);
                     queries.upBalance(this.currentUser.username, inputBalance).then((value)=>{
                         this.currentUser = value;

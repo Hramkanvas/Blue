@@ -16,7 +16,6 @@ export let pieShowMainPart = (function () {
         }
 
         makeOrder(e) {
-            console.log(this.week);
             this.info.setAttribute('week', this.week);
         }
 
