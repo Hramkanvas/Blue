@@ -34,7 +34,7 @@ export let pieMenuItem = (function () {
                 let priceChange = e.detail.priceChange;
                 let pastPrice = +this.shadowRoot.getElementById("price").innerText;
                 let place = this.shadowRoot.getElementById("price");
-                place.innerHTML = `${pastPrice + priceChange}`
+                place.innerHTML = `${this.cutStuff(pastPrice + priceChange)}`
             }.bind(this));
 
         }
@@ -134,7 +134,7 @@ export let pieMenuItem = (function () {
                             </table>
                         </div>
                         <div class="price">
-                            Итого: ${this.totalForDay} руб.
+                            Итого: ${this.cutStuff(this.totalForDay)} руб.
                         </div>`;
                     itemState.classList.add(attr);
                     break;
@@ -169,7 +169,7 @@ export let pieMenuItem = (function () {
                             </table>
                         </div>
                         <div class="price">
-                            Итого: ${this.totalForDay} руб.
+                            Итого: ${this.cutStuff(this.totalForDay)} руб.
                         </div>
                     `;
                     let editButton = this.shadowRoot.getElementById("editButton");
@@ -236,7 +236,7 @@ export let pieMenuItem = (function () {
                                 </tbody>
                             </table>
                         </div>
-                        <div class="    price edit">Итого: <b id="price">${this.totalForDay}</b> руб.</div>
+                        <div class="    price edit">Итого: <b id="price">${this.cutStuff(this.totalForDay)}</b> руб.</div>
                         <button class="orderButton edit" id="sendOrder">Заказать</button>
                     `;
 
@@ -322,7 +322,9 @@ export let pieMenuItem = (function () {
                 this.currentDayObject.price = +this.shadowRoot.getElementById('price').innerText;
             }
         }
-
+        cutStuff(item){
+            return +Number.parseFloat(item).toFixed(2);
+        }
         clearButtonFunction() {
             this.rewriteCurrentDayObject("clear");
             this.renderTable(this.dayName);
