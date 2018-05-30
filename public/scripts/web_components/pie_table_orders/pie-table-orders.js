@@ -1,6 +1,6 @@
-import {queries} from "../../queries.js";
-import {pieError} from "../pie_error/pie-error.js";
-import {templates} from "../templates/templates.js";
+import { queries } from "../../queries.js";
+import { pieError } from "../pie_error/pie-error.js";
+import { templates } from "../templates/templates.js";
 
 export let pieTableOrders = (function () {
     let template = templates.pieTableOrdersTemplate;
@@ -8,7 +8,7 @@ export let pieTableOrders = (function () {
     class TableOrdersClass extends HTMLElement {
         constructor() {
             super();
-            this.attachShadow({mode: 'open'}).innerHTML = template;
+            this.attachShadow({ mode: 'open' }).innerHTML = template;
             this.getPerson = this.getPerson.bind(this);
             this.nameList = this.shadowRoot.getElementById('name');
             this.inputZone = this.shadowRoot.getElementById('inputZone');
@@ -20,15 +20,7 @@ export let pieTableOrders = (function () {
         }
 
         clearTable() {
-            // let templHeaderTable =  `
-            // <thead>
-            //     <tr class="ordersTableHeader headerTable" id = "header">
-            //         <th class = "firstColumn">Имя</th>
-            //         <th>Заказ</th>
-            //         <th>Сумма заказа</th>
-            //     </tr>
-            // </thead>`
-            // this.ordersTable.innerHTML = templHeaderTable;
+             this.ordersTable.innerHTML = '';
         }
 
         showAllUsers() {
@@ -40,11 +32,11 @@ export let pieTableOrders = (function () {
                 let listOrders = "";
                 const productsNames = Object.keys(products);
                 productsNames.forEach(prod => {
-                    if(products[prod].count>0){
+                    if (products[prod].count > 0) {
                         listOrders += prod + "  -  " + products[prod].count + '<br>';
                     }
                 });
-                if(listOrders !==""){
+                if (listOrders !== "") {
                     templ += `
                     <tr class="ordersTableHeader">
                         <th>${this.orders[username].FIO}</th>
@@ -53,7 +45,7 @@ export let pieTableOrders = (function () {
                     </tr>
                     `;
                 }
-                
+
             });
             this.ordersTable.innerHTML += templ;
         }
@@ -71,10 +63,10 @@ export let pieTableOrders = (function () {
 
         loadOrders() {
             queries.getDayOrders().then(orders => {
-                    this.orders = orders;
-                    this.showAllUsers();
-                    this.loadNames();
-                },
+                this.orders = orders;
+                this.showAllUsers();
+                this.loadNames();
+            },
                 error => {
                     console.log(error);
                 });
@@ -100,13 +92,12 @@ export let pieTableOrders = (function () {
                     let listOrders = "";
                     const productsNames = Object.keys(products);
                     productsNames.forEach(prod => {
-                        if(products[prod].count>0){
+                        if (products[prod].count > 0) {
                             listOrders += prod + "  -  " + products[prod].count + '<br>';
                         }
                     });
-                    if(appendingRes !==""){
-
-                    appendingRes += `
+                    if (listOrders.length !== 0) {
+                        appendingRes += `
                     <tr class="ordersTableHeader">
                         <th>${this.orders[username].FIO}</th>
                         <th>${listOrders}</th>
