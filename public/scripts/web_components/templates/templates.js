@@ -78,7 +78,14 @@ export let templates = (function () {
         color: #7a7a7a;
     }
     
+    .errorMessage {
+        color: red;
+        position: absolute;
+        top: 70px;
+        left: 45%;
+    }
     .authorizationBlock {
+        position: relative;
         --fon: red;
         background: #ebebeb;
         border-radius: 3px;
@@ -1240,22 +1247,23 @@ export let templates = (function () {
         border-radius: 50%;
         }
         .loader {
-        color: #ffffff;
-        font-size: 11px;
-        text-indent: -99999em;
-        margin: 5px auto;
-        position: relative;
-        width: 10em;
-        height: 10em;
-        box-shadow: inset 0 0 0 1em;
-        -webkit-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        transform: translateZ(0);
+            color: #ffffff;
+            font-size: 11px;
+            text-indent: -99999em;
+            position: absolute;
+            left:50%;
+            top:50%;
+            width: 10em;
+            height: 10em;
+            box-shadow: inset 0 0 0 1em;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
         }
         .loader:before,
         .loader:after {
-        position: absolute;
-        content: '';
+            position: absolute;
+            content: '';
         }
         .loader:before {
         width: 5.2em;

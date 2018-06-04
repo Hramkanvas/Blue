@@ -32,6 +32,12 @@ let template = templates.pieAuthorizationTemplate;
             }
             )
             .catch(error => {
+                let errorMessage = document.createElement("div");
+                errorMessage.classList.add("errorMessage");
+                errorMessage.innerHTML = "Ошибка"
+                
+                
+                this.authorizationBlock.appendChild(errorMessage);
                 this.authorizationBlock.classList.toggle("Error");
             });
         }
